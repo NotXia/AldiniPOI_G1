@@ -18,47 +18,44 @@
       }
    </style>
 </head>
-<body>
-   <div align="center">
+   <body>
 
-      <h2>Registrazione</h2>
-      
-      <form action="register.php" method="POST">
-         <table>
-            <tr>
-               <td id="label">Nome</td>
-               <td><input type="text" name="nome" required></td>
-            </tr>
-            <tr>
-               <td id="label">Cognome</td>
-               <td><input type="text" name="cognome" required></td>
-            </tr>
-            <tr>
-               <td id="label">Data di nascita</td>
-               <td><input type="date" name="ddn" required></td>
-            </tr>
-            <tr>
-               <td id="label">Email</td>
-               <td><input type="email" name="email" required></td>
-            </tr>
-            <tr>
-               <td id="label">Password</td>
-               <td><input type="password" name="password1" required></td>
-            </tr>
-            <tr>
-               <td id="label">Conferma password</td>
-               <td><input type="password" name="password2" required></td>
-            </tr>
-         </table>
-         <br>
-         <input type="submit" name="" value="Registrati">
-      </form>
+      <div align="center">
 
-   </div>
+         <h2>Registrazione</h2>
 
-   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
-   <!-- Include all compiled plugins (below), or include individual files as needed -->
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-</body>
+         <form action="register.php" method="POST">
+            <table>
+               <tr>
+                  <td id="label">Nome</td>
+                  <td><input type="text" name="nome" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Cognome</td>
+                  <td><input type="text" name="cognome" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Data di nascita</td>
+                  <td><input type="date" name="ddn" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Email</td>
+                  <td><input type="email" name="email" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Password</td>
+                  <td><input type="password" name="password1" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Conferma password</td>
+                  <td><input type="password" name="password2" required></td>
+               </tr>
+            </table>
+            <br>
+            <input type="submit" value="Registrati">
+         </form>
+
+      </div>
+
+   </body>
 </html>

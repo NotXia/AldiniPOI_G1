@@ -57,16 +57,16 @@
                $mail->setFrom($EMAIL_CONFERMA, $NOME_CONFERMA);
                $mail->addAddress($email);
 
-               $email_format = file_get_contents("templateMail.html");
-               $email_format = str_replace("%cognome", $cognome, $email_format);
-               $email_format = str_replace("%nome", $nome, $email_format);
+               $email_format = file_get_contents("./res/templateMail.html");
+               $email_format = str_replace("%cognome%", $cognome, $email_format);
+               $email_format = str_replace("%nome%", $nome, $email_format);
 
                $mail->isHTML(true);
                $mail->Subject = "POI - Registrazione effettuata con successo";
                $mail->Body = $email_format;
 
                if($mail->send()){
-                  echo "<p>Registrazione avvenuta con successo</p>";
+                  header("Location:success.html");
                }
                else{
                   // TODO Gestite errore invio email
