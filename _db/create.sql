@@ -15,14 +15,13 @@ CREATE TABLE dispositivi (
 	mac_address VARCHAR(20)
 );
 
-CREATE TABLE orari (
+CREATE TABLE visite (
 	id INT AUTO_INCREMENT PRIMARY KEY,
+	data_inizio DATE NOT NULL,
 	ora_inizio TIME NOT NULL,
 	ora_fine TIME NOT NULL,
 	CHECK (ora_inizio < ora_fine)
 );
-INSERT orari VALUES(null, "15:00:00". "16:00:00");
-INSERT orari VALUES(null, "16:00:00". "17:00:00");
 
 CREATE TABLE laboratori (
 	tag VARCHAR(20) PRIMARY KEY,
