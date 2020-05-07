@@ -4,17 +4,19 @@
    require "lib/phpmailer/PHPMailerAutoload.php";
 
    if(isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["ddn"]) &&
-      isset($_POST["email"]) && isset($_POST["password1"]) &&isset($_POST["password2"])) {
+      isset($_POST["email"]) && isset($_POST["password1"]) && isset($_POST["password2"])) {
 
       if($_POST["password1"] == $_POST["password2"]) {
          try {
             $conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PSW);
+
             $nome = trim($_POST["nome"]);
             $cognome = trim($_POST["cognome"]);
             $email = trim($_POST["email"]);
             $ddn = $_POST["ddn"];
             $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
 
+            // Controlla se l'email inserita è già presente
             $sql = "SELECT COUNT(*) as conta FROM utenti WHERE email = :email";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
@@ -22,7 +24,7 @@
 
             $account_check = $stmt->fetch()["conta"];
             if($account_check == 0) {
-               $conn->beginTransaction();
+               // Inserimento utente
                $sql = "INSERT utenti VALUES(null, :email, :psw, :nome, :cognome, :ddn, 1)"; // 1 = cod permesso base
                $stmt = $conn->prepare($sql);
                $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
@@ -32,9 +34,7 @@
                $stmt->bindParam(":ddn", $ddn);
                $stmt->execute();
 
-               $conn->commit();
-
-               // INVIO EMAIL
+               // Invio email di conferma
                $mail = new PHPMailer;
                $mail->SMTPOptions=array(
                   'ssl'=>array(
@@ -69,10 +69,10 @@
                   echo "<p>Registrazione avvenuta con successo</p>";
                }
                else{
-                  $conn->rollback();
+                  // TODO Gestite errore invio email
                }
-               // FINE EMAIL
-            }
+               // FINE - Invio email di conferma
+            } // if($account_check == 0)
             else {
                echo "<p>L'indirizzo email che hai inserito è già in uso</p>";
             }
@@ -80,7 +80,7 @@
          catch(PDOException $e) {
             echo "<p>Qualcosa è andato storto</p>";
          }
-      }
+      } // if($_POST["password1"] == $_POST["password2"])
       else {
          echo "<p>Le password non coincidono</p>";
       }
