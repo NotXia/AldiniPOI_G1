@@ -17,11 +17,7 @@ CREATE TABLE dispositivi (
 
 CREATE TABLE visite (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-<<<<<<< HEAD
 	data_inizio DATE NOT NULL,
-=======
-	data DATE NOT NULL
->>>>>>> 1a2ce4965372ab3b70bccc7df82d12fd5fa8b0f0
 	ora_inizio TIME NOT NULL,
 	ora_fine TIME NOT NULL,
 	CHECK (ora_inizio < ora_fine)
