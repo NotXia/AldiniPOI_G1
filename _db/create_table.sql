@@ -1,5 +1,6 @@
 CREATE DATABASE aldini_poi;
 USE aldini_poi;
+DROP DATABASE aldini_poi;
 
 CREATE TABLE permessi (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,19 +45,21 @@ CREATE TABLE utenti (
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+DESCRIBE visite;
+
 CREATE TABLE prenotazioni (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	data_visita DATE NOT NULL,
 	ora_inizio TIME,
 	username VARCHAR(100) NOT NULL, /* Generato per la visita */
 	psw VARCHAR(100) NOT NULL, /* Generato per la visita */
-	cod_utente VARCHAR(100) NOT NULL,
+	cod_utente INT NOT NULL,
 	cod_dispositivo INT,
-	cod_orario INT NOT NULL,
+	cod_visita INT NOT NULL,
 	cod_permesso INT NOT NULL,
 	FOREIGN KEY (cod_utente) REFERENCES utenti(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (cod_dispositivo) REFERENCES dispositivi(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (cod_orario) REFERENCES orari(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (cod_visita) REFERENCES visite(id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
