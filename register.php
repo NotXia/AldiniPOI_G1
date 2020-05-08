@@ -1,3 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+   <title>Registrazione</title>
+
+   <!-- Bootstrap -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+   <style>
+      td {
+         padding: 1.7px;
+      }
+      td#label {
+         text-align: right;
+      }
+      p#error {
+         color: red;
+         text-align: center;
+      }
+   </style>
+</head>
+   <body>
+
+      <div align="center">
+
+         <h2>Registrazione</h2>
+
+         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+            <table>
+               <tr>
+                  <td id="label">Nome</td>
+                  <td><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome'];?>" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Cognome</td>
+                  <td><input type="text" name="cognome" value="<?php if(isset($_POST['cognome'])) echo $_POST['cognome'];?>" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Data di nascita</td>
+                  <td><input type="date" name="ddn" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn'];?>" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Email</td>
+                  <td><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email'];?>" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Password</td>
+                  <td><input type="password" name="password1" required></td>
+               </tr>
+               <tr>
+                  <td id="label">Conferma password</td>
+                  <td><input type="password" name="password2" required></td>
+               </tr>
+            </table>
+            <br>
+            <input type="submit" value="Registrati">
+         </form>
+
+      </div>
+
+   </body>
+</html>
+
+
 <?php
 
    require "utilities.php";
@@ -74,15 +141,15 @@
                // FINE - Invio email di conferma
             } // if($account_check == 0)
             else {
-               echo "<p>L'indirizzo email che hai inserito è già in uso</p>";
+               echo "<p id='error'>L'indirizzo email che hai inserito è già in uso</p>";
             }
          }
          catch(PDOException $e) {
-            echo "<p>Qualcosa è andato storto</p>";
+            echo "<p id='error'>Qualcosa è andato storto</p>";
          }
       } // if($_POST["password1"] == $_POST["password2"])
       else {
-         echo "<p>Le password non coincidono</p>";
+         echo "<p id='error'>Le password non coincidono</p>";
       }
    }
 
