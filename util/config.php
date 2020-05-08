@@ -1,10 +1,16 @@
 <?php
 
+   //
+   // CONFIGURAZIONE DATABASE
+   //
    $DB_HOST = "localhost";
    $DB_NAME = "aldini_poi";
    $DB_USER = "root";
    $DB_PSW = "";
 
+   //
+   // CONFIGURAZIONE EMAIL
+   //
    $EMAIL_SERVER = "tcxia.test@gmail.com";
    $PSW_SERVER = "XiaTesting";
    $NOME_SERVER = "Aldini Valeriani";
@@ -18,6 +24,10 @@
    */
    $URL_CONFERMA = "http://localhost/aldini_poi/validation/email.php?id=%d&p1=%s&p2=%s&p3=%s";
 
+   //
+   // CONFIGURAZIONE REQUISITI REGISTRAZIONE
+   //
    $MIN_PSW_LENGTH = 4;
+   $MIN_AGE = 12;
 
 ?>

@@ -1,6 +1,11 @@
 <?php
    require (dirname(__FILE__)."/util/config.php");
+
+   $min_birth=date_create(date("Y-m-d"));
+   date_add($min_birth, date_interval_create_from_date_string("-$MIN_AGE years"));
+   $min_birth = date_format($min_birth,"Y-m-d");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +48,7 @@
                </tr>
                <tr>
                   <td id="label">Data di nascita</td>
-                  <td><input type="date" name="ddn" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn']; ?>" required></td>
+                  <td><input type="date" name="ddn" max="<?php echo htmlentities($min_birth); ?>" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Email</td>
@@ -102,8 +107,12 @@
    if(isset($_POST["submit"]) && isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["ddn"]) &&
       isset($_POST["email"]) && isset($_POST["password1"]) && isset($_POST["password2"])) {
 
+      // Verifica l'età minima
+      if(strtotime($_POST["ddn"]) > strtotime($min_birth)) {
+         echo "<p id='error'>Devi avere almeno $MIN_AGE anni per iscriverti, puoi chiedere ad un genitore di iscriverti per te</p>";
+      }
       // Verifica che la password soddisfi la dimensione minima
-      if(strlen($_POST["password1"]) < $MIN_PSW_LENGTH || strlen($_POST["password2"]) < $MIN_PSW_LENGTH) {
+      else if(strlen($_POST["password1"]) < $MIN_PSW_LENGTH || strlen($_POST["password2"]) < $MIN_PSW_LENGTH) {
          echo "<p id='error'>La password è troppo corta</p>";
       }
       // Verifica che la mail inserita sia in un formato corretto
