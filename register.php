@@ -1,4 +1,7 @@
-<!doctype html>
+<?php
+   require (dirname(__FILE__)."/util/config.php");
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="utf-8">
@@ -28,46 +31,45 @@
 
          <h2>Registrazione</h2>
 
-         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
             <table>
                <tr>
                   <td id="label">Nome</td>
-                  <td><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome'];?>" required></td>
+                  <td><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Cognome</td>
-                  <td><input type="text" name="cognome" value="<?php if(isset($_POST['cognome'])) echo $_POST['cognome'];?>" required></td>
+                  <td><input type="text" name="cognome" value="<?php if(isset($_POST['cognome'])) echo $_POST['cognome']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Data di nascita</td>
-                  <td><input type="date" name="ddn" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn'];?>" required></td>
+                  <td><input type="date" name="ddn" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Email</td>
-                  <td><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email'];?>" required></td>
+                  <td><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Password</td>
                   <td>
-                     <input id="password" type="password" name="password1" minlength="8" required>
-                     <!-- <meter max="3" id="password-strength-meter"></meter> -->
+                     <input id="password" type="password" name="password1" minlength="<?php echo htmlentities($MIN_PSW_LENGTH); ?>" required>
                      <p id="password-strength-text"></p>
                   </td>
                </tr>
                <tr>
                   <td id="label">Conferma password</td>
-                  <td><input type="password" name="password2" minlength="8" required></td>
+                  <td><input type="password" name="password2" minlength="<?php echo htmlentities($MIN_PSW_LENGTH); ?>" required></td>
                </tr>
             </table>
             <br>
-            <input type="submit" value="Registrati">
+            <input type="submit" name="submit" value="Registrati">
          </form>
          <br>
 
       </div>
 
    </body>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+   <script src="./lib/zxcvbn/zxcvbn.js"></script>
    <script>
       var strength = {
          0: "Pessima 😣",
@@ -79,16 +81,11 @@
       var password = document.getElementById('password');
       var text = document.getElementById('password-strength-text');
 
-      password.addEventListener('input', function()
-      {
+      password.addEventListener('input', function() {
          var val = password.value;
          var result = zxcvbn(val);
-         if(val !== "") {
-            text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>";
-         }
-         else {
-            text.innerHTML = "";
-         }
+         if(val !== "") { text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>"; }
+         else { text.innerHTML = ""; }
       });
 
    </script>
@@ -97,39 +94,54 @@
 
 <?php
 
-   require "utilities.php";
-   require "./lib/phpmailer/mailer.php";
+   require (dirname(__FILE__)."/util/dbconnect.php");
+   require (dirname(__FILE__)."/util/mailer.php");
+   require (dirname(__FILE__)."/util/verification_mail_gen.php");
 
-   if(isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["ddn"]) &&
+   // Verifica che tutti i campi siano impostati
+   if(isset($_POST["submit"]) && isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["ddn"]) &&
       isset($_POST["email"]) && isset($_POST["password1"]) && isset($_POST["password2"])) {
 
-      if(strlen($_POST["password1"]) < 8 || strlen($_POST["password2"]) < 8) {
+      // Verifica che la password soddisfi la dimensione minima
+      if(strlen($_POST["password1"]) < $MIN_PSW_LENGTH || strlen($_POST["password2"]) < $MIN_PSW_LENGTH) {
          echo "<p id='error'>La password è troppo corta</p>";
       }
+      // Verifica che la mail inserita sia in un formato corretto
       else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
          echo "<p id='error'>La mail inserita non è valida</p>";
       }
+      // Verifica che le due password coincidano
       else if($_POST["password1"] == $_POST["password2"]) {
          try {
-            $conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PSW);
+            $conn = db_connect();
 
+            // ----------------------------------------------------------------
+            // Sanitizzazione input
+            // ----------------------------------------------------------------
             $nome = trim($_POST["nome"]);
             $cognome = trim($_POST["cognome"]);
             $email = strtolower(trim($_POST["email"]));
             $ddn = $_POST["ddn"];
             $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
+            // ****************************************************************
 
+
+            // ----------------------------------------------------------------
             // Controlla se l'email inserita è già presente
+            // ----------------------------------------------------------------
             $sql = "SELECT COUNT(*) as conta FROM utenti WHERE email = :email";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
             $stmt->execute();
+            $account_check = $stmt->fetch()["conta"]; // Numero di utenti con quella mail (0 o 1)
+            // ****************************************************************
 
-            $account_check = $stmt->fetch()["conta"];
-            if($account_check == 0) {
+            if($account_check == 0) { // Email non presente
+               // ----------------------------------------------------------------
                // Inserimento utente
+               // ----------------------------------------------------------------
                $sql = "INSERT utenti (email, psw, nome, cognome, ddn, verifica_mail, data_creazione, cod_permesso)
-                       VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod permesso base
+                       VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod_permesso base
                $stmt = $conn->prepare($sql);
                $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
                $stmt->bindParam(":psw", $pswd, PDO::PARAM_STR, 60);
@@ -137,37 +149,34 @@
                $stmt->bindParam(":cognome", $cognome, PDO::PARAM_STR, 100);
                $stmt->bindParam(":ddn", $ddn);
                $stmt->execute();
+               // ****************************************************************
 
+               // ID dell'utente appena inserito
                $last_id = $conn->lastInsertId();
 
-               $sql = "SELECT data_creazione FROM utenti WHERE id=$last_id";
+               // ----------------------------------------------------------------
+               // Estrazione data e ora creazione utente
+               // ----------------------------------------------------------------
+               $sql = "SELECT data_creazione FROM utenti WHERE id = $last_id";
                $stmt = $conn->prepare($sql);
                $stmt->execute();
-
                $data_creazione = $stmt->fetch()["data_creazione"];
+               // ****************************************************************
 
-               $url_validazione = sprintf(
-                  $URL_CONFERMA,
-                  $last_id,
-                  hash("sha512", $nome.$data_creazione),
-                  hash("sha512", $cognome.$data_creazione),
-                  hash("sha512", $email.$data_creazione)
-               );
 
-               echo $url_validazione;
-
-               $email_format = file_get_contents("./res/templateMail.html");
-               $email_format = str_replace("%cognome%", $cognome, $email_format);
-               $email_format = str_replace("%nome%", $nome, $email_format);
-               $email_format = str_replace("%url_conferma%", $url_validazione, $email_format);
+               // ----------------------------------------------------------------
+               // Invio della mail per verificare la mail
+               // ----------------------------------------------------------------
+               $email_format = verification_mail($last_id, $nome, $cognome, $email, $data_creazione);
 
                if(mailTo($email, "POI - Registrazione effettuata con successo", $email_format)){
                   header("Location:success.html");
                }
                else{
-                  // TODO Gestite errore invio email
+                  // TODO Gestire errore invio email
                }
-               // FINE - Invio email di conferma
+               // ****************************************************************
+
             } // if($account_check == 0)
             else {
                echo "<p id='error'>L'indirizzo email che hai inserito è già in uso</p>";

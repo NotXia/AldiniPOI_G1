@@ -40,6 +40,8 @@ CREATE TABLE utenti (
 	nome VARCHAR(100) NOT NULL,
 	cognome VARCHAR(100) NOT NULL,
 	ddn DATE NOT NULL,
+	data_creazione DATETIME NOT NULL,
+	verifica_mail BOOLEAN NOT NULL,
 	cod_permesso INT NOT NULL,
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
