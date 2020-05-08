@@ -5,7 +5,13 @@
    $DB_USER = "root";
    $DB_PSW = "";
 
-   $EMAIL_CONFERMA = "tcxia.test@gmail.com";
-   $PSW_CONFERMA = "XiaTesting";
-   $NOME_CONFERMA = "Aldini Valeriani";
+   /*
+      Parametri GET
+      id -> id utente in chiaro
+      p1 -> hash nome
+      p2 -> hash cognome
+      p3 -> hash email
+   */
+   $URL_CONFERMA = "http://localhost/esercizi/POI/emailvalidation.php?id=%d&p1=%s&p2=%s&p3=%s";
+
 ?>
