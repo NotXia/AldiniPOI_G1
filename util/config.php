@@ -16,7 +16,7 @@
       p2 -> hash cognome
       p3 -> hash email
    */
-   $URL_CONFERMA = "http://localhost/aldini_poi_g1/validation/email.php?id=%d&p1=%s&p2=%s&p3=%s";
+   $URL_CONFERMA = "http://localhost/aldini_poi/validation/email.php?id=%d&p1=%s&p2=%s&p3=%s";
 
    $MIN_PSW_LENGTH = 4;
 

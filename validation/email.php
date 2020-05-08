@@ -13,7 +13,7 @@
       // Estrazione dati dell'utente cercando utilizzando l'id passato come parametro
       $sql = "SELECT nome, cognome, email, data_creazione, verifica_mail FROM utenti WHERE id = :id";
       $stmt = $conn->prepare($sql);
-      $stmt->bindParam(":id", "id", PDO::PARAM_INT);
+      $stmt->bindParam(":id", $id, PDO::PARAM_INT);
       $stmt->execute();
 
       $res = $stmt->fetch();
@@ -34,7 +34,7 @@
             else { // Aggiornamento stato utente
                $sql = "UPDATE utenti SET verifica_mail = 1 WHERE id = :id";
                $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":id", "id", PDO::PARAM_INT);
+               $stmt->bindParam(":id", $id, PDO::PARAM_INT);
                $stmt->execute();
                header("Location:success.html");
             }
