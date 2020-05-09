@@ -27,7 +27,7 @@
    //
    // CONFIGURAZIONE REQUISITI REGISTRAZIONE
    //
-   $MIN_PSW_LENGTH = 4;
+   $MIN_PSW_LENGTH = 8;
    $MIN_AGE = 12;
 
 ?>
