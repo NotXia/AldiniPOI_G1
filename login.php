@@ -10,18 +10,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>Login</title>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-   <style>
-      td {
-         padding: 1.7px;
-      }
-      td#label {
-         text-align: right;
-      }
-      p#error {
-         color: red;
-         text-align: center;
-      }
-   </style>
+   <link rel="stylesheet" href="./css/form_table.css">
 </head>
    <body>
 
@@ -33,11 +22,11 @@
             <table>
                <tr>
                   <td id="label">Email</td>
-                  <td><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
+                  <td id="padding"><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Password</td>
-                  <td><input id="password" type="password" name="password" required></td>
+                  <td id="padding"><input id="password" type="password" name="password" required></td>
                </tr>
             </table>
             <br>
@@ -77,7 +66,7 @@
             // ----------------------------------------------------------------
             // Controlla se l'email inserita è già presente
             // ----------------------------------------------------------------
-            $sql = "SELECT id, nome, cognome, email, psw FROM utenti WHERE email = :email";
+            $sql = "SELECT id, nome, cognome, email, psw, cod_permesso FROM utenti WHERE email = :email";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
             $stmt->execute();
@@ -91,6 +80,7 @@
                   $_SESSION["nome"] = $res["nome"];
                   $_SESSION["cognome"] = $res["cognome"];
                   $_SESSION["email"] = $res["email"];
+                  $_SESSION["cod_permesso"] = $res["cod_permesso"];
                   header("Location:index.php");
                }
                else {

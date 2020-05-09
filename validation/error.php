@@ -15,7 +15,7 @@
          <h4>Si è verificato un errore nel processo di attivazione dell'account</h4>
          <h4>
             <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-               <input type="hidden" name="id" value="<?php echo htmlentities($_GET["id"]); ?>">
+               <input type="hidden" name="id" value="<?php echo htmlentities($_GET['id']); ?>">
                Se vuoi ricevere una nuova mail di validazione premi <input type="submit" name="mail_again" value="qui" style="padding:0;border:none;background:none;color:blue">
             </form>
          </h4>
@@ -28,7 +28,7 @@
    if(isset($_POST["mail_again"])) {
       require (dirname(__FILE__)."/../util/dbconnect.php");
       require (dirname(__FILE__)."/../util/mailer.php");
-      require (dirname(__FILE__)."/../util/verification_mail_gen.php");
+      require (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
 
       $id = $_POST["id"];
 
@@ -43,9 +43,12 @@
 
          $res = $stmt->fetch();
          if(isset($res["email"])) {
+
             $email_format = verification_mail($id, $res["nome"], $res["cognome"], $res["email"], $res["data_creazione"]);
             mailTo($res["email"], "POI - Verifica email", $email_format);
+
             header("Location:sent.html");
+            
          }
       }
       catch(PDOException $e) {

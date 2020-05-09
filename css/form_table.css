@@ -1,0 +1,15 @@
+td#padding {
+   padding: 1.7px;
+}
+td#label {
+   text-align: right;ù
+   padding: 1.7px;
+}
+
+p#error {
+   color: red;
+   text-align: center;
+}
+p#message {
+   text-align: center;
+}

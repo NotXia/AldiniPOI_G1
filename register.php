@@ -12,23 +12,9 @@
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
    <title>Registrazione</title>
-
-   <!-- Bootstrap -->
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-   <style>
-      td {
-         padding: 1.7px;
-      }
-      td#label {
-         text-align: right;
-      }
-      p#error {
-         color: red;
-         text-align: center;
-      }
-   </style>
+   <link rel="stylesheet" href="./css/form_table.css">
 </head>
    <body>
 
@@ -40,34 +26,35 @@
             <table>
                <tr>
                   <td id="label">Nome</td>
-                  <td><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
+                  <td id="padding"><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Cognome</td>
-                  <td><input type="text" name="cognome" value="<?php if(isset($_POST['cognome'])) echo $_POST['cognome']; ?>" required></td>
+                  <td id="padding"><input type="text" name="cognome" value="<?php if(isset($_POST['cognome'])) echo $_POST['cognome']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Data di nascita</td>
-                  <td><input type="date" name="ddn" max="<?php echo htmlentities($min_birth); ?>" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn']; ?>" required></td>
+                  <td id="padding"><input type="date" name="ddn" max="<?php echo htmlentities($min_birth); ?>" value="<?php if(isset($_POST['ddn'])) echo $_POST['ddn']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Email</td>
-                  <td><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
+                  <td id="padding"><input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
                </tr>
                <tr>
                   <td id="label">Password</td>
-                  <td>
+                  <td id="padding">
                      <input id="password" type="password" name="password1" minlength="<?php echo htmlentities($MIN_PSW_LENGTH); ?>" required>
-                     <p id="password-strength-text"></p>
+                     <p id="password-strength-text" style="display:none;"></p>
                   </td>
                </tr>
                <tr>
                   <td id="label">Conferma password</td>
-                  <td><input type="password" name="password2" minlength="<?php echo htmlentities($MIN_PSW_LENGTH); ?>" required></td>
+                  <td id="padding"><input type="password" name="password2" minlength="<?php echo htmlentities($MIN_PSW_LENGTH); ?>" required></td>
                </tr>
             </table>
             <br>
             <input type="submit" name="submit" value="Registrati">
+            <input id="strength" type="hidden" name="strength" value="">
          </form>
          <br>
 
@@ -89,10 +76,16 @@
       password.addEventListener('input', function() {
          var val = password.value;
          var result = zxcvbn(val);
-         if(val !== "") { text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>"; }
-         else { text.innerHTML = ""; }
+         if(val !== "") {
+            text.style = "display: block;"
+            text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>";
+            document.getElementById('strength').value = result.score;
+         }
+         else {
+            text.style = "display: none;"
+            text.innerHTML = "";
+         }
       });
-
    </script>
 </html>
 
@@ -101,14 +94,17 @@
 
    require (dirname(__FILE__)."/util/dbconnect.php");
    require (dirname(__FILE__)."/util/mailer.php");
-   require (dirname(__FILE__)."/util/verification_mail_gen.php");
+   require (dirname(__FILE__)."/util/mail_gen/verification_mail.php");
 
-   // Verifica che tutti i campi siano impostati
-   if(isset($_POST["submit"]) && isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["ddn"]) &&
-      isset($_POST["email"]) && isset($_POST["password1"]) && isset($_POST["password2"])) {
+   if(isset($_POST["submit"])) {
 
+      // Verifica che tutti i campi siano impostati
+      if(!isset($_POST["submit"]) || !isset($_POST["nome"]) || !isset($_POST["cognome"]) || !isset($_POST["ddn"]) ||
+         !isset($_POST["email"]) || !isset($_POST["password1"]) || !isset($_POST["password2"]) || !isset($_POST["strength"])) {
+         echo "<p id='error'>Qualcosa è andato storto</p>";
+      }
       // Verifica l'età minima
-      if(strtotime($_POST["ddn"]) > strtotime($min_birth)) {
+      else if(strtotime($_POST["ddn"]) > strtotime($min_birth)) {
          echo "<p id='error'>Devi avere almeno $MIN_AGE anni per iscriverti, puoi chiedere ad un genitore di iscriverti per te</p>";
       }
       // Verifica che la password soddisfi la dimensione minima
@@ -118,6 +114,10 @@
       // Verifica che la mail inserita sia in un formato corretto
       else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
          echo "<p id='error'>La mail inserita non è valida</p>";
+      }
+      // Verifica che la complessità della password sia accettabile
+      else if($_POST["strength"] < 2) {
+         echo "<p id='error'>La password è troppo debole</p>";
       }
       // Verifica che le due password coincidano
       else if($_POST["password1"] == $_POST["password2"]) {
@@ -150,7 +150,7 @@
                // Inserimento utente
                // ----------------------------------------------------------------
                $sql = "INSERT utenti (email, psw, nome, cognome, ddn, verifica_mail, data_creazione, cod_permesso)
-                       VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod_permesso base
+               VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod_permesso base
                $stmt = $conn->prepare($sql);
                $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
                $stmt->bindParam(":psw", $pswd, PDO::PARAM_STR, 60);
@@ -199,5 +199,7 @@
          echo "<p id='error'>Le password non coincidono</p>";
       }
    }
+
+
 
 ?>
