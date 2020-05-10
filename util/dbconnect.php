@@ -8,7 +8,9 @@
       $user = $GLOBALS["DB_USER"];
       $psw = $GLOBALS["DB_PSW"];
 
-      return new PDO("mysql:host=$host;dbname=$db", $user, $psw);
+      $conn = new PDO("mysql:host=$host;dbname=$db", $user, $psw);
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $conn;
    }
 
 ?>
