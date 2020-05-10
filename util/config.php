@@ -32,8 +32,10 @@
    $MIN_PSW_LENGTH = 8;
    $MIN_AGE = 0;
 
-   $TIMEOUT_CHANGE_PSW = 1;
+   // In minuti
+   $TIMEOUT_CHANGE_PSW = 60;
 
+   // In minuti
    $TIMEOUT_REMEMBER_ME = 60 * 60 * 24 * 30;
 
 ?>

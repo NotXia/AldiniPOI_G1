@@ -23,7 +23,7 @@
    require (dirname(__FILE__)."/../util/dbconnect.php");
    require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
 
-   if(isset($_GET["id"]) && isset($_GET["p1"]) && isset($_GET["p2"]) && isset($_GET["p3"])) {
+   if(isset($_GET["id"]) && isset($_GET["p1"]) && isset($_GET["p2"]) && isset($_GET["p3"]) && isset($_GET["p4"])) {
       try {
          $conn = db_connect();
          $id = $_GET["id"];
@@ -60,6 +60,9 @@
                $_SESSION["change_psw_id"] = $id;
                header("Location:change.php");
             }
+            else {
+               echo "<p id='error'>Qualcosa è andato storto</p>";
+            }
          }
          else {
             echo "<p id='error'>Qualcosa è andato storto</p>";
@@ -68,6 +71,9 @@
       catch (PDOException $e) {
          echo "<p id='error'>Qualcosa è andato storto</p>";
       }
+   }
+   else {
+      echo "<p id='error'>Qualcosa è andato storto</p>";
    }
 
 ?>
