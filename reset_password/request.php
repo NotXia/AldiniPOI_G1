@@ -40,7 +40,21 @@
          $res = $stmt->fetch();
          if(isset($res["email"])) { // Se la query ha restituito una riga
             // Creazione e invio mail
-            $email_format = reset_psw_mail($res["id"], $res["nome"], $res["cognome"], $res["email"], $res["data_creazione"]);
+            $conn->beginTransaction();
+            $sql = "UPDATE utenti SET ultima_modifica_psw = NOW() WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":id", $res["id"], PDO::PARAM_INT);
+            $stmt->execute();
+
+            $sql = "SELECT ultima_modifica_psw FROM utenti WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":id", $res["id"], PDO::PARAM_INT);
+            $stmt->execute();
+            $conn->commit();
+
+            $now = $stmt->fetch()["ultima_modifica_psw"];
+
+            $email_format = reset_psw_mail($res["id"], $res["nome"], $res["cognome"], $res["email"], $res["data_creazione"], $now);
             mailTo($res["email"], "POI - Cambio password", $email_format);
 
             echo "<p id='message'>Ti abbiamo inviato una mail con la procedura di cambio password</p>";
@@ -51,6 +65,7 @@
       }
       catch(PDOException $e) {
          echo "<p id='error'>Qualcosa è andato storto</p>";
+         $conn->rollback();
       }
    }
 

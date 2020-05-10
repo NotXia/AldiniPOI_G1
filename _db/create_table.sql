@@ -42,8 +42,20 @@ CREATE TABLE utenti (
 	ddn DATE NOT NULL,
 	data_creazione DATETIME NOT NULL,
 	verifica_mail BOOLEAN NOT NULL,
+	ultima_modifica_psw DATETIME,
 	cod_permesso INT NOT NULL,
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE autenticazioni (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	token VARCHAR(60) NOT NULL,
+	selector VARCHAR(20) NOT NULL,
+	ip VARCHAR(15),
+	web_agent VARCHAR(100),
+	data_scadenza DATETIME NOT NULL,
+	cod_utente INT NOT NULL,
+	FOREIGN KEY (cod_utente) REFERENCES utenti(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE prenotazioni (

@@ -2,7 +2,7 @@
 
    require (dirname(__FILE__)."/../config.php");
 
-   function reset_psw_mail($id, $nome, $cognome, $email, $data_creazione) {
+   function reset_psw_mail($id, $nome, $cognome, $email, $data_creazione, $data_modifica) {
 
       $url_reset = $GLOBALS["URL_RESET_PSW"];
 
@@ -14,7 +14,8 @@
          $id,
          hash("sha512", $nome.$data_creazione),
          hash("sha512", $cognome.$data_creazione),
-         hash("sha512", $email.$data_creazione)
+         hash("sha512", $email.$data_creazione),
+         hash("sha512", $data_modifica.$data_creazione)
       );
       // ****************************************************************
 
@@ -36,7 +37,8 @@
          return (
             $hashes[0] == hash("sha512", $values[0].$values[3]) &&
             $hashes[1] == hash("sha512", $values[1].$values[3]) &&
-            $hashes[2] == hash("sha512", $values[2].$values[3])
+            $hashes[2] == hash("sha512", $values[2].$values[3]) &&
+            $hashes[3] == hash("sha512", $values[4].$values[3])
          );
       } catch (Exception $e) {
          return false;

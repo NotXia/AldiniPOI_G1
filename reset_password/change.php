@@ -93,7 +93,8 @@
             $conn = db_connect();
             $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
 
-            $sql = "UPDATE utenti SET psw = '$pswd' WHERE id = :id";
+            // Aggiornamento password e impostazione data richiesta ultima modifica a null
+            $sql = "UPDATE utenti SET psw = '$pswd', ultima_modifica_psw = null WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":id", $_SESSION["change_psw_id"], PDO::PARAM_INT);
             $stmt->execute();

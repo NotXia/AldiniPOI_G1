@@ -29,9 +29,10 @@
                   <td id="padding"><input id="password" type="password" name="password" required></td>
                </tr>
             </table>
-            <br>
-            <input type="submit" name="submit" value="Accedi">
+            <input type="checkbox" name="rememberme" value=""> Ricordami
             <br><br>
+            <input type="submit" name="submit" value="Accedi">
+            <br>
          </form>
          <a href="./reset_password/request.php">Ho dimenticato la password</a>
          <br>
@@ -43,6 +44,8 @@
 <?php
 
    require (dirname(__FILE__)."/util/dbconnect.php");
+   require (dirname(__FILE__)."/util/config.php");
+   require (dirname(__FILE__)."/util/token_gen.php");
 
    // Verifica che tutti i campi siano impostati
    if(isset($_POST["submit"]) && isset($_POST["email"]) && isset($_POST["password"])) {
@@ -81,7 +84,28 @@
                   $_SESSION["cognome"] = $res["cognome"];
                   $_SESSION["email"] = $res["email"];
                   $_SESSION["cod_permesso"] = $res["cod_permesso"];
-                  header("Location:index.php");
+
+                  // Inizializza cookie per ricordare l'utente
+                  if(isset($_POST["rememberme"])) {
+                     $token = token_gen();
+                     $selector = token_gen(20);
+                     $scadenza = time() + $TIMEOUT_REMEMBER_ME;
+
+                     setcookie("user", "$selector:$token", $scadenza, "/");
+
+                     $token_hash = password_hash($token, PASSWORD_DEFAULT);
+                     $ip = $_SERVER['REMOTE_ADDR'];
+                     $web_agent = $_SERVER['HTTP_USER_AGENT'];
+                     $id = $_SESSION["id"];
+                     $giorno_scadenza = date("Y-m-d H:i:s", $scadenza);
+
+                     $sql = "INSERT autenticazioni (token, selector, ip, web_agent, data_scadenza, cod_utente) 
+                             VALUES('$token_hash', '$selector', '$ip', '$web_agent', '$giorno_scadenza', $id)";
+                     $stmt = $conn->prepare($sql);
+                     $stmt->execute();
+                  }
+
+                  header("Location:prenotazioni.php");
                }
                else {
                   echo "<p id='error'>Credenziali non corrette</p>";

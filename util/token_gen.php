@@ -4,7 +4,7 @@
       Genera una sequenza alfanumerica casuale crittograficamente sicura
    */
 
-   function random_str(
+   function token_gen(
    int $length = 128,
    string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string {
 
@@ -15,9 +15,5 @@
       }
       return implode('', $pieces);
    }
-
-   $a = random_str();
-   echo $a . "<br>";
-   echo $b=password_hash($a, PASSWORD_DEFAULT);
 
  ?>

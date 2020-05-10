@@ -145,6 +145,7 @@
             $account_check = $stmt->fetch()["conta"]; // Numero di utenti con quella mail (0 o 1)
             // ****************************************************************
 
+
             if($account_check == 0) { // Email non presente
                // ----------------------------------------------------------------
                // Inserimento utente

@@ -21,14 +21,19 @@
       p1 -> hash nome+data_creazione
       p2 -> hash cognome+data_creazione
       p3 -> hash email+data_creazione
+      p4 -> hash ultima_modifica_psw+data_creazione
    */
    $URL_CONFERMA = "http://localhost/aldini_poi/validation/email.php?id=%d&p1=%s&p2=%s&p3=%s";
-   $URL_RESET_PSW = "http://localhost/aldini_poi/reset_password/verify.php?id=%d&p1=%s&p2=%s&p3=%s";
+   $URL_RESET_PSW = "http://localhost/esercizi/poi/reset_password/verify.php?id=%d&p1=%s&p2=%s&p3=%s&p4=%s";
 
    //
    // CONFIGURAZIONE REQUISITI REGISTRAZIONE
    //
    $MIN_PSW_LENGTH = 8;
    $MIN_AGE = 0;
+
+   $TIMEOUT_CHANGE_PSW = 1;
+
+   $TIMEOUT_REMEMBER_ME = 60 * 60 * 24 * 30;
 
 ?>
