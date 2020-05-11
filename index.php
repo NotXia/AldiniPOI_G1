@@ -7,6 +7,6 @@
    <body>
       <a href="register.php">Registrazione</a><br>
       <a href="login.php">Login</a><br>
-      <a href="prenotazioni.php">Prenotazioni</a>
+      <a href="prenotazioni/view.php">Prenotazioni</a>
    </body>
 </html>
