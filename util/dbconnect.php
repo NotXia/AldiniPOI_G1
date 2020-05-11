@@ -1,6 +1,6 @@
 <?php
 
-   require (dirname(__FILE__)."/config.php");
+   require_once (dirname(__FILE__)."/config.php");
 
    function db_connect() {
       $host = $GLOBALS["DB_HOST"];

@@ -1,6 +1,6 @@
 <?php
 
-   require (dirname(__FILE__)."/../config.php");
+   require_once (dirname(__FILE__)."/../config.php");
 
    function reset_psw_mail($id, $nome, $cognome, $email, $data_creazione, $data_modifica) {
 

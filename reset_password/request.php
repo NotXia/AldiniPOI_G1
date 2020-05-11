@@ -1,7 +1,12 @@
 <?php
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-   require (dirname(__FILE__)."/../util/mailer.php");
-   require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
+   require_once (dirname(__FILE__)."/../util/auth_check.php");
+   if(isLogged()) {
+      header("Location:index.php");
+   }
+
+   require_once (dirname(__FILE__)."/../util/dbconnect.php");
+   require_once (dirname(__FILE__)."/../util/mailer.php");
+   require_once (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
 ?>
 <!DOCTYPE html>
 <html>

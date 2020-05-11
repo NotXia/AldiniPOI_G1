@@ -48,9 +48,8 @@ CREATE TABLE utenti (
 );
 
 CREATE TABLE autenticazioni (
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	selector VARCHAR(20) PRIMARY KEY,
 	token VARCHAR(60) NOT NULL,
-	selector VARCHAR(20) NOT NULL,
 	ip VARCHAR(15),
 	web_agent VARCHAR(100),
 	data_scadenza DATETIME NOT NULL,

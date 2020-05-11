@@ -1,7 +1,7 @@
 <?php
 
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-   require (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
+   require_once (dirname(__FILE__)."/../util/dbconnect.php");
+   require_once (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
 
    try {
       $conn = db_connect();

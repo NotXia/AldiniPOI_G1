@@ -1,7 +1,7 @@
 <?php
 
-   require (dirname(__FILE__)."/../lib/phpmailer/PHPMailerAutoload.php");
-   require (dirname(__FILE__)."/config.php");
+   require_once (dirname(__FILE__)."/../lib/phpmailer/PHPMailerAutoload.php");
+   require_once (dirname(__FILE__)."/config.php");
 
    function mailTo($destinatario, $oggetto, $corpo) {
       $email_mitt = $GLOBALS["EMAIL_SERVER"];

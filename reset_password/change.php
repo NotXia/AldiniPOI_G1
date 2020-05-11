@@ -1,8 +1,8 @@
 <?php
-   require (dirname(__FILE__)."/../util/config.php");
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-
    session_start();
+
+   require_once (dirname(__FILE__)."/../util/config.php");
+   require_once (dirname(__FILE__)."/../util/dbconnect.php");
 ?>
 
 <!DOCTYPE html>
@@ -41,40 +41,45 @@
    </body>
 
    <script src="../lib/zxcvbn/zxcvbn.js"></script>
-   <script>
-      var strength = {
-         0: "Pessima 😣",
-         1: "Debole 😞",
-         2: "Mediocre 😐",
-         3: "Buona 😃",
-         4: "Ottima 😄"
-      }
-      var password = document.getElementById('password');
-      var text = document.getElementById('password-strength-text');
-
-      password.addEventListener('input', function() {
-         var val = password.value;
-         var result = zxcvbn(val);
-         if(val !== "") {
-            text.style = "display: block;"
-            text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>";
-            document.getElementById('strength').value = result.score;
-         }
-         else {
-            text.style = "display: none;"
-            text.innerHTML = "";
-         }
-      });
-   </script>
+   <script src="../js/psw_strength.js"></script>
 </html>
 
 <?php
 
-   if(isset($_POST["change_psw"])) {
+   if(isset($_SESSION["change_psw_id"])) {
+      try {
+         $conn = db_connect();
+         $sql = "SELECT ultima_modifica_psw FROM utenti WHERE id = :id";
+         $stmt = $conn->prepare($sql);
+         $stmt->bindParam(":id", $_SESSION["change_psw_id"], PDO::PARAM_INT);
+         $stmt->execute();
+         $res = $stmt->fetch();
 
-      //
-      // TODO Ulteriore controllo sulla scadenza della richiesta
-      //
+         if(isset($res["ultima_modifica_psw"])) {
+            $time_diff = round((strtotime(date("Y-m-d H:i:s")) - strtotime($res["ultima_modifica_psw"])) / 60); // In minuti
+
+            // Verifica che la richiesta di modifica password sia ancora valida
+            if($time_diff > $TIMEOUT_CHANGE_PSW) {
+               $sql = "UPDATE utenti SET ultima_modifica_psw = null WHERE id = :id";
+               $stmt = $conn->prepare($sql);
+               $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+               $stmt->execute();
+               die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra premendo <a href='request.php'>qui</a></p>");
+            }
+         }
+         else {
+            die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra premendo <a href='request.php'>qui</a></p>");
+         }
+      }
+      catch (PDOException $e) {
+         die ("<p id='error'>Qualcosa è andato storto</p>");
+      }
+   }
+   else { // if(isset($_SESSION["change_psw_id"]))
+      die ("<p id='error'>Si è verificato un errore</p>");
+   }
+
+   if(isset($_POST["change_psw"])) {
 
       // Controlla se tutti i campi sono impostati
       if(!isset($_POST["password1"]) || !isset($_POST["password2"]) || !isset($_POST["strength"])) {
@@ -92,7 +97,7 @@
       }
 
       // Evita di far modificare la password più volte
-      else if(isset($_SESSION["change_psw_id"])) {
+      else {
          try {
             $conn = db_connect();
             $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
@@ -110,9 +115,6 @@
          catch (PDOException $e) {
             echo "<p id='error'>Qualcosa è andato storto</p>";
          }
-      }
-      else { // if(isset($_SESSION["change_psw_id"]))
-         echo "<p id='error'>Si è verificato un errore</p>";
       }
 
    } // if(isset($_POST["change_psw"]))

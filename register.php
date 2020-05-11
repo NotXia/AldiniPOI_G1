@@ -1,8 +1,13 @@
 <?php
-   require (dirname(__FILE__)."/util/config.php");
-   require (dirname(__FILE__)."/util/dbconnect.php");
-   require (dirname(__FILE__)."/util/mailer.php");
-   require (dirname(__FILE__)."/util/mail_gen/verification_mail.php");
+   require_once (dirname(__FILE__)."/util/auth_check.php");
+   if(isLogged()) {
+      header("Location:index.php");
+   }
+
+   require_once (dirname(__FILE__)."/util/config.php");
+   require_once (dirname(__FILE__)."/util/dbconnect.php");
+   require_once (dirname(__FILE__)."/util/mailer.php");
+   require_once (dirname(__FILE__)."/util/mail_gen/verification_mail.php");
 
    $min_birth=date_create(date("Y-m-d"));
    date_add($min_birth, date_interval_create_from_date_string("-$MIN_AGE years"));
@@ -65,31 +70,7 @@
 
    </body>
    <script src="./lib/zxcvbn/zxcvbn.js"></script>
-   <script>
-      var strength = {
-         0: "Pessima 😣",
-         1: "Debole 😞",
-         2: "Mediocre 😐",
-         3: "Buona 😃",
-         4: "Ottima 😄"
-      }
-      var password = document.getElementById('password');
-      var text = document.getElementById('password-strength-text');
-
-      password.addEventListener('input', function() {
-         var val = password.value;
-         var result = zxcvbn(val);
-         if(val !== "") {
-            text.style = "display: block;"
-            text.innerHTML = "Efficacia: " + "<strong>" + strength[result.score] + "</strong>";
-            document.getElementById('strength').value = result.score;
-         }
-         else {
-            text.style = "display: none;"
-            text.innerHTML = "";
-         }
-      });
-   </script>
+   <script src="./js/psw_strength.js"></script>
 </html>
 
 
