@@ -1,3 +1,8 @@
+<?php
+   require (dirname(__FILE__)."/../util/dbconnect.php");
+   require (dirname(__FILE__)."/../util/mailer.php");
+   require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
+?>
 <!DOCTYPE html>
 <html>
    <head>
@@ -20,12 +25,7 @@
    </body>
 </html>
 
-
 <?php
-
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-   require (dirname(__FILE__)."/../util/mailer.php");
-   require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
 
    if(isset($_POST["request"])) {
 
@@ -39,21 +39,25 @@
 
          $res = $stmt->fetch();
          if(isset($res["email"])) { // Se la query ha restituito una riga
-            // Creazione e invio mail
+
             $conn->beginTransaction();
+
+            // Aggiorna la data di modifica password
             $sql = "UPDATE utenti SET ultima_modifica_psw = NOW() WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":id", $res["id"], PDO::PARAM_INT);
             $stmt->execute();
 
+            // Estrae la data appena inserita
             $sql = "SELECT ultima_modifica_psw FROM utenti WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":id", $res["id"], PDO::PARAM_INT);
             $stmt->execute();
-            $conn->commit();
 
+            $conn->commit();
             $now = $stmt->fetch()["ultima_modifica_psw"];
 
+            // Creazione e invio mail
             $email_format = reset_psw_mail($res["id"], $res["nome"], $res["cognome"], $res["email"], $res["data_creazione"], $now);
             mailTo($res["email"], "POI - Cambio password", $email_format);
 

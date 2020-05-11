@@ -1,4 +1,6 @@
 <?php
+   require (dirname(__FILE__)."/util/dbconnect.php");
+
    session_start();
 
    if(!isset($_SESSION["id"])) {
@@ -7,7 +9,6 @@
          // [selector, token]
          $parti = explode(":", $_COOKIE["user"]);
 
-         require (dirname(__FILE__)."/util/dbconnect.php");
          try {
             $conn = db_connect();
 

@@ -1,6 +1,8 @@
 <?php
-   session_start();
    require (dirname(__FILE__)."/../util/config.php");
+   require (dirname(__FILE__)."/../util/dbconnect.php");
+
+   session_start();
 ?>
 
 <!DOCTYPE html>
@@ -68,9 +70,11 @@
 
 <?php
 
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-
    if(isset($_POST["change_psw"])) {
+
+      //
+      // TODO Ulteriore controllo sulla scadenza della richiesta
+      //
 
       // Controlla se tutti i campi sono impostati
       if(!isset($_POST["password1"]) || !isset($_POST["password2"]) || !isset($_POST["strength"])) {

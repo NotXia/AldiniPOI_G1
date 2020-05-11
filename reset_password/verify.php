@@ -1,3 +1,11 @@
+<?php
+   require (dirname(__FILE__)."/../util/config.php");
+   require (dirname(__FILE__)."/../util/dbconnect.php");
+   require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
+
+   session_start(); // Serve per passare l'id alla pagina di change.php
+?>
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -16,12 +24,8 @@
       </div>
    </body>
 </html>
-<?php
-   session_start(); // Serve per passare l'id alla pagina di change.php
 
-   require (dirname(__FILE__)."/../util/config.php");
-   require (dirname(__FILE__)."/../util/dbconnect.php");
-   require (dirname(__FILE__)."/../util/mail_gen/reset_password.php");
+<?php
 
    if(isset($_GET["id"]) && isset($_GET["p1"]) && isset($_GET["p2"]) && isset($_GET["p3"]) && isset($_GET["p4"])) {
       try {
@@ -37,19 +41,22 @@
          $res = $stmt->fetch();
          if(isset($res["nome"])) { // Se la query ha restituito una riga
 
-            // Verifica che la richiesta di modifica password sia ancora valida
+            // Verifica che la richiesta di modifica password sia stata fatta
             if(isset($res["ultima_modifica_psw"])) {
                $time_diff = round((strtotime(date("Y-m-d H:i:s")) - strtotime($res["ultima_modifica_psw"])) / 60); // In minuti
+
+               // Verifica che la richiesta di modifica password sia ancora valida
                if($time_diff > $TIMEOUT_CHANGE_PSW) {
                   $sql = "UPDATE utenti SET ultima_modifica_psw = null WHERE id = :id";
                   $stmt = $conn->prepare($sql);
                   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
                   $stmt->execute();
-                  die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra</p>");
+                  die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra premendo <a href='request.php'>qui</a></p>");
                }
+
             }
             else {
-               die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra</p>");
+               die ("<p id='error'>La tua richiesta è scaduta, richiedine un'altra premendo <a href='request.php'>qui</a></p>");
             }
 
             // Verifica dei parametri passati e gli hash corrispondenti
@@ -57,13 +64,13 @@
                array($_GET["p1"], $_GET["p2"], $_GET["p3"], $_GET["p4"]),
                array($res["nome"], $res["cognome"], $res["email"], $res["data_creazione"], $res["ultima_modifica_psw"]))
             ) {
-               $_SESSION["change_psw_id"] = $id;
+               $_SESSION["change_psw_id"] = $id; // Per passarlo alla pagina change.php
                header("Location:change.php");
             }
             else {
                echo "<p id='error'>Qualcosa è andato storto</p>";
             }
-         }
+         } // if(isset($res["nome"]))
          else {
             echo "<p id='error'>Qualcosa è andato storto</p>";
          }
@@ -71,7 +78,7 @@
       catch (PDOException $e) {
          echo "<p id='error'>Qualcosa è andato storto</p>";
       }
-   }
+   } // if(isset($_GET["id"]) && isset($_GET["p1"]) && isset($_GET["p2"]) && isset($_GET["p3"]) && isset($_GET["p4"]))
    else {
       echo "<p id='error'>Qualcosa è andato storto</p>";
    }

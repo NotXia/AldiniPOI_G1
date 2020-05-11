@@ -1,4 +1,8 @@
 <?php
+   require (dirname(__FILE__)."/util/dbconnect.php");
+   require (dirname(__FILE__)."/util/config.php");
+   require (dirname(__FILE__)."/util/token_gen.php");
+
    session_start();
 ?>
 
@@ -43,10 +47,6 @@
 
 <?php
 
-   require (dirname(__FILE__)."/util/dbconnect.php");
-   require (dirname(__FILE__)."/util/config.php");
-   require (dirname(__FILE__)."/util/token_gen.php");
-
    // Verifica che tutti i campi siano impostati
    if(isset($_POST["submit"]) && isset($_POST["email"]) && isset($_POST["password"])) {
 
@@ -77,6 +77,8 @@
             // ****************************************************************
 
             if(isset($res["id"])) {
+
+               // Verifica credenziali
                if(password_verify($pswd, $res["psw"])) {
                   // Inizializzazione parametri della sessione
                   $_SESSION["id"] = $res["id"];
@@ -85,9 +87,11 @@
                   $_SESSION["email"] = $res["email"];
                   $_SESSION["cod_permesso"] = $res["cod_permesso"];
 
-                  // Inizializza cookie per ricordare l'utente
+                  // ----------------------------------------------------------------
+                  // Inizializza cookie per il token dell'utente (Se "Ricordami" è spuntato)
+                  // ----------------------------------------------------------------
                   if(isset($_POST["rememberme"])) {
-                     $token = token_gen();
+                     $token = token_gen(128);
                      $selector = token_gen(20);
                      $scadenza = time() + $TIMEOUT_REMEMBER_ME;
 
@@ -99,14 +103,15 @@
                      $id = $_SESSION["id"];
                      $giorno_scadenza = date("Y-m-d H:i:s", $scadenza);
 
-                     $sql = "INSERT autenticazioni (token, selector, ip, web_agent, data_scadenza, cod_utente) 
+                     $sql = "INSERT autenticazioni (token, selector, ip, web_agent, data_scadenza, cod_utente)
                              VALUES('$token_hash', '$selector', '$ip', '$web_agent', '$giorno_scadenza', $id)";
                      $stmt = $conn->prepare($sql);
                      $stmt->execute();
                   }
+                  // ****************************************************************
 
                   header("Location:prenotazioni.php");
-               }
+               } // if(password_verify($pswd, $res["psw"]))
                else {
                   echo "<p id='error'>Credenziali non corrette</p>";
                }

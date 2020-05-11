@@ -1,3 +1,9 @@
+<?php
+   require (dirname(__FILE__)."/../util/dbconnect.php");
+   require (dirname(__FILE__)."/../util/mailer.php");
+   require (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
+?>
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -26,9 +32,6 @@
 <?php
 
    if(isset($_POST["mail_again"])) {
-      require (dirname(__FILE__)."/../util/dbconnect.php");
-      require (dirname(__FILE__)."/../util/mailer.php");
-      require (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
 
       $id = $_POST["id"];
 
@@ -48,7 +51,7 @@
             mailTo($res["email"], "POI - Verifica email", $email_format);
 
             header("Location:sent.html");
-            
+
          }
       }
       catch(PDOException $e) {

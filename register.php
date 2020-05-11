@@ -1,5 +1,8 @@
 <?php
    require (dirname(__FILE__)."/util/config.php");
+   require (dirname(__FILE__)."/util/dbconnect.php");
+   require (dirname(__FILE__)."/util/mailer.php");
+   require (dirname(__FILE__)."/util/mail_gen/verification_mail.php");
 
    $min_birth=date_create(date("Y-m-d"));
    date_add($min_birth, date_interval_create_from_date_string("-$MIN_AGE years"));
@@ -92,9 +95,7 @@
 
 <?php
 
-   require (dirname(__FILE__)."/util/dbconnect.php");
-   require (dirname(__FILE__)."/util/mailer.php");
-   require (dirname(__FILE__)."/util/mail_gen/verification_mail.php");
+
 
    if(isset($_POST["submit"])) {
 
