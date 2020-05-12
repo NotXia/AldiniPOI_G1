@@ -35,9 +35,12 @@
    if(isset($_POST["request"])) {
 
       try {
-         // Estrae i dati dell'utente a cui mandare la mail
+         // Estrae i dati dell'utente a cui mandare la mail, solo se ha già verificato la mail
          $conn = db_connect();
-         $sql = "SELECT id, nome, cognome, email, data_creazione FROM utenti WHERE email = :email";
+         $sql = "SELECT id, nome, cognome, email, data_creazione
+                 FROM utenti
+                 WHERE email = :email AND
+                       verifica_mail = 1";
          $stmt = $conn->prepare($sql);
          $stmt->bindParam(":email", $_POST["email"], PDO::PARAM_STR, 100);
          $stmt->execute();
