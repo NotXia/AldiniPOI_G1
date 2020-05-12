@@ -25,14 +25,11 @@
             <div class="row text-white">
                 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
                     <h1 class="display-4 py-2 text-truncate">Aldini Valeriani</h1>
-                    
-    
-                            <button type="submit" class="btn btn-primary btn-lg">Effettua prenotazione</button>
-                        </form>
-                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Effettua prenotazione</button>
                 </div>
-            </div>
-        </div>
+             </div>
+         </div>
+     </div>
 </section>
 </body>
 </html>
