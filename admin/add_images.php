@@ -12,11 +12,6 @@
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
    require_once (dirname(__FILE__)."/../util/config.php");
 
-
-   if(isset($_GET["tag"])) {
-      $tag = $_GET["tag"];
-   }
-
    /*
       return
         -1 -> Errore generico
@@ -52,7 +47,7 @@
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Aggiungi laboratorio</title>
+   <title>Aggiungi immagini</title>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
    <link rel="stylesheet" href="../css/form_table.css">
 
@@ -61,14 +56,15 @@
 
       <div align="center">
 
-         <h2>Aggiungi laboratorio</h2>
+         <h2>Aggiungi immagini</h2>
 
-         <h3>Immagini base</h3>
          <div id="form1">
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
                <input id="tag_id" type="hidden" name="tag" value="<?php if(isset($_GET['tag'])) echo $_GET['tag'] ?>">
+
                Permessi <select name="permessi">
                   <?php
+                     // Estrae i tipi di permessi disponibili, diversi da admin
                      $conn = db_connect();
                      $sql = "SELECT * FROM permessi WHERE id != 3";
                      $stmt = $conn->prepare($sql);
@@ -82,8 +78,7 @@
                </select>
                <br>
                <br>
-
-               <input id="file_1" type="file" name="img_base[]" accept=".jpg,.jpeg,.png" multiple><br>
+               <input id="file_1" type="file" name="img_user[]" accept=".jpg,.jpeg,.png" multiple><br>
                <input id="submit_1" type="submit" name="submit_load_base" value="Carica">
 
             </form>
@@ -93,18 +88,20 @@
          <table>
 
          <?php
+            // Inserisce le immagini nel db e nella cartella di upload.
+            // Stampa le immagini appena inserite permettendo di inserire una descizione
             if(isset($_POST["submit_load_base"]) && !empty($_POST["tag"])) {
                $conn = db_connect();
 
-               for($i=0; $i < count($_FILES["img_base"]["name"]); $i++) {
-                  $check_res = check_img("img_base", $i);
+               for($i=0; $i < count($_FILES["img_user"]["name"]); $i++) {
+                  $check_res = check_img("img_user", $i);
 
                   // Immagine ok
                   if($check_res == 0) {
                      try {
                         $conn->beginTransaction();
 
-                        // Inserimento con percorso fittizio
+                        // Inserimento dell'immagine con percorso fittizio
                         $sql = "INSERT immagini (percorso, descrizione, cod_laboratorio, cod_permesso)
                         VALUES('temp', null, :cod_laboratorio, :cod_permesso)";
                         $stmt = $conn->prepare($sql);
@@ -115,42 +112,47 @@
                         $last_id = $conn->lastInsertId();
 
                         // Compone il nome del file da salvare
-                        $estensione = strtolower(pathinfo($_FILES["img_base"]["name"][$i], PATHINFO_EXTENSION));
+                        $estensione = strtolower(pathinfo($_FILES["img_user"]["name"][$i], PATHINFO_EXTENSION));
                         $nome_immagine = $_POST["tag"] . "_" . $last_id . "." . $estensione;
                         $final_path = "../" . $IMAGES_PATH_BASE . "/" .  $nome_immagine;
 
-                        if (move_uploaded_file($_FILES["img_base"]["tmp_name"][$i], $final_path)) {
-                           // Aggiorna il percorso con quello reale
+                        // Sposta l'immagine nella cartella upload
+                        if (move_uploaded_file($_FILES["img_user"]["tmp_name"][$i], $final_path)) {
+
+                           // Aggiorna il percorso nel db con quello reale
                            $sql = "UPDATE immagini SET percorso = :percorso WHERE id = $last_id";
                            $stmt = $conn->prepare($sql);
                            $stmt->bindParam(":percorso", $final_path, PDO::PARAM_STR, 500);
                            $stmt->execute();
+
+                           // Stampa l'immagine e un'area di testo
                            echo "<tr>
                                  <td><img src=$final_path width=200></td>
                                  <td><textarea name='descrizione[$last_id]' rows=6></textarea></td>
                                  </tr>";
                         }
                         else { // Inserimento fallito
+                           // Eliminazione dell'immagine dal db
                            $sql = "DELETE FROM immagini WHERE id = $last_id";
                            $stmt = $conn->prepare($sql);
                            $stmt->execute();
-                           echo "<tr><td>" . basename($_FILES["img_base"]["name"][$i]) . " non è stato caricato</td></tr>";
+                           echo "<tr><td>" . basename($_FILES["img_user"]["name"][$i]) . " non è stato caricato</td></tr>";
                         }
 
                         $conn->commit();
 
                      }
                      catch(PDOException $e) {
-                        echo $e->getMessage();
                         $conn->rollBack();
+                        echo "<tr><td>" . basename($_FILES["img_user"]["name"][$i]) . " non è stato caricato</td></tr>";
                      }
                   }
                   else if($check_res == 1) { // Non è immagine
-                     $file_name = basename($_FILES["img_base"]["name"][$i]);
+                     $file_name = basename($_FILES["img_user"]["name"][$i]);
                      echo "<tr><td>$file_name non è un'immagine</td></tr>";
                   }
                   else if($check_res == 2) { // Troppo grande
-                     $file_name = basename($_FILES["img_base"]["name"][$i]);
+                     $file_name = basename($_FILES["img_user"]["name"][$i]);
                      echo "<tr><td>$file_name è troppo grande</td></tr>";
                   }
                   else if($check_res == -1) { // Errore generico
@@ -158,6 +160,7 @@
                   }
                }
 
+               // Nasconde il primo form (caricamento immagine)
                echo "<script> document.getElementById('form1').style = 'display:none;'; </script>";
 
             } // if(isset($_POST["submit_load_base"]) && !empty($_POST["tag"]))
@@ -165,6 +168,7 @@
 
          </table>
          <?php
+            // Stampa il bottone di submit del secondo form (inserimento descrizione)
             if(isset($_POST["submit_load_base"]) && !empty($_POST["tag"])) {
                ?>
                <br>
@@ -181,8 +185,10 @@
 <?php
 
    if(isset($_POST["submit_base"])) {
+
       $conn = db_connect();
 
+      // Inserisce per ogni immagine la descrizione corrispondente
       foreach($_POST["descrizione"] as $id=>$desc) {
          try {
             $sql = "UPDATE immagini SET descrizione = :descrizione WHERE id = :id";
@@ -197,6 +203,7 @@
 
       $current_tag = "";
 
+      // Estrae il tag del laboratorio in modo tale da poter tornare alla fase iniziale
       foreach($_POST["descrizione"] as $id=>$desc) {
          $sql = "SELECT cod_laboratorio FROM immagini WHERE id = :id";
          $stmt = $conn->prepare($sql);

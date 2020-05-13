@@ -153,6 +153,7 @@
                   // ****************************************************************
 
                   header("Location:index.php");
+                  
                } // if(password_verify($pswd, $res["psw"]))
                else {
                   echo "<p id='error'>Credenziali non corrette</p>";

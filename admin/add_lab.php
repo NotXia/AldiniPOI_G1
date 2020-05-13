@@ -60,13 +60,7 @@
                   <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(isset($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
                </tr>
             </table>
-
-            <table>
-               <tr>
-                  <td><button type="button" id="btn_back" onclick="changeTab(-1)">Indietro</button></td>
-                  <td><input type="submit" id="submit" name="submit" value="Inserisci"></td>
-               </tr>
-            </table>
+            <td><input type="submit" id="submit" name="submit" value="Inserisci"></td>
 
          </form>
       </div>
@@ -75,18 +69,6 @@
 
 
 <?php
-
-   /*
-      CREATE TABLE laboratori (
-         tag VARCHAR(20) PRIMARY KEY,
-         nome VARCHAR(100) NOT NULL,
-         piano INT NOT NULL,
-         num_posti INT,
-         num_pc INT,
-         presenza_lim BOOLEAN,
-         descrizione VARCHAR(500)
-      );
-   */
 
    if(isset($_POST["submit"])) {
 
@@ -109,10 +91,12 @@
             $stmt->execute();
 
             $tag = $_POST["tag"];
+
+            // Pagina per inserire immagini
             header("Location:add_images.php?tag=$tag");
 
          } catch (PDOException $e) {
-            echo $e->getMessage();
+            echo "<p>Si è verificato un errore</p>";
          }
 
       }
