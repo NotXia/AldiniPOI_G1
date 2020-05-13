@@ -17,7 +17,7 @@
       <title></title>
    </head>
    <body>
-      <a href="add_lab.php">Aggiungi laboratorio</a>
+      <a href="add_lab.php">Aggiungi laboratorio</a><br>
       <a href="add_openday.php">Aggiungi open day</a>
    </body>
 </html>

@@ -38,4 +38,11 @@
    // In minuti
    $TIMEOUT_REMEMBER_ME = 60 * 60 * 24 * 30;
 
+   //
+   // CONFIGURAZIONE IMMAGINI
+   //
+   $MAX_IMAGE_SIZE = 500000;
+   $IMAGES_PATH_BASE = "res/lab_images/base"; // Relativo alla root
+   $IMAGES_PATH_AVANZATO = "res/lab_images/avanzato"; // Relativo alla root
+
 ?>
