@@ -66,7 +66,7 @@
          <h3>Immagini base</h3>
          <div id="form1">
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
-               <input type="hidden" name="tag" value="<?php if(isset($_GET['tag'])) echo $_GET['tag'] ?>">
+               <input id="tag_id" type="hidden" name="tag" value="<?php if(isset($_GET['tag'])) echo $_GET['tag'] ?>">
                Permessi <select name="permessi">
                   <?php
                      $conn = db_connect();
@@ -82,12 +82,10 @@
                </select>
                <br>
                <br>
-               <table>
-                  <tr>
-                     <td><input id="file_1" type="file" name="img_base[]" accept=".jpg,.jpeg,.png" multiple></td>
-                     <td><input id="submit_1" type="submit" name="submit_load_base" value="Carica"></td>
-                  </tr>
-               </table>
+
+               <input id="file_1" type="file" name="img_base[]" accept=".jpg,.jpeg,.png" multiple><br>
+               <input id="submit_1" type="submit" name="submit_load_base" value="Carica">
+
             </form>
          </div>
 
@@ -194,12 +192,22 @@
             $stmt->execute();
          }
          catch(PDOException $e) {
-
          }
       }
 
-      echo "<script> document.getElementById('form1').style = 'display:none;'; </script>";
-      echo "<h4 style='text-align:center'>Fatto</h4>";
+      $current_tag = "";
+
+      foreach($_POST["descrizione"] as $id=>$desc) {
+         $sql = "SELECT cod_laboratorio FROM immagini WHERE id = :id";
+         $stmt = $conn->prepare($sql);
+         $stmt->bindParam(":id", $id, PDO::PARAM_STR, 20);
+         $stmt->execute();
+         $current_tag = $stmt->fetch()["cod_laboratorio"];
+         break;
+      }
+
+      echo "<script> document.getElementById('tag_id').value = '$current_tag' </script>";
+      echo "<p style='text-align:center'>Immagini aggiornate con successo</p>";
    }
 
 ?>
