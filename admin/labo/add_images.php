@@ -1,16 +1,16 @@
 <?php
-   require_once (dirname(__FILE__)."/../util/auth_check.php");
+   require_once (dirname(__FILE__)."/../../util/auth_check.php");
    if(isLogged()) {
       if($_SESSION["cod_permesso"] != 3) {
-         header("Location:../index.php");
+         header("Location:../../index.php");
       }
    }
    else {
-      header("Location:login.php");
+      header("Location:../login.php");
    }
 
-   require_once (dirname(__FILE__)."/../util/dbconnect.php");
-   require_once (dirname(__FILE__)."/../util/config.php");
+   require_once (dirname(__FILE__)."/../../util/dbconnect.php");
+   require_once (dirname(__FILE__)."/../../util/config.php");
 
    /*
       return
@@ -69,7 +69,8 @@
                      $sql = "SELECT * FROM permessi WHERE id != 3";
                      $stmt = $conn->prepare($sql);
                      $stmt->execute();
-                     while($row = $stmt->fetch()) {
+                     $res = $stmt->fetchAll();
+                     foreach($res as $row) {
                         $id = $row["id"];
                         $tipologia = $row["tipologia"];
                         echo "<option value='$id'>$tipologia</option>";
@@ -113,8 +114,8 @@
 
                         // Compone il nome del file da salvare
                         $estensione = strtolower(pathinfo($_FILES["img_user"]["name"][$i], PATHINFO_EXTENSION));
-                        $nome_immagine = $_POST["tag"] . "_" . $last_id . "." . $estensione;
-                        $final_path = "../" . $IMAGES_PATH_BASE . "/" .  $nome_immagine;
+                        $nome_immagine = $_POST["tag"] . "_" . $last_id . "_" . $_POST["permessi"] . "." . $estensione;
+                        $final_path = "../../" . $IMAGES_PATH . "/" .  $nome_immagine;
 
                         // Sposta l'immagine nella cartella upload
                         if (move_uploaded_file($_FILES["img_user"]["tmp_name"][$i], $final_path)) {
@@ -122,7 +123,7 @@
                            // Aggiorna il percorso nel db con quello reale
                            $sql = "UPDATE immagini SET percorso = :percorso WHERE id = $last_id";
                            $stmt = $conn->prepare($sql);
-                           $stmt->bindParam(":percorso", $final_path, PDO::PARAM_STR, 500);
+                           $stmt->bindParam(":percorso", $nome_immagine, PDO::PARAM_STR, 500);
                            $stmt->execute();
 
                            // Stampa l'immagine e un'area di testo
@@ -172,7 +173,7 @@
             if(isset($_POST["submit_load_base"]) && !empty($_POST["tag"])) {
                ?>
                <br>
-               <input type="submit" name="submit_base" value="Salva">
+               <input type="submit" name="submit" value="Salva">
                <?php
             }
          ?>
@@ -184,37 +185,39 @@
 
 <?php
 
-   if(isset($_POST["submit_base"])) {
+   if(isset($_POST["submit"])) {
 
       $conn = db_connect();
 
-      // Inserisce per ogni immagine la descrizione corrispondente
-      foreach($_POST["descrizione"] as $id=>$desc) {
-         try {
-            $sql = "UPDATE immagini SET descrizione = :descrizione WHERE id = :id";
+      if(!empty($_POST["descrizione"])) {
+         // Inserisce per ogni immagine la descrizione corrispondente
+         foreach($_POST["descrizione"] as $id=>$desc) {
+            try {
+               $sql = "UPDATE immagini SET descrizione = :descrizione WHERE id = :id";
+               $stmt = $conn->prepare($sql);
+               $stmt->bindParam(":descrizione", $desc, PDO::PARAM_STR, 500);
+               $stmt->bindParam(":id", $id, PDO::PARAM_STR, 20);
+               $stmt->execute();
+            }
+            catch(PDOException $e) {
+            }
+         }
+
+         $current_tag = "";
+
+         // Estrae il tag del laboratorio in modo tale da poter tornare alla fase iniziale
+         foreach($_POST["descrizione"] as $id=>$desc) {
+            $sql = "SELECT cod_laboratorio FROM immagini WHERE id = :id";
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":descrizione", $desc, PDO::PARAM_STR, 500);
             $stmt->bindParam(":id", $id, PDO::PARAM_STR, 20);
             $stmt->execute();
+            $current_tag = $stmt->fetch()["cod_laboratorio"];
+            break;
          }
-         catch(PDOException $e) {
-         }
+
+         echo "<script> document.getElementById('tag_id').value = '$current_tag' </script>";
+         echo "<p style='text-align:center'>Immagini aggiornate con successo</p>";
       }
-
-      $current_tag = "";
-
-      // Estrae il tag del laboratorio in modo tale da poter tornare alla fase iniziale
-      foreach($_POST["descrizione"] as $id=>$desc) {
-         $sql = "SELECT cod_laboratorio FROM immagini WHERE id = :id";
-         $stmt = $conn->prepare($sql);
-         $stmt->bindParam(":id", $id, PDO::PARAM_STR, 20);
-         $stmt->execute();
-         $current_tag = $stmt->fetch()["cod_laboratorio"];
-         break;
-      }
-
-      echo "<script> document.getElementById('tag_id').value = '$current_tag' </script>";
-      echo "<p style='text-align:center'>Immagini aggiornate con successo</p>";
    }
 
 ?>

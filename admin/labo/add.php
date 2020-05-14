@@ -1,15 +1,15 @@
 <?php
-   require_once (dirname(__FILE__)."/../util/auth_check.php");
+   require_once (dirname(__FILE__)."/../../util/auth_check.php");
    if(isLogged()) {
       if($_SESSION["cod_permesso"] != 3) {
-         header("Location:../index.php");
+         header("Location:../../index.php");
       }
    }
    else {
-      header("Location:login.php");
+      header("Location:../login.php");
    }
 
-   require_once (dirname(__FILE__)."/../util/dbconnect.php");
+   require_once (dirname(__FILE__)."/../../util/dbconnect.php");
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +21,15 @@
    <title>Aggiungi laboratorio</title>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
    <link rel="stylesheet" href="../css/form_table.css">
+   <style media="screen">
+   td#padding {
+      padding: 1.7px;
+   }
+   td#label {
+      text-align: right;
+      padding: 1.7px;
+   }
+   </style>
 </head>
    <body>
 
@@ -60,7 +69,8 @@
                   <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(isset($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
                </tr>
             </table>
-            <td><input type="submit" id="submit" name="submit" value="Inserisci"></td>
+            <br>
+            <input type="submit" id="submit" name="submit" value="Inserisci">
 
          </form>
       </div>

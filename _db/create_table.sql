@@ -20,7 +20,8 @@ CREATE TABLE visite (
 	data_inizio DATE NOT NULL,
 	ora_inizio TIME NOT NULL,
 	ora_fine TIME NOT NULL,
-	CHECK (ora_inizio < ora_fine)
+	posti_disponibili INT NOT NULL,
+	CHECK (ora_inizio < ora_fine AND posti_disponibili >= 0)
 );
 
 CREATE TABLE laboratori (
