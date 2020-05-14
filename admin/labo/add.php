@@ -1,4 +1,5 @@
 <?php
+   ob_start();
    require_once (dirname(__FILE__)."/../../util/auth_check.php");
    if(isLogged()) {
       if($_SESSION["cod_permesso"] != 3) {
@@ -14,66 +15,84 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="utf-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Aggiungi laboratorio</title>
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/form_table.css">
-   <style media="screen">
-   td#padding {
-      padding: 1.7px;
-   }
-   td#label {
-      text-align: right;
-      padding: 1.7px;
-   }
-   </style>
-</head>
+   <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+      <link rel="stylesheet" href="../../css/admin_navbar.css">
+      <link rel="stylesheet" href="../../css/form_table.css">
+
+      <title>Aggiungi</title>
+
+   </head>
+
    <body>
 
-      <div align="center">
+      <nav class="navbar navbar-dark bg-primary">
+         <a class="navbar-brand" href="../index">Aldini Valeriani</a>
+         <div align="right">
+            <a id="nav_options" href="../openday/view.php">Open Day</a>
+            <a id="nav_options" href="view.php">Laboratori</a>
+         </div>
+      </nav>
 
-         <h2>Aggiungi laboratorio</h2>
+      <section id="cover" class="min-vh-90">
+         <div id="cover-caption">
+            <div class="container">
+               <div class="row text-black">
+                  <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto text-center form p-4">
+                     <h1 class="display-4 py-2">Aggiungi laboratorio</h1>
 
-         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-            <h3>Informazioni</h3>
-            <table>
-               <tr>
-                  <td id="label">Tag</td>
-                  <td id="padding"><input type="text" name="tag" value="<?php if(isset($_POST['tag'])) echo $_POST['tag']; ?>" required></td>
-               </tr>
-               <tr>
-                  <td id="label">Nome</td>
-                  <td id="padding"><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
-               </tr>
-               <tr>
-                  <td id="label">Piano</span></td>
-                  <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(isset($_POST['piano'])) echo $_POST['piano']; ?>" required></td>
-               </tr>
-               <tr>
-                  <td id="label">Numero posti</td>
-                  <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(isset($_POST['numposti'])) echo $_POST['numposti']; ?>"></td>
-               </tr>
-               <tr>
-                  <td id="label">Numero PC</td>
-                  <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(isset($_POST['numpc'])) echo $_POST['numpc']; ?>"></td>
-               </tr>
-               <tr>
-                  <td id="label">Presenza LIM</td>
-                  <td id="padding"><input type="checkbox" name="lim"></td>
-               </tr>
-               <tr>
-                  <td id="label">Descrizione</td>
-                  <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(isset($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
-               </tr>
-            </table>
-            <br>
-            <input type="submit" id="submit" name="submit" value="Inserisci">
+                     <div align="center">
+                        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+                           <table>
+                              <tr>
+                                 <td id="label">Tag</td>
+                                 <td id="padding"><input type="text" name="tag" value="<?php if(isset($_POST['tag'])) echo $_POST['tag']; ?>" required></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Nome</td>
+                                 <td id="padding"><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Piano</span></td>
+                                 <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(isset($_POST['piano'])) echo $_POST['piano']; ?>" required></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Numero posti</td>
+                                 <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(isset($_POST['numposti'])) echo $_POST['numposti']; ?>"></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Numero PC</td>
+                                 <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(isset($_POST['numpc'])) echo $_POST['numpc']; ?>"></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Presenza LIM</td>
+                                 <td id="padding"><input type="checkbox" name="lim"></td>
+                              </tr>
+                              <tr>
+                                 <td id="label">Descrizione</td>
+                                 <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(isset($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
+                              </tr>
+                           </table>
+                           <br>
+                           <input type="submit" id="submit" name="submit" value="Inserisci">
 
-         </form>
-      </div>
+                        </form>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
    </body>
 </html>
 
@@ -106,7 +125,7 @@
             header("Location:add_images.php?tag=$tag");
 
          } catch (PDOException $e) {
-            echo "<p>Si è verificato un errore</p>";
+            echo "<p style='text-align:center;'>Si è verificato un errore</p>";
          }
 
       }

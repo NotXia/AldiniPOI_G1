@@ -13,43 +13,68 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
    <head>
-      <link rel="stylesheet" type="text/css" href="style.css">
-      <!-- Required meta tags -->
+
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
       <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+      <link rel="stylesheet" href="../../css/admin_navbar.css">
+      <link rel="stylesheet" href="../../css/form_table.css">
+
       <title>Elimina</title>
+
    </head>
+
    <body>
 
-      <div align="center">
-         <?php
-            if(!isset($_GET["tag"])) {
-               ?>
-               <h3>Errore</h3>
-               <?php
-            }
-            else {
-               $tag = htmlentities($_GET["tag"]);
+      <nav class="navbar navbar-dark bg-primary">
+         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <div align="right">
+            <a id="nav_options" href="../openday/view.php">Open Day</a>
+            <a id="nav_options" href="view.php">Laboratori</a>
+         </div>
+      </nav>
 
-               ?>
-               <h3>Confermi la cancellazione del tag <?php echo "'$tag'"; ?>?</h3>
-               <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-                  <input type="hidden" name="tag" value="<?php echo $tag ?>">
-                  <input type="submit" name="confirm" value="Elimina">
-               </form>
-               <?php
-            }
-         ?>
-      </div>
+      <section id="cover" class="min-vh-90">
+         <div id="cover-caption">
+            <div class="container">
+               <div class="row text-black">
+                  <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto text-center form p-4">
+                     <?php
+                        if(!isset($_GET["tag"]) && !isset($_POST["tag"])) {
+                           ?>
+                           <h3>Errore</h3>
+                           <?php
+                        }
+                        else {
+                           if(isset($_GET["tag"])) { $tag = htmlentities($_GET["tag"]); }
+                           else { $tag = htmlentities($_POST["tag"]); }
+
+                     ?>
+                     <h3>Confermi la cancellazione del tag <?php echo "'$tag'"; ?>?</h3><br>
+
+                     <div align="center">
+                        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+                           <input type="hidden" name="tag" value="<?php echo $tag ?>">
+                           <input type="submit" name="confirm" value="Elimina">
+                        </form>
+                        <?php
+                        }
+                        ?>
+                  </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
    </body>
 </html>
 
