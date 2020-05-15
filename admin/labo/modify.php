@@ -75,9 +75,10 @@
                                  $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
                                  $stmt->execute();
                                  $res = $stmt->fetch();
-                                 if(empty($res)) {
-                                    die ("<h3>Errore</h3>");
-                                 }
+
+                                 // if(empty($res)) {
+                                 //    die ("<h3>Errore</h3>");
+                                 // }
                               ?>
                               <table>
                                  <tr>
@@ -114,45 +115,45 @@
                                  <tr>
                                     <th>Immagine</th> <th>Descizione</th> <th>Permesso</th> <th>Elimina</th>
                                  </tr>
-                                 <?php
-                                 $conn = db_connect();
+                                    <?php
+                                    $conn = db_connect();
 
-                                 $sql = "SELECT * FROM permessi";
-                                 $stmt = $conn->prepare($sql);
-                                 $stmt->execute();
-                                 $res = $stmt->fetchAll();
-                                 $permessi = [];
-                                 foreach($res as $row) {
-                                    $permessi[$row["id"]] = $row["tipologia"];
-                                 }
-
-                                 // Estraee le immagini connesse al tag
-                                 $sql = "SELECT * FROM immagini WHERE cod_laboratorio = :tag";
-                                 $stmt = $conn->prepare($sql);
-                                 $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
-                                 $stmt->execute();
-                                 $res = $stmt->fetchAll();
-
-                                 foreach($res as $row) {
-                                    $id = $row["id"];
-                                    $percorso = $row["percorso"];
-                                    $descrizione = $row["descrizione"];
-                                    $cod_permesso = $row["cod_permesso"];
-                                    echo "<tr>";
-                                    echo "<td><img src='../../$IMAGES_PATH/$percorso' width='200px'><br>$percorso</td>
-                                    <td><textarea rows='5' cols='50' name='descrizione_img[$id]'>$descrizione</textarea></td>
-                                    <td><select name='permesso[$id]'>";
-                                    foreach($permessi as $id_perm=>$tipo) { // Imposta il permesso corretto dell'immagine
-                                       if($cod_permesso == $id_perm) {
-                                          echo "<option value='$id_perm' selected='selected'>$tipo</option>";
-                                       }
-                                       else {
-                                          echo "<option value='$id_perm'>$tipo</option>";
-                                       }
+                                    $sql = "SELECT * FROM permessi";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->fetchAll();
+                                    $permessi = [];
+                                    foreach($res as $row) {
+                                       $permessi[$row["id"]] = $row["tipologia"];
                                     }
-                                    echo "</select></td> <td><input type='checkbox' name='delete[$id]'></td>";
-                                    echo "</tr>";
-                                 }
+
+                                    // Estraee le immagini connesse al tag
+                                    $sql = "SELECT * FROM immagini WHERE cod_laboratorio = :tag";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
+                                    $stmt->execute();
+                                    $res = $stmt->fetchAll();
+
+                                    foreach($res as $row) {
+                                       $id = $row["id"];
+                                       $percorso = $row["percorso"];
+                                       $descrizione = $row["descrizione"];
+                                       $cod_permesso = $row["cod_permesso"];
+                                       echo "<tr>";
+                                       echo "<td><img src='../../$IMAGES_PATH/$percorso' width='200px'><br>$percorso</td>
+                                       <td><textarea rows='5' cols='50' name='descrizione_img[$id]'>$descrizione</textarea></td>
+                                       <td><select name='permesso[$id]'>";
+                                       foreach($permessi as $id_perm=>$tipo) { // Imposta il permesso corretto dell'immagine
+                                          if($cod_permesso == $id_perm) {
+                                             echo "<option value='$id_perm' selected='selected'>$tipo</option>";
+                                          }
+                                          else {
+                                             echo "<option value='$id_perm'>$tipo</option>";
+                                          }
+                                       }
+                                       echo "</select></td> <td><input type='checkbox' name='delete[$id]'></td>";
+                                       echo "</tr>";
+                                    }
                                  ?>
                               </table>
                               <br>
