@@ -63,7 +63,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="../openday/view.php">Open Day</a>
@@ -83,7 +83,7 @@
 
                         <div id="form1">
                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
-                              <input id="tag_id" type="hidden" name="tag" value="<?php if(isset($_GET['tag'])) echo $_GET['tag'] ?>">
+                              <input id="tag_id" type="hidden" name="tag" value="<?php if(!empty($_GET['tag'])) echo $_GET['tag'] ?>">
 
                               Permessi <select name="permessi">
                                  <?php

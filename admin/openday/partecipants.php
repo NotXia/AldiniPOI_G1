@@ -27,7 +27,7 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
       <link rel="stylesheet" href="../../css/admin_navbar.css">
 
-      <title>Visualizza</title>
+      <title>Partecipanti</title>
 
       <style>
       @media print {
@@ -42,7 +42,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="view.php">Open Day</a>
@@ -60,11 +60,11 @@
 
                      <?php
                         $id = "";
-                        if(!isset($_GET["id"]) && !isset($_POST["id"])) {
+                        if(empty($_GET["id"]) && empty($_POST["id"])) {
                            die("<h3>Errore</h3>");
                         }
                         else {
-                           if(isset($_GET["id"])) { $id = htmlentities($_GET["id"]); }
+                           if(!empty($_GET["id"])) { $id = htmlentities($_GET["id"]); }
                            else { $id = htmlentities($_POST["id"]); }
                         }
 
@@ -76,7 +76,7 @@
                         $stmt->execute();
                         $res = $stmt->fetch();
 
-                        if(isset($res)) {
+                        if(!empty($res)) {
                            $data = date("d/m/Y", strtotime($res["data_inizio"]));
                            $orario = date("H:i" ,strtotime($res["ora_inizio"])) . " - " . date("H:i" ,strtotime($res["ora_fine"]));
                            echo "<p>$data | $orario</p>";
@@ -182,10 +182,6 @@
                                     ?>
                                        </table>
 
-                                       <div class="noprint">
-                                          <button >Genera credenziali</button>
-                                       </div>
-
                                        <script>
                                           document.getElementById('tab1').style = 'display: none;';
                                           document.getElementById('tab2').style = 'display: block;';
@@ -203,69 +199,61 @@
                               //
                               // Genera credenziali a selezionati
                               //
-                              if(isset($_POST["submit_selected"])) {
+                              if(isset($_POST["submit_selected"]) && isset($_POST["choose"])) {
 
                                  try {
                                     $conn = db_connect();
+                                    foreach($_POST["choose"] as $id_user=>$x) {
+                                       if(isset($x)) {
+                                          // Seleziona l'utente
+                                          $sql = "SELECT prenotazioni.id AS id_p, email, nome, cognome
+                                          FROM prenotazioni, utenti
+                                          WHERE cod_utente = utenti.id AND
+                                          cod_visita = :cod_visita AND
+                                          cod_utente = :cod_utente";
+                                          $stmt = $conn->prepare($sql);
+                                          $stmt->bindParam(":cod_visita", $id, PDO::PARAM_INT);
+                                          $stmt->bindParam(":cod_utente", $id_user, PDO::PARAM_INT);
+                                          $stmt->execute();
 
-                                    if(isset($_POST["choose"])) {
-                                       foreach($_POST["choose"] as $id_user=>$x) {
-                                          if(isset($x)) {
-                                             // Seleziona l'utente
-                                             $sql = "SELECT prenotazioni.id AS id_p, email, nome, cognome
-                                             FROM prenotazioni, utenti
-                                             WHERE cod_utente = utenti.id AND
-                                             cod_visita = :cod_visita AND
-                                             cod_utente = :cod_utente";
+                                          $res = $stmt->fetchAll();
+                                          foreach($res as $row) {
+                                             $nome = $row["nome"];
+                                             $cognome = $row["cognome"];
+                                             $email = $row["email"];
+                                             $id_pren = $row["id_p"];
+
+                                             // -------------------------------------------------------------
+                                             // GENERAZIONE CREDENZIALI
+                                             // -------------------------------------------------------------
+                                             $username = "openday_$id_pren";
+                                             $password = token_gen(8, "abcdefghijklmnopqrstuvwxyz"); // Password di 8 caratteri e solo minuscole
+                                             $psw_hash = password_hash($password, PASSWORD_DEFAULT);
+                                             // **************************************************************
+
+
+                                             // Inserimento credenziali su DB
+                                             $sql = "UPDATE prenotazioni SET username = :username, psw = :psw WHERE id = :id";
                                              $stmt = $conn->prepare($sql);
-                                             $stmt->bindParam(":cod_visita", $id, PDO::PARAM_INT);
-                                             $stmt->bindParam(":cod_utente", $id_user, PDO::PARAM_INT);
+                                             $stmt->bindParam(":id", $id_pren, PDO::PARAM_INT);
+                                             $stmt->bindParam(":username", $username, PDO::PARAM_STR, 100);
+                                             $stmt->bindParam(":psw", $psw_hash, PDO::PARAM_STR, 60);
                                              $stmt->execute();
 
-                                             $res = $stmt->fetchAll();
-                                             foreach($res as $row) {
-                                                $nome = $row["nome"];
-                                                $cognome = $row["cognome"];
-                                                $email = $row["email"];
-                                                $id_pren = $row["id_p"];
-
-                                                // -------------------------------------------------------------
-                                                // GENERAZIONE CREDENZIALI
-                                                // -------------------------------------------------------------
-                                                $username = "openday_$id_pren";
-                                                $password = token_gen(8, "abcdefghijklmnopqrstuvwxyz"); // Password di 8 caratteri e solo minuscole
-                                                $psw_hash = password_hash($password, PASSWORD_DEFAULT);
-                                                // **************************************************************
-
-
-                                                // Inserimento credenziali su DB
-                                                $sql = "UPDATE prenotazioni SET username = :username, psw = :psw WHERE id = :id";
-                                                $stmt = $conn->prepare($sql);
-                                                $stmt->bindParam(":id", $id_pren, PDO::PARAM_INT);
-                                                $stmt->bindParam(":username", $username, PDO::PARAM_STR, 100);
-                                                $stmt->bindParam(":psw", $psw_hash, PDO::PARAM_STR, 60);
-                                                $stmt->execute();
-
-                                                echo "<tr style='text-align:center;'>";
-                                                echo "<td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$username</td> <td>$password</td>";
-                                                echo "</tr>";
-                                             }
+                                             echo "<tr style='text-align:center;'>";
+                                             echo "<td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$username</td> <td>$password</td>";
+                                             echo "</tr>";
                                           }
                                        }
-                                       ?>
-                                    </table>
+                                    }
+                                    ?>
+                                 </table>
 
-                                    <div class="noprint">
-                                       <button >Genera credenziali</button>
-                                    </div>
-
-                                    <script>
-                                       document.getElementById('tab1').style = 'display: none;';
-                                       document.getElementById('tab2').style = 'display: block;';
-                                    </script>
-                                    <?php
-
-                                          }
+                                 <script>
+                                    document.getElementById('tab1').style = 'display: none;';
+                                    document.getElementById('tab2').style = 'display: block;';
+                                 </script>
+                                 <?php
 
                                  }
                                  catch (PDOException $e) {

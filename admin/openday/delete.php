@@ -33,7 +33,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="view.php">Open Day</a>
@@ -51,13 +51,13 @@
 
                      <div align="center">
                         <?php
-                           if(!isset($_GET["id"]) && !isset($_POST["id"])) {
+                           if(empty($_GET["id"]) && empty($_POST["id"])) {
                               ?>
                               <h3>Errore</h3>
                               <?php
                            }
                            else {
-                              if(isset($_GET["id"])) { $id = htmlentities($_GET["id"]); }
+                              if(!empty($_GET["id"])) { $id = htmlentities($_GET["id"]); }
                               else { $id = htmlentities($_POST["id"]); }
                               ?>
                               <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">

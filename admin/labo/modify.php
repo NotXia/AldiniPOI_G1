@@ -36,7 +36,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="../openday/view.php">Open Day</a>
@@ -51,13 +51,13 @@
                <div class="row text-black">
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mx-auto text-center form p-4">
                      <?php
-                        if(!isset($_GET["tag"]) && !isset($_POST["tag"])) {
+                        if(empty($_GET["tag"]) && empty($_POST["tag"])) {
                            ?>
                            <h3>Errore</h3>
                            <?php
                         }
                         else {
-                           if(isset($_GET["tag"])) { $tag = htmlentities($_GET["tag"]); }
+                           if(!empty($_GET["tag"])) { $tag = htmlentities($_GET["tag"]); }
                            else { $tag = htmlentities($_POST["tag"]); }
 
                      ?>
@@ -75,38 +75,38 @@
                                  $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
                                  $stmt->execute();
                                  $res = $stmt->fetch();
-                                 if(!isset($res)) {
+                                 if(empty($res)) {
                                     die ("<h3>Errore</h3>");
                                  }
                               ?>
                               <table>
                                  <tr>
                                     <td id="label">Tag</td>
-                                    <td id="padding"><input type="text" name="tag" value="<?php if(isset($res['tag'])) echo $res['tag']; ?>" required></td>
+                                    <td id="padding"><input type="text" name="tag" value="<?php if(!empty($res['tag'])) echo $res['tag']; ?>" required></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Nome</td>
-                                    <td id="padding"><input type="text" name="nome" value="<?php if(isset($res['nome'])) echo $res['nome']; ?>" required></td>
+                                    <td id="padding"><input type="text" name="nome" value="<?php if(!empty($res['nome'])) echo $res['nome']; ?>" required></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Piano</span></td>
-                                    <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(isset($res['piano'])) echo $res['piano']; ?>" required></td>
+                                    <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(!empty($res['piano'])) echo $res['piano']; ?>" required></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Numero posti</td>
-                                    <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(isset($res['num_posti'])) echo $res['num_posti']; ?>"></td>
+                                    <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(!empty($res['num_posti'])) echo $res['num_posti']; ?>"></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Numero PC</td>
-                                    <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(isset($res['num_pc'])) echo $res['num_pc']; ?>"></td>
+                                    <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(!empty($res['num_pc'])) echo $res['num_pc']; ?>"></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Presenza LIM</td>
-                                    <td id="padding"><input type="checkbox" name="lim" <?php if(isset($res['presenza_lim'])) { if($res['presenza_lim'] == 1) echo "checked"; } ?>></td>
+                                    <td id="padding"><input type="checkbox" name="lim" <?php if(!empty($res['presenza_lim'])) { if($res['presenza_lim'] == 1) echo "checked"; } ?>></td>
                                  </tr>
                                  <tr>
                                     <td id="label">Descrizione</td>
-                                    <td id="padding"><textarea name="descrizione" rows="5"><?php if(isset($res['descrizione'])) echo $res['descrizione']; ?></textarea></td>
+                                    <td id="padding"><textarea name="descrizione" rows="5"><?php if(!empty($res['descrizione'])) echo $res['descrizione']; ?></textarea></td>
                                  </tr>
                               </table>
                               <br>

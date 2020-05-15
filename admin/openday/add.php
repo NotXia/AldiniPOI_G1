@@ -34,7 +34,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="view.php">Open Day</a>
@@ -55,19 +55,19 @@
                            <table>
                               <tr>
                                  <td id="label">Data</td>
-                                 <td id="padding"><input type="date" name="data" min="<?php echo htmlentities(date("Y-m-d")); ?>" value="<?php if(isset($_POST['data'])) echo $_POST['data']; ?>" required></td>
+                                 <td id="padding"><input type="date" name="data" min="<?php echo htmlentities(date("Y-m-d")); ?>" value="<?php if(!empty($_POST['data'])) echo $_POST['data']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Ora inizio</td>
-                                 <td id="padding"><input type="time" name="ora_inizio" value="<?php if(isset($_POST['ora_inizio'])) echo $_POST['ora_inizio']; ?>" required></td>
+                                 <td id="padding"><input type="time" name="ora_inizio" value="<?php if(!empty($_POST['ora_inizio'])) echo $_POST['ora_inizio']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Ora fine</span></td>
-                                 <td id="padding"><input type="time" name="ora_fine" value="<?php if(isset($_POST['ora_fine'])) echo $_POST['ora_fine']; ?>" required></td>
+                                 <td id="padding"><input type="time" name="ora_fine" value="<?php if(!empty($_POST['ora_fine'])) echo $_POST['ora_fine']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Numero posti</td>
-                                 <td id="padding"><input type="number" min="0" name="posti" value="<?php if(isset($_POST['posti'])) echo $_POST['posti']; else echo "15"; ?>" required></td>
+                                 <td id="padding"><input type="number" min="0" name="posti" value="<?php if(!empty($_POST['posti'])) echo $_POST['posti']; else echo "15"; ?>" required></td>
                               </tr>
                            </table>
                            <br>
@@ -106,7 +106,7 @@
             header("Location:view.php");
 
          } catch (PDOException $e) {
-            echo "<p>Si è verificato un errore</p>";
+            echo "<p id='error'>Si è verificato un errore</p>";
          }
 
       }

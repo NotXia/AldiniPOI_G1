@@ -29,7 +29,10 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
       <link rel="stylesheet" href="../css/admin_navbar.css">
+      <link rel="stylesheet" href="../css/form_table.css">
+
       <title>Login admin</title>
+
    </head>
 
    <body>
@@ -42,18 +45,17 @@
             <div class="container">
                <div class="row text-black">
                   <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                     <h1 class="display-4 py-2 text-truncate">Admin Login</h1>
-                     <p class="lead">Effettua il login con i tuoi dati.</p>
+                     <h1 class="display-4 py-2 text-truncate">Admin</h1>
 
                      <div class="px-2">
                         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-                           <p>Email</p>
-                           <input type="email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required></td>
+                           <p style="margin: 0 0 0;">Email</p>
+                           <input type="email" name="email" value="<?php if(!empty($_POST['email'])) echo $_POST['email']; ?>" required></td>
                            <br>
                            <br>
-                           <p>Password</p>
+                           <p style="margin: 0 0 0;">Password</p>
                            <input id="password" type="password" name="password" required>
-                           <br>
+                           <br><br>
                            <input type="checkbox" name="rememberme" value=""> Ricordami
                            <br><br>
                            <input type="submit" name="submit" value="Accedi">
@@ -63,7 +65,7 @@
 <?php
 
    // Verifica che tutti i campi siano impostati
-   if(isset($_POST["submit"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+   if(isset($_POST["submit"]) && !empty($_POST["email"]) && !empty($_POST["password"])) {
 
       // Verifica che la mail inserita sia in un formato corretto
       if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -94,7 +96,7 @@
             $res = $stmt->fetch();
             // ****************************************************************
 
-            if(isset($res["id"])) {
+            if(!empty($res["id"])) {
 
                // Verifica credenziali
                if(password_verify($pswd, $res["psw"])) {

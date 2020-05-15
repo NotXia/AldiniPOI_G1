@@ -35,7 +35,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="../openday/view.php">Open Day</a>
@@ -56,23 +56,23 @@
                            <table>
                               <tr>
                                  <td id="label">Tag</td>
-                                 <td id="padding"><input type="text" name="tag" value="<?php if(isset($_POST['tag'])) echo $_POST['tag']; ?>" required></td>
+                                 <td id="padding"><input type="text" name="tag" value="<?php if(!empty($_POST['tag'])) echo $_POST['tag']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Nome</td>
-                                 <td id="padding"><input type="text" name="nome" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
+                                 <td id="padding"><input type="text" name="nome" value="<?php if(!empty($_POST['nome'])) echo $_POST['nome']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Piano</span></td>
-                                 <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(isset($_POST['piano'])) echo $_POST['piano']; ?>" required></td>
+                                 <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(!empty($_POST['piano'])) echo $_POST['piano']; ?>" required></td>
                               </tr>
                               <tr>
                                  <td id="label">Numero posti</td>
-                                 <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(isset($_POST['numposti'])) echo $_POST['numposti']; ?>"></td>
+                                 <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(!empty($_POST['numposti'])) echo $_POST['numposti']; ?>"></td>
                               </tr>
                               <tr>
                                  <td id="label">Numero PC</td>
-                                 <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(isset($_POST['numpc'])) echo $_POST['numpc']; ?>"></td>
+                                 <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(!empty($_POST['numpc'])) echo $_POST['numpc']; ?>"></td>
                               </tr>
                               <tr>
                                  <td id="label">Presenza LIM</td>
@@ -80,7 +80,7 @@
                               </tr>
                               <tr>
                                  <td id="label">Descrizione</td>
-                                 <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(isset($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
+                                 <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(!empty($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
                               </tr>
                            </table>
                            <br>

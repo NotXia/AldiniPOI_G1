@@ -37,7 +37,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="view.php">Open Day</a>
@@ -55,13 +55,13 @@
 
                      <div class="table-responsive" align="center">
                         <?php
-                           if(!isset($_GET["id"]) && !isset($_POST["id"])) {
+                           if(empty($_GET["id"]) && empty($_POST["id"])) {
                               ?>
                               <h3>Errore</h3>
                               <?php
                            }
                            else {
-                              if(isset($_GET["id"])) { $id = htmlentities($_GET["id"]); }
+                              if(!empty($_GET["id"])) { $id = htmlentities($_GET["id"]); }
                               else { $id = htmlentities($_POST["id"]); }
 
                               ?>
@@ -74,22 +74,22 @@
                                     $stmt->bindParam(":id", $id, PDO::PARAM_INT);
                                     $stmt->execute();
                                     $res = $stmt->fetch();
-                                    if(!isset($res)) {
+                                    if(empty($res)) {
                                        die ("<h3>Errore</h3>");
                                     }
                                  ?>
                                  <table>
                                     <tr>
                                        <td id="label">Data</td>
-                                       <td id="padding"><input type="date" name="data" min="<?php echo htmlentities(date("Y-m-d")); ?>" value="<?php if(isset($res['data_inizio'])) echo $res['data_inizio']; ?>" required></td>
+                                       <td id="padding"><input type="date" name="data" min="<?php echo htmlentities(date("Y-m-d")); ?>" value="<?php if(!empty($res['data_inizio'])) echo $res['data_inizio']; ?>" required></td>
                                     </tr>
                                     <tr>
                                        <td id="label">Ora inizio</td>
-                                       <td id="padding"><input type="time" name="ora_inizio" value="<?php if(isset($res['ora_inizio'])) echo $res['ora_inizio']; ?>" required></td>
+                                       <td id="padding"><input type="time" name="ora_inizio" value="<?php if(!empty($res['ora_inizio'])) echo $res['ora_inizio']; ?>" required></td>
                                     </tr>
                                     <tr>
                                        <td id="label">Ora fine</td>
-                                       <td id="padding"><input type="time" name="ora_fine" value="<?php if(isset($res['ora_fine'])) echo $res['ora_fine']; ?>" required></td>
+                                       <td id="padding"><input type="time" name="ora_fine" value="<?php if(!empty($res['ora_fine'])) echo $res['ora_fine']; ?>" required></td>
                                     </tr>
                                  </table>
                                  <br>
@@ -124,14 +124,14 @@
             try {
                $conn = db_connect();
 
-               // Estrare i dati originali della visita 
+               // Estrare i dati originali della visita
                $sql = "SELECT * FROM visite WHERE id = :id";
                $stmt = $conn->prepare($sql);
                $stmt->bindParam(":id", $_POST["id"], PDO::PARAM_INT);
                $stmt->execute();
                $res_old = $stmt->fetch();
 
-               if(isset($res_old)) {
+               if(!empty($res_old)) {
                   $sql = "UPDATE visite SET data_inizio = :data_inizio, ora_inizio = :ora_inizio, ora_fine = :ora_fine
                   WHERE id = :id";
                   $stmt = $conn->prepare($sql);
@@ -151,7 +151,7 @@
                      $stmt->execute();
                      $res = $stmt->fetchAll();
 
-                     if(isset($res)) {
+                     if(!empty($res)) {
                         foreach($res as $row) {
                            mailTo(
                               $row["email"],
@@ -178,7 +178,7 @@
             }
          } // if(strtotime($_POST["data"]) >= strtotime(date("Y-m-d")) && strtotime($_POST["ora_fine"]) > strtotime($_POST["ora_inizio"]))
          else {
-            echo "<p style='text-align:center;'>Data o ora non corrette</p>";
+            echo "<p id='error'>Data o ora non corrette</p>";
          }
       } // if(!empty($_POST["data"]) && !empty($_POST["ora_inizio"]) && !empty($_POST["ora_fine"]) && !empty($_POST["id"]))
    }

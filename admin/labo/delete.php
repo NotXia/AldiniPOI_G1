@@ -34,7 +34,7 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
+         <a class="navbar-brand" href="../index.php">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="../openday/view.php">Open Day</a>
@@ -49,13 +49,13 @@
                <div class="row text-black">
                   <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto text-center form p-4">
                      <?php
-                        if(!isset($_GET["tag"]) && !isset($_POST["tag"])) {
+                        if(empty($_GET["tag"]) && empty($_POST["tag"])) {
                            ?>
                            <h3>Errore</h3>
                            <?php
                         }
                         else {
-                           if(isset($_GET["tag"])) { $tag = htmlentities($_GET["tag"]); }
+                           if(!empty($_GET["tag"])) { $tag = htmlentities($_GET["tag"]); }
                            else { $tag = htmlentities($_POST["tag"]); }
 
                      ?>
