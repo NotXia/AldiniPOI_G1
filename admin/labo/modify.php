@@ -1,4 +1,5 @@
 <?php
+   ob_start();
    require_once (dirname(__FILE__)."/../../util/auth_check.php");
    if(isLogged()) {
       if($_SESSION["cod_permesso"] != 3) {
@@ -37,8 +38,10 @@
       <nav class="navbar navbar-dark bg-primary">
          <a class="navbar-brand" href="../index.php">Aldini Valeriani</a>
          <div align="right">
+            <a id="nav_options" href="../index.php">Dashboard</a>
             <a id="nav_options" href="../openday/view.php">Open Day</a>
             <a id="nav_options" href="view.php">Laboratori</a>
+            <a id="nav_options" href="../logout.php">Logout</a>
          </div>
       </nav>
 
@@ -64,7 +67,49 @@
 
                            <a href="add_images.php?tag=<?php echo $tag?>">Aggiungi immagini</a> <br><br>
                            <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
-                              <input type="hidden" name="tag" value="<?php echo $tag ?>">
+                              <input type="hidden" name="old_tag" value="<?php echo $tag ?>">
+                              <?php
+                                 $conn = db_connect();
+                                 $sql = "SELECT * FROM laboratori WHERE tag = :tag";
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
+                                 $stmt->execute();
+                                 $res = $stmt->fetch();
+                                 if(!isset($res)) {
+                                    die ("<h3>Errore</h3>");
+                                 }
+                              ?>
+                              <table>
+                                 <tr>
+                                    <td id="label">Tag</td>
+                                    <td id="padding"><input type="text" name="tag" value="<?php if(isset($res['tag'])) echo $res['tag']; ?>" required></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Nome</td>
+                                    <td id="padding"><input type="text" name="nome" value="<?php if(isset($res['nome'])) echo $res['nome']; ?>" required></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Piano</span></td>
+                                    <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(isset($res['piano'])) echo $res['piano']; ?>" required></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Numero posti</td>
+                                    <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(isset($res['num_posti'])) echo $res['num_posti']; ?>"></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Numero PC</td>
+                                    <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(isset($res['num_pc'])) echo $res['num_pc']; ?>"></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Presenza LIM</td>
+                                    <td id="padding"><input type="checkbox" name="lim" <?php if(isset($res['presenza_lim'])) { if($res['presenza_lim'] == 1) echo "checked"; } ?>></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Descrizione</td>
+                                    <td id="padding"><textarea name="descrizione" rows="5"><?php if(isset($res['descrizione'])) echo $res['descrizione']; ?></textarea></td>
+                                 </tr>
+                              </table>
+                              <br>
                               <table class="table table-bordered">
                                  <tr>
                                     <th>Immagine</th> <th>Descizione</th> <th>Permesso</th> <th>Elimina</th>
@@ -95,7 +140,7 @@
                                     $cod_permesso = $row["cod_permesso"];
                                     echo "<tr>";
                                     echo "<td><img src='../../$IMAGES_PATH/$percorso' width='200px'><br>$percorso</td>
-                                    <td><textarea rows='5' cols='50' name='descrizione[$id]'>$descrizione</textarea></td>
+                                    <td><textarea rows='5' cols='50' name='descrizione_img[$id]'>$descrizione</textarea></td>
                                     <td><select name='permesso[$id]'>";
                                     foreach($permessi as $id_perm=>$tipo) { // Imposta il permesso corretto dell'immagine
                                        if($cod_permesso == $id_perm) {
@@ -133,20 +178,42 @@
       try {
          $conn = db_connect();
 
-         foreach($_POST["descrizione"] as $id=>$desc) {
-            if(isset($_POST["delete"][$id])) {
-               $sql = "DELETE FROM immagini WHERE id = :id";
-               $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-               $stmt->execute();
-            }
-            else {
-               $sql = "UPDATE immagini SET descrizione = :descrizione, cod_permesso = :permesso WHERE id = :id";
-               $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":descrizione", $desc, PDO::PARAM_STR, 500);
-               $stmt->bindParam(":permesso", $_POST["permesso"][$id], PDO::PARAM_INT);
-               $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-               $stmt->execute();
+         if(!empty($_POST["tag"]) && !empty($_POST["nome"]) && !empty($_POST["piano"])) {
+            $lim = isset($_POST["lim"]) ? 1 : 0;
+
+            $conn = db_connect();
+            $sql = "UPDATE laboratori
+                    SET tag = :tag, nome = :nome, piano = :piano, num_posti = :num_posti,
+                        num_pc = :num_pc, presenza_lim = :presenza_lim, descrizione = :descrizione
+                    WHERE tag = :old_tag";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":tag", $_POST["tag"], PDO::PARAM_STR, 20);
+            $stmt->bindParam(":nome", $_POST["nome"], PDO::PARAM_STR, 100);
+            $stmt->bindParam(":piano", $_POST["piano"], PDO::PARAM_INT);
+            $stmt->bindParam(":num_posti", $_POST["numposti"], PDO::PARAM_INT);
+            $stmt->bindParam(":num_pc", $_POST["numpc"], PDO::PARAM_INT);
+            $stmt->bindParam(":presenza_lim", $lim);
+            $stmt->bindParam(":descrizione", $_POST["descrizione"], PDO::PARAM_STR, 500);
+            $stmt->bindParam(":old_tag", $_POST["old_tag"], PDO::PARAM_STR, 20);
+            $stmt->execute();
+         }
+
+         if(!empty($_POST["descrizione_img"])) {
+            foreach($_POST["descrizione_img"] as $id=>$desc) {
+               if(isset($_POST["delete"][$id])) {
+                  $sql = "DELETE FROM immagini WHERE id = :id";
+                  $stmt = $conn->prepare($sql);
+                  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                  $stmt->execute();
+               }
+               else {
+                  $sql = "UPDATE immagini SET descrizione = :descrizione, cod_permesso = :permesso WHERE id = :id";
+                  $stmt = $conn->prepare($sql);
+                  $stmt->bindParam(":descrizione", $desc, PDO::PARAM_STR, 500);
+                  $stmt->bindParam(":permesso", $_POST["permesso"][$id], PDO::PARAM_INT);
+                  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                  $stmt->execute();
+               }
             }
          }
 

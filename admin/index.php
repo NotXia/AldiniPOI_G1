@@ -28,8 +28,10 @@
       <nav class="navbar navbar-dark bg-primary">
          <a class="navbar-brand" href="#">Aldini Valeriani</a>
          <div align="right">
+            <a id="nav_options" href="index.php">Dashboard</a>
             <a id="nav_options" href="openday/view.php">Open Day</a>
             <a id="nav_options" href="labo/view.php">Laboratori</a>
+            <a id="nav_options" href="logout.php">Logout</a>
          </div>
       </nav>
    </body>
