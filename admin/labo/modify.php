@@ -75,10 +75,6 @@
                                  $stmt->bindParam(":tag", $tag, PDO::PARAM_STR, 20);
                                  $stmt->execute();
                                  $res = $stmt->fetch();
-
-                                 // if(empty($res)) {
-                                 //    die ("<h3>Errore</h3>");
-                                 // }
                               ?>
                               <table>
                                  <tr>
