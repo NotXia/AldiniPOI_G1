@@ -22,7 +22,7 @@
       // ----------------------------------------------------------------
       // Componimento HTML della mail da inviare
       // ----------------------------------------------------------------
-      $email_format = file_get_contents(dirname(__FILE__)."/../../res/template_reset_password.html");
+      $email_format = file_get_contents(dirname(__FILE__)."/templates/reset_password.html");
       $email_format = str_replace("%cognome%", $cognome, $email_format);
       $email_format = str_replace("%nome%", $nome, $email_format);
       $email_format = str_replace("%url_reset%", $url_validazione, $email_format);

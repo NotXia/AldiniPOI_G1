@@ -21,7 +21,7 @@
       // ----------------------------------------------------------------
       // Componimento HTML della mail da inviare
       // ----------------------------------------------------------------
-      $email_format = file_get_contents(dirname(__FILE__)."/../../res/template_verification_mail.html");
+      $email_format = file_get_contents(dirname(__FILE__)."/templates/verification_mail.html");
       $email_format = str_replace("%cognome%", $cognome, $email_format);
       $email_format = str_replace("%nome%", $nome, $email_format);
       $email_format = str_replace("%url_conferma%", $url_validazione, $email_format);

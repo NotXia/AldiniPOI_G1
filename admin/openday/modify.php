@@ -11,6 +11,8 @@
 
    require_once (dirname(__FILE__)."/../../util/dbconnect.php");
    require_once (dirname(__FILE__)."/../../util/config.php");
+   require_once (dirname(__FILE__)."/../../util/mail_gen/openday_update.php");
+   require_once (dirname(__FILE__)."/../../util/mailer.php");
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +93,8 @@
                                     </tr>
                                  </table>
                                  <br>
+                                 <input type="checkbox" id="send_mail" name="send_mail"><label for="send_mail">&nbspManda un avviso a chi si è prenotato</label>
+                                 <br><br>
                                  <input type="submit" name="confirm" value="Salva">
                               </form>
 
@@ -120,16 +124,54 @@
             try {
                $conn = db_connect();
 
-               $sql = "UPDATE visite SET data_inizio = :data_inizio, ora_inizio = :ora_inizio, ora_fine = :ora_fine
-               WHERE id = :id";
+               // Estrare i dati originali della visita 
+               $sql = "SELECT * FROM visite WHERE id = :id";
                $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":data_inizio", $_POST["data"]);
-               $stmt->bindParam(":ora_inizio", $_POST["ora_inizio"]);
-               $stmt->bindParam(":ora_fine", $_POST["ora_fine"]);
                $stmt->bindParam(":id", $_POST["id"], PDO::PARAM_INT);
                $stmt->execute();
+               $res_old = $stmt->fetch();
 
-               header("Location:view.php");
+               if(isset($res_old)) {
+                  $sql = "UPDATE visite SET data_inizio = :data_inizio, ora_inizio = :ora_inizio, ora_fine = :ora_fine
+                  WHERE id = :id";
+                  $stmt = $conn->prepare($sql);
+                  $stmt->bindParam(":data_inizio", $_POST["data"]);
+                  $stmt->bindParam(":ora_inizio", $_POST["ora_inizio"]);
+                  $stmt->bindParam(":ora_fine", $_POST["ora_fine"]);
+                  $stmt->bindParam(":id", $_POST["id"], PDO::PARAM_INT);
+                  $stmt->execute();
+
+                  // Invio mail di avviso agli utenti già prenotati
+                  if(isset($_POST["send_mail"])) {
+                     $sql = "SELECT email, nome, cognome FROM prenotazioni, utenti
+                     WHERE cod_utente = utenti.id AND
+                     cod_visita = :cod_visita";
+                     $stmt = $conn->prepare($sql);
+                     $stmt->bindParam(":cod_visita", $_POST["id"], PDO::PARAM_INT);
+                     $stmt->execute();
+                     $res = $stmt->fetchAll();
+
+                     if(isset($res)) {
+                        foreach($res as $row) {
+                           mailTo(
+                              $row["email"],
+                              "POI - Modifiche prenotazione",
+                              openday_update_mail(
+                                 $row["nome"], $row["cognome"],
+                                 date("d/m/Y", strtotime($res_old["data_inizio"])),
+                                 date("H:i", strtotime($res_old["ora_inizio"])),
+                                 date("H:i", strtotime($res_old["ora_fine"])),
+                                 date("d/m/Y", strtotime($_POST["data"])),
+                                 date("H:i", strtotime($_POST["ora_inizio"])),
+                                 date("H:i", strtotime($_POST["ora_fine"]))
+                              )
+                           );
+                        }
+                     }
+                  }
+
+                  header("Location:view.php");
+               }
 
             } catch (PDOException $e) {
                echo $e->getMessage();
