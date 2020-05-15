@@ -65,13 +65,15 @@
                               $res = $stmt->fetchAll();
                               foreach($res as $row) {
                                  $id = $row["id"];
-                                 $data = $row["data_inizio"];
-                                 $ora_inizio = date("h:i", strtotime($row["ora_inizio"]));
+                                 $data = date("d/m/Y", strtotime($row["data_inizio"]));
+                                 $orario = date("H:i" ,strtotime($row["ora_inizio"])) . " - " . date("H:i" ,strtotime($row["ora_fine"]));
                                  $ora_fine = date("h:i", strtotime($row["ora_fine"]));
                                  $posti = $row["posti_disponibili"];
                                  echo "<tr style='text-align:center;'>";
-                                 echo "<td>$data</td> <td>$ora_inizio - $ora_fine</td> <td>$posti</td>";
-                                 echo "<td><a href='modify.php?id=$id'>Modifica</a></td> <td><a href='delete.php?id=$id'>Elimina</a></td>";
+                                 echo "<td>$data</td> <td>$orario</td> <td>$posti</td>";
+                                 echo "<td><a href='modify.php?id=$id'>Modifica</a></td>
+                                       <td><a href='delete.php?id=$id'>Elimina</a></td>
+                                       <td><a href='partecipants.php?id=$id'>Partecipanti</a></td>";
                                  echo "</tr>";
                               }
                            ?>
