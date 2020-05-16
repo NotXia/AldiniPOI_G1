@@ -1,48 +1,37 @@
-@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
-
-html, body {
-   height: 100%;
+.sidebar {
+   background: #fff;
 }
 
- .sidebar{
-    position: fixed;
-    width: 250px;
-    top:0;
-    right: 0;
-    bottom: 0;
-    background: #fff;
-    padding-top: 50px;
- }
+.sidebar h1 {
+   display: block;
+   color: #111;
+   text-decoration: none;
+   letter-spacing: 2px;
+   font-weight: 400;
+   margin: 0;
+   font-size: 25px;
+   text-align: right;
+   text-transform: uppercase;
+   padding-bottom: 20px;
+   direction: rtl;
+}
 
- .sidebar h1{
-    display: block;
-    padding: 10px 20px;
-    color: #111;
-    text-decoration: none;
-    font-family: "Rubik";
-    letter-spacing: 2px;
-    font-weight: 400;
-    margin: 0;
-    font-size: 25px;
-    text-transform: uppercase;
- }
+.sidebar a {
+   display: block;
+   color: #bbb;
+   text-decoration: none;
+   letter-spacing: 2px;
+   text-align: right;
+   margin-bottom: 15px;
+}
 
- .sidebar a{
-    display: block;
-    padding: 10px 20px;
-    color: #bbb;
-    text-decoration: none;
-    font-family: "Rubik";
-    letter-spacing: 2px;
- }
+.sidebar a:hover {
+   color: #111;
+   margin-right: 15px;
+   transition: 0.4s;
+}
 
- .sidebar a:hover{
-    color: #111;
-    margin-left: 20px;
-    transition: 0.4s;
- }
-
-.svgmap svg{
+.svgmap svg {
    display:block;
    margin:auto;
    align-items: left;
@@ -50,14 +39,4 @@ html, body {
    animation-name: animation;
    animation-iteration-count: initial;
    animation-direction: alternate;
-}
-
-@keyframes animation{
-   from{
-      transform: translateX(0) translateY(0);
-      opacity: 0;
-   }
-   to {
-      opacity: 1;
-   }
 }
