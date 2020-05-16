@@ -89,17 +89,17 @@
                         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
                            <table class="table table-bordered">
                               <tr style="text-align:center;">
-                                 <th></th> <th>Cognome</th> <th>Nome</th> <th>Email</th>
+                                 <th></th> <th>Cognome</th> <th>Nome</th> <th>Email</th> <th>Dispositivo</th>
                               </tr>
                               <?php
                                  try {
                                     $conn = db_connect();
 
-                                    // Estrae tutti i partecipanti dell'Open Day
-                                    $sql = "SELECT cod_utente, email, nome, cognome
-                                            FROM prenotazioni, utenti
-                                            WHERE cod_utente = utenti.id AND
-                                                  cod_visita = :cod_visita";
+                                    // Estrae tutti i partecipanti dell'Open Day associandoli eventualmente al dispositivo
+                                    $sql = "SELECT cod_utente, email, nome, cognome, mac_address
+                                            FROM (utenti INNER JOIN prenotazioni ON (cod_utente = utenti.id))
+                                                 LEFT OUTER JOIN dispositivi ON (cod_dispositivo = dispositivi.id)
+                                            WHERE cod_visita = :cod_visita";
                                     $stmt = $conn->prepare($sql);
                                     $stmt->bindParam(":cod_visita", $id, PDO::PARAM_INT);
                                     $stmt->execute();
@@ -110,8 +110,9 @@
                                        $cognome = $row["cognome"];
                                        $email = $row["email"];
                                        $id_user = $row["cod_utente"];
+                                       $dispositivo = $row["mac_address"];
                                        echo "<tr style='text-align:center;'>";
-                                       echo "<td><input type='checkbox' name='choose[$id_user]'></td><td>$cognome</td> <td>$nome</td> <td>$email</td>";
+                                       echo "<td><input type='checkbox' name='choose[$id_user]'></td><td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$dispositivo</td>";
                                        echo "</tr>";
                                     }
                                  } catch (PDOException $e) {
@@ -129,34 +130,42 @@
                      <div id="tab2" style="display: none;" class="table-responsive" align="center">
                         <table class="table table-bordered">
                            <tr style="text-align:center;">
-                              <th rowspan="2"><br>Cognome</th> <th rowspan="2"><br>Nome</th> <th rowspan="2"><br>Email</th> <th colspan="2">Accesso visita</th>
+                              <th rowspan="2"><br>Cognome</th> <th rowspan="2"><br>Nome</th> <th rowspan="2"><br>Email</th> <th rowspan="2"><br>Dispositivo</th> <th colspan="2">Accesso visita</th>
                            </tr>
                            <tr style="text-align:center;">
                               <th>Username</th> <th>Password</th>
                            </tr>
 
                            <?php
-                              //
-                              // Genera credenziali a tutti
-                              //
-                              if(isset($_POST["submit_all"])) {
+                              if(isset($_POST["submit_all"]) || isset($_POST["submit_selected"])) {
+                                 $selected = false;
+                                 if(isset($_POST["submit_selected"])) {
+                                    $selected = true;
+                                 }
 
                                  try {
                                     $conn = db_connect();
-                                    // Estrae tutti i partecipanti dell'Open Day
-                                    $sql = "SELECT prenotazioni.id AS id_p, email, nome, cognome
-                                            FROM prenotazioni, utenti
-                                            WHERE cod_utente = utenti.id AND
-                                                  cod_visita = :cod_visita";
+                                    // Estrae tutti i partecipanti dell'Open Day associandoli eventualmente al dispositivo
+                                    $sql = "SELECT prenotazioni.id AS id_p, cod_utente, email, nome, cognome, mac_address
+                                            FROM (utenti INNER JOIN prenotazioni ON (cod_utente = utenti.id))
+                                                 LEFT OUTER JOIN dispositivi ON (cod_dispositivo = dispositivi.id)
+                                            WHERE cod_visita = :cod_visita";
                                     $stmt = $conn->prepare($sql);
-                                    $stmt->bindParam(":cod_visita", $id, PDO::PARAM_INT);
+                                    $stmt->bindParam(":cod_visita", $_POST["id"], PDO::PARAM_INT);
                                     $stmt->execute();
 
                                     $res = $stmt->fetchAll();
                                     foreach($res as $row) {
+                                       // Se la generazione è per selezione, verifica che l'utente sia stato selezionato
+                                       if($selected) {
+                                          if(!isset($_POST["choose"][$row["cod_utente"]])) {
+                                             continue;
+                                          }
+                                       }
                                        $nome = $row["nome"];
                                        $cognome = $row["cognome"];
                                        $email = $row["email"];
+                                       $dispositivo = $row["mac_address"];
                                        $id_pren = $row["id_p"];
 
                                        // -------------------------------------------------------------
@@ -177,7 +186,7 @@
                                        $stmt->execute();
 
                                        echo "<tr style='text-align:center;'>";
-                                       echo "<td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$username</td> <td>$password</td>";
+                                       echo "<td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$dispositivo</td> <td>$username</td> <td>$password</td>";
                                        echo "</tr>";
                                     }
                                     ?>
@@ -196,72 +205,6 @@
                               }
                            ?>
 
-                           <?php
-                              //
-                              // Genera credenziali a selezionati
-                              //
-                              if(isset($_POST["submit_selected"]) && isset($_POST["choose"])) {
-
-                                 try {
-                                    $conn = db_connect();
-                                    foreach($_POST["choose"] as $id_user=>$x) {
-                                       if(isset($x)) {
-                                          // Seleziona l'utente
-                                          $sql = "SELECT prenotazioni.id AS id_p, email, nome, cognome
-                                          FROM prenotazioni, utenti
-                                          WHERE cod_utente = utenti.id AND
-                                          cod_visita = :cod_visita AND
-                                          cod_utente = :cod_utente";
-                                          $stmt = $conn->prepare($sql);
-                                          $stmt->bindParam(":cod_visita", $id, PDO::PARAM_INT);
-                                          $stmt->bindParam(":cod_utente", $id_user, PDO::PARAM_INT);
-                                          $stmt->execute();
-
-                                          $res = $stmt->fetchAll();
-                                          foreach($res as $row) {
-                                             $nome = $row["nome"];
-                                             $cognome = $row["cognome"];
-                                             $email = $row["email"];
-                                             $id_pren = $row["id_p"];
-
-                                             // -------------------------------------------------------------
-                                             // GENERAZIONE CREDENZIALI
-                                             // -------------------------------------------------------------
-                                             $username = "openday_$id_pren";
-                                             $password = token_gen(8, "abcdefghijklmnopqrstuvwxyz"); // Password di 8 caratteri e solo minuscole
-                                             $psw_hash = password_hash($password, PASSWORD_DEFAULT);
-                                             // **************************************************************
-
-
-                                             // Inserimento credenziali su DB
-                                             $sql = "UPDATE prenotazioni SET username = :username, psw = :psw WHERE id = :id";
-                                             $stmt = $conn->prepare($sql);
-                                             $stmt->bindParam(":id", $id_pren, PDO::PARAM_INT);
-                                             $stmt->bindParam(":username", $username, PDO::PARAM_STR, 100);
-                                             $stmt->bindParam(":psw", $psw_hash, PDO::PARAM_STR, 60);
-                                             $stmt->execute();
-
-                                             echo "<tr style='text-align:center;'>";
-                                             echo "<td>$cognome</td> <td>$nome</td> <td>$email</td> <td>$username</td> <td>$password</td>";
-                                             echo "</tr>";
-                                          }
-                                       }
-                                    }
-                                    ?>
-                                 </table>
-
-                                 <script>
-                                    document.getElementById('tab1').style = 'display: none;';
-                                    document.getElementById('tab2').style = 'display: block;';
-                                 </script>
-                                 <?php
-
-                                 }
-                                 catch (PDOException $e) {
-                                    echo $e->getMessage();
-                                 }
-                              }
-                           ?>
                      </div>
 
                   </div>
