@@ -3,7 +3,14 @@
         <meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Mappa Aldini</title>
-        <link rel="stylesheet" type="text/css" href="../css/map.css" />
+        <link rel="stylesheet" type="text/css" href="css/map.css" />
+        <style>
+            #rotate {
+               /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
+               transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
+               transition: all 1.6s ease-in;
+            }
+         </style>
     </head>
     <body>
         <nav class="sidebar">
@@ -77,5 +84,18 @@
                   </svg>
               </div>
           </body>
+    <script type="text/javascript">
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
+        async function animate() {
+           x = document.getElementById("rotate");
+           await sleep(300);
+           // x.style = "transform: rotate3d(1, 0, 0, -0.23turn);";
+           x.style = "transform: rotate3d(3, -2, -1.8, -0.15turn);";
+        }
+
+        animate()
+     </script>
 </html>

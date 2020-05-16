@@ -58,9 +58,6 @@ html, body {
       opacity: 0;
    }
    to {
-      transform: translateX(150) translateY(0);
-      transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
-      transform: rotate3d(3, -2, -1.8, -0.15turn);
       opacity: 1;
    }
 }
