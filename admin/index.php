@@ -28,10 +28,10 @@
       <title>Dashboard</title>
 
       <style>
-         .border {
-            border: 1px solid;
+         .border_board {
+            border: 2px solid #2e78c4;
             border-radius: 15px;
-            padding: 10px;
+            padding: 15px;
          }
       </style>
 
@@ -56,39 +56,50 @@
                   <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 mx-auto text-center form p-4">
                      <h1 class="display-4 py-2">Dashboard</h1><br>
 
-                     <div class="border">
+                     <div class="border_board">
 
                         <h4>OGGI</h4>
-                        <?php
-                           try {
-                              $conn = db_connect();
-                              $sql = "SELECT * FROM visite WHERE data_inizio = DATE(NOW())";
-                              $stmt = $conn->prepare($sql);
-                              $stmt->execute();
-                              $res = $stmt->fetchAll();
+                        <table align="center">
+                           <?php
+                              try {
+                                 $conn = db_connect();
+                                 $sql = "SELECT * FROM visite WHERE data_inizio = DATE(NOW())";
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->execute();
+                                 $res = $stmt->fetchAll();
 
-                              if(!empty($res)) {
-                                 foreach($res as $row) {
-                                    $orario = date("H:i" ,strtotime($row["ora_inizio"])) . " - " . date("H:i" ,strtotime($row["ora_fine"]));
-                                    $cod_visita = $row["id"];
+                                 if(!empty($res)) {
+                                    foreach($res as $row) {
+                                       $orario = date("H:i" ,strtotime($row["ora_inizio"])) . " - " . date("H:i" ,strtotime($row["ora_fine"]));
+                                       $cod_visita = $row["id"];
 
-                                    $sql = "SELECT COUNT(*) AS tot FROM prenotazioni WHERE cod_visita = $cod_visita";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res_count = $stmt->fetch()["tot"];
+                                       $sql = "SELECT COUNT(*) AS tot_part, COUNT(cod_dispositivo) AS tot_disp
+                                       FROM prenotazioni
+                                       WHERE cod_visita = $cod_visita";
+                                       $stmt = $conn->prepare($sql);
+                                       $stmt->execute();
+                                       $res = $stmt->fetch();
+                                       $tot_partecipanti = $res["tot_part"];
+                                       $tot_dispositivi = $res["tot_disp"];
 
-                                    echo "<p style='margin: 0'>$orario ($res_count partecipanti)</p>";
+                                       $str_partecipanti = $tot_partecipanti == 1 ? "partecipante" : "partecipanti";
+                                       $str_dispositivi = $tot_dispositivi == 1 ? "dispositivo" : "dispositivi";
+
+                                       echo "<tr style='border-bottom: 1px solid #4588cc; border-top: 1px solid #4588cc;'>";
+                                       echo "<td style='text-align:right;'>$orario&nbsp</td> <td>&nbsp</td> <td>$tot_partecipanti $str_partecipanti</td> <td>&nbsp</td> <td>$tot_dispositivi $str_dispositivi</td>";
+                                       echo "</tr>";
+                                    }
+                                 }
+                                 else {
+                                    echo "<p style='margin: 0'>Non ci sono Open Day oggi</p>";
                                  }
                               }
-                              else {
-                                 echo "<p style='margin: 0'>Non ci sono Open Day oggi</p>";
+                              catch (PDOException $e) {
+                                 echo $e->getMessage();
                               }
-                           }
-                           catch (PDOException $e) {
-                              echo $e->getMessage();
-                           }
 
-                        ?>
+                           ?>
+                        </table>
                      </div>
 
                   </div>
