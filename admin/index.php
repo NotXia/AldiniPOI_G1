@@ -44,6 +44,7 @@
             <a id="nav_options" href="index.php">Dashboard</a>
             <a id="nav_options" href="openday/view.php">Open Day</a>
             <a id="nav_options" href="labo/view.php">Laboratori</a>
+            <a id="nav_options" href="devices/view.php">Dispositivi</a>
             <a id="nav_options" href="logout.php">Logout</a>
          </div>
       </nav>

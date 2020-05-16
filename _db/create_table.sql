@@ -12,7 +12,7 @@ INSERT permessi VALUES(null, "Admin");
 CREATE TABLE dispositivi (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	descrizione VARCHAR(100) NOT NULL,
-	mac_address VARCHAR(20)
+	mac_address VARCHAR(20) UNIQUE
 );
 
 CREATE TABLE visite (

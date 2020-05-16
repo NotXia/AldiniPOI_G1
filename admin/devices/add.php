@@ -1,4 +1,5 @@
 <?php
+   ob_start();
    require_once (dirname(__FILE__)."/../../util/auth_check.php");
    if(isLogged()) {
       if($_SESSION["cod_permesso"] != 3) {
@@ -13,7 +14,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
 
       <meta charset="utf-8">
@@ -34,12 +35,12 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="../index.php">Admin</a>
+         <a class="navbar-brand" href="../index">Admin</a>
          <div align="right">
             <a id="nav_options" href="../index.php">Dashboard</a>
-            <a id="nav_options" href="view.php">Open Day</a>
+            <a id="nav_options" href="../openday/view.php">Open Day</a>
             <a id="nav_options" href="../labo/view.php">Laboratori</a>
-            <a id="nav_options" href="../devices/view.php">Dispositivi</a>
+            <a id="nav_options" href="view.php">Dispositivi</a>
             <a id="nav_options" href="../logout.php">Logout</a>
          </div>
       </nav>
@@ -49,31 +50,22 @@
             <div class="container">
                <div class="row text-black">
                   <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto text-center form p-4">
-                     <h1 class="display-4 py-2">Aggiungi Open Day</h1>
+                     <h1 class="display-4 py-2">Aggiungi dispositivo</h1>
 
-                     <div class="table-responsive" align="center">
+                     <div align="center">
                         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
                            <table>
                               <tr>
-                                 <td id="label">Data</td>
-                                 <td id="padding"><input type="date" name="data" min="<?php echo htmlentities(date("Y-m-d")); ?>" value="<?php if(!empty($_POST['data'])) echo $_POST['data']; ?>" required></td>
+                                 <td id="label">Indirizzo MAC</td>
+                                 <td id="padding"><input type="text" id="mac_address" maxlength="17" name="mac_address" value="<?php if(!empty($_POST['mac_address'])) echo $_POST['mac_address']; ?>" required></td>
                               </tr>
                               <tr>
-                                 <td id="label">Ora inizio</td>
-                                 <td id="padding"><input type="time" name="ora_inizio" value="<?php if(!empty($_POST['ora_inizio'])) echo $_POST['ora_inizio']; ?>" required></td>
-                              </tr>
-                              <tr>
-                                 <td id="label">Ora fine</span></td>
-                                 <td id="padding"><input type="time" name="ora_fine" value="<?php if(!empty($_POST['ora_fine'])) echo $_POST['ora_fine']; ?>" required></td>
-                              </tr>
-                              <tr>
-                                 <td id="label">Numero posti</td>
-                                 <td id="padding"><input type="number" min="0" name="posti" value="<?php if(!empty($_POST['posti'])) echo $_POST['posti']; else echo "15"; ?>" required></td>
+                                 <td id="label">Descrizione</td>
+                                 <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(!empty($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
                               </tr>
                            </table>
                            <br>
                            <input type="submit" id="submit" name="submit" value="Inserisci">
-
                         </form>
                      </div>
 
@@ -84,30 +76,38 @@
       </section>
 
    </body>
+
+   <script type="text/javascript">
+      document.getElementById("mac_address").addEventListener('keyup', function() {
+         this.value = (this.value.toUpperCase()
+                      .replace(/[^\d|A-F]/g, '')
+                      .match(/.{1,2}/g) || [])
+                      .join(":")
+      });
+   </script>
 </html>
+
 
 <?php
 
    if(isset($_POST["submit"])) {
 
       // Controlla che tutti i campi obbligatori siano impostati
-      if(!empty($_POST["data"]) && !empty($_POST["ora_inizio"]) && !empty($_POST["ora_fine"]) && !empty($_POST["posti"])) {
+      if(!empty($_POST["mac_address"])) {
          try {
-
             $conn = db_connect();
-            $sql = "INSERT visite (data_inizio, ora_inizio, ora_fine, posti_disponibili)
-                    VALUES(:data_inizio, :ora_inizio, :ora_fine, :posti_disponibili)";
+            $sql = "INSERT dispositivi (mac_address, descrizione)
+                    VALUES(:mac, :descrizione)";
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":data_inizio", $_POST["data"]);
-            $stmt->bindParam(":ora_inizio", $_POST["ora_inizio"]);
-            $stmt->bindParam(":ora_fine", $_POST["ora_fine"]);
-            $stmt->bindParam(":posti_disponibili", $_POST["posti"], PDO::PARAM_INT);
+            $stmt->bindParam(":mac", $_POST["mac_address"], PDO::PARAM_STR, 20);
+            $stmt->bindParam(":descrizione", $_POST["descrizione"], PDO::PARAM_STR, 100);
             $stmt->execute();
 
+            // Pagina per inserire immagini
             header("Location:view.php");
 
          } catch (PDOException $e) {
-            echo "<p id='error'>Si è verificato un errore</p>";
+            echo "<p style='text-align:center;'>Si è verificato un errore</p>";
          }
 
       }
