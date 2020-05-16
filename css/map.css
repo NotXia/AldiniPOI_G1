@@ -48,7 +48,7 @@
     border-radius: 0%;
  }
 
-.min-vh-90 svg {
+#cover svg {
    display:block;
    margin:auto;
    align-items: left;
