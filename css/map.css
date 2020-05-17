@@ -53,10 +53,34 @@
    margin:auto;
    align-items: left;
    animation-duration:1.2s;
-   animation-name: animation;
+   animation-name: fade-in;
    animation-iteration-count: initial;
    animation-direction: alternate;
 }
+
+.cls-3, .cls-2{
+   transform: translateX(0px) translateY(0px);
+   transform-origin: center;
+   transition: all 0.5s ease;
+}
+.cls-3:hover {
+   transform: translateX(-10px) translateY(-20px);
+   transform-origin: center;
+}
+.cls-2:hover {
+   transform: translateX(-5px) translateY(-10px);
+   transform-origin: center;
+}
+.cls-3:hover ~ .cls-4 {
+   opacity: 0.2;
+}
+
+#t230 {
+   transform-origin: center;
+   transform:rotate(-90);
+}
+
+
 
 @keyframes fade-in{
    from{
@@ -67,3 +91,12 @@
       opacity: 1;
    }
 }
+
+.cls-1{fill:#d3d3d3;}
+.cls-1,.cls-2,.cls-3{stroke-miterlimit:10;}
+.cls-2{fill:#8e8e8e;}
+.cls-3{fill:cyan;}
+.cls-4,.cls-6{font-size:24px;font-family:MyriadPro-Regular, Myriad Pro;}
+.cls-4{fill:#fff;}
+.cls-5{letter-spacing:-0.01em;}
+.cls-6{fill:#4c4c4c;}
