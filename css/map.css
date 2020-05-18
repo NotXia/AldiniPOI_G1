@@ -25,9 +25,15 @@
    text-decoration: none;
    font-family: "Rubik";
    font-weight: 400;
-   margin: 0;
+   margin-left: 0;
+   border-radius: 50%;
    font-size: 20px;
    text-transform: uppercase;
+   transition: 0.4s;
+}
+.sidebar h2:hover{
+   margin-left: 5px;
+   border-radius: 0%;
 }
 
 .sidebar a{
