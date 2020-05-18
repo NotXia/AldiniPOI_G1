@@ -111,6 +111,10 @@
                                     <td id="label">Descrizione</td>
                                     <td id="padding"><textarea name="descrizione" rows="5"><?php if(!empty($res['descrizione'])) echo $res['descrizione']; ?></textarea></td>
                                  </tr>
+                                 <tr>
+                                    <td id="label">Id HTML</td>
+                                    <td id="padding"><input type="text" name="id_html" value="<?php if(!empty($res['id_html_map'])) echo $res['id_html_map']; ?>"></td>
+                                 </tr>
                               </table>
                               <br>
                               <table class="table table-bordered">
@@ -187,7 +191,7 @@
             $conn = db_connect();
             $sql = "UPDATE laboratori
                     SET tag = :tag, nome = :nome, piano = :piano, num_posti = :num_posti,
-                        num_pc = :num_pc, presenza_lim = :presenza_lim, descrizione = :descrizione
+                        num_pc = :num_pc, presenza_lim = :presenza_lim, descrizione = :descrizione, id_html_map = :id_html
                     WHERE tag = :old_tag";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":tag", $_POST["tag"], PDO::PARAM_STR, 20);
@@ -197,6 +201,7 @@
             $stmt->bindParam(":num_pc", $_POST["numpc"], PDO::PARAM_INT);
             $stmt->bindParam(":presenza_lim", $lim);
             $stmt->bindParam(":descrizione", $_POST["descrizione"], PDO::PARAM_STR, 500);
+            $stmt->bindParam(":id_html", $_POST["id_html"], PDO::PARAM_STR, 100);
             $stmt->bindParam(":old_tag", $_POST["old_tag"], PDO::PARAM_STR, 20);
             $stmt->execute();
          }

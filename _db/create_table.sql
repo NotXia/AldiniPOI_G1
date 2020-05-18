@@ -31,7 +31,8 @@ CREATE TABLE laboratori (
 	num_posti INT,
 	num_pc INT,
 	presenza_lim BOOLEAN,
-	descrizione VARCHAR(500)
+	descrizione VARCHAR(500),
+	id_html_map VARCHAR(100)
 );
 
 CREATE TABLE utenti (

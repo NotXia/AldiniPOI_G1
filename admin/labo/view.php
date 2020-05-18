@@ -62,7 +62,7 @@
                            <tr style="text-align:center;">
                               <th>Tag</th> <th>Nome</th> <th>Piano</th>
                               <th>Numero posti</th> <th>Numero PC</th>
-                              <th>LIM</th> <th>Descrizione</th>
+                              <th>LIM</th> <th>Descrizione</th> <th>Id HTML</th>
                            </tr>
                            <?php
 
@@ -80,9 +80,10 @@
                               $num_pc = $row["num_pc"];
                               $lim = $row["presenza_lim"] ? "Si" : "No";
                               $desc = nl2br($row["descrizione"]);
-                              echo "<tr>";
-                              echo "<td>$tag</td> <td>$nome</td> <td>$piano</td> <td>$num_post</td> <td>$num_pc</td> <td>$lim</td> <td><div style='width:200px; word-wrap: break-word''>$desc</div></td>";
-                              echo "<td><a>Visualizza</a></td> <td><a href='modify.php?tag=$tag'>Modifica</a></td> <td><a href='delete.php?tag=$tag'>Elimina</a></td>";
+                              $id_html = $row["id_html_map"];
+                              echo "<tr style='text-align:center;'>";
+                              echo "<td>$tag</td> <td>$nome</td> <td>$piano</td> <td>$num_post</td> <td>$num_pc</td> <td>$lim</td> <td><div style='width:200px; word-wrap: break-word; text-align:left;'>$desc</div></td> <td>$id_html</td>";
+                              echo "<td><a href='../../view.php?tag=$tag'>Visualizza</a></td> <td><a href='modify.php?tag=$tag'>Modifica</a></td> <td><a href='delete.php?tag=$tag'>Elimina</a></td>";
                               echo "</tr>";
                            }
 

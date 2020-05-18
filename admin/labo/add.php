@@ -88,6 +88,10 @@
                                  <td id="label">Descrizione</td>
                                  <td id="padding"><textarea name="descrizione" rows="5" value="<?php if(!empty($_POST['descrizione'])) echo $_POST['descrizione']; ?>"></textarea></td>
                               </tr>
+                              <tr>
+                                 <td id="label">Id HTML</td>
+                                 <td id="padding"><input type="text" name="id_html" value="<?php if(!empty($_POST['id_html'])) echo $_POST['id_html']; ?>"></td>
+                              </tr>
                            </table>
                            <br>
                            <input type="submit" id="submit" name="submit" value="Inserisci">
@@ -115,8 +119,8 @@
             $lim = isset($_POST["lim"]) ? 1 : 0;
 
             $conn = db_connect();
-            $sql = "INSERT laboratori (tag, nome, piano, num_posti, num_pc, presenza_lim, descrizione)
-                    VALUES(:tag, :nome, :piano, :num_posti, :num_pc, :presenza_lim, :descrizione)";
+            $sql = "INSERT laboratori (tag, nome, piano, num_posti, num_pc, presenza_lim, descrizione, id_html_map)
+                    VALUES(:tag, :nome, :piano, :num_posti, :num_pc, :presenza_lim, :descrizione :id_html)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":tag", $_POST["tag"], PDO::PARAM_STR, 20);
             $stmt->bindParam(":nome", $_POST["nome"], PDO::PARAM_STR, 100);
@@ -125,6 +129,7 @@
             $stmt->bindParam(":num_pc", $_POST["numpc"], PDO::PARAM_INT);
             $stmt->bindParam(":presenza_lim", $lim);
             $stmt->bindParam(":descrizione", $_POST["descrizione"], PDO::PARAM_STR, 500);
+            $stmt->bindParam(":id_html", $_POST["id_html"], PDO::PARAM_STR, 100);
             $stmt->execute();
 
             $tag = $_POST["tag"];
