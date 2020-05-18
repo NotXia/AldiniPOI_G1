@@ -117,10 +117,13 @@ $(document).ready(function(){
         rectInHover("221");
         rectInHover("228");
         rectInHover("230");
+        $(".mapbiennio").css("transition", "0.4s");
+        $(".mapbiennio").css("opacity", "0.3");
         }, function(){
         rectUnHover("221");    
         rectUnHover("228");
         rectUnHover("230");
+        $(".mapbiennio").css("opacity", "1");
         });
 
     $("#labsb").hover(function(){
@@ -128,11 +131,14 @@ $(document).ready(function(){
         rectInHover("290");
         rectInHover("292");
         rectInHover("297b");
+        $(".maptriennio").css("transition", "0.4s");
+        $(".maptriennio").css("opacity", "0.3");
         }, function(){
         rectUnHover("288");    
         rectUnHover("290");
         rectUnHover("292");
         rectUnHover("297b");
+        $(".maptriennio").css("opacity", "1");
         });
 
     $("#dipartimento").hover(function(){
@@ -162,6 +168,8 @@ $(document).ready(function(){
         $(text_id).css("transition", "all 0.8s ease");
         $(rect_id).css("transition", "all 0.8s ease");
         $(text_id).css("transform-origin", "center");
+        $(rect_id).css("transform-origin", "center");
+        $(rect_id).css("transform", "translateX(-10px) translateY(-20px)");
         $(text_id).css("transform", "translateX(-14px) translateY(-28px)");
         $(rect_id).css("fill", "blue");
         $(side_id).css("color", "#111");
@@ -174,6 +182,7 @@ $(document).ready(function(){
         text_id = "#t" + id;
         side_id = "#s" + id;
         $(text_id).css("transform", "translateX(0) translateY(0)");
+        $(rect_id).css("transform", "translateX(0) translateY(0)");
         $(rect_id).css("fill", "cyan");
         $(side_id).css("color", "#bbb");
         $(side_id).css("margin-left", "25px");
