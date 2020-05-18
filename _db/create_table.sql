@@ -61,15 +61,15 @@ CREATE TABLE autenticazioni (
 CREATE TABLE prenotazioni (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	ora_login TIME,
-	username VARCHAR(100) NOT NULL, /* Generato per la visita */
-	psw VARCHAR(60) NOT NULL, /* Generato per la visita */
+	username VARCHAR(100), /* Generato per la visita */
+	psw VARCHAR(60), /* Generato per la visita */
 	cod_utente INT NOT NULL,
 	cod_dispositivo INT,
 	cod_visita INT NOT NULL,
 	cod_permesso INT NOT NULL,
 	FOREIGN KEY (cod_utente) REFERENCES utenti(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (cod_dispositivo) REFERENCES dispositivi(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY (cod_visita) REFERENCES visite(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (cod_visita) REFERENCES visite(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
