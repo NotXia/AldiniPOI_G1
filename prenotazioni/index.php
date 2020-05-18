@@ -20,7 +20,7 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
-      <link rel="stylesheet" href="../css/admin_navbar.css">
+      <link rel="stylesheet" href="../css/navbar.css">
 
       <title>Prenotazioni</title>
    </head>
@@ -28,13 +28,32 @@
    <body>
 
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="#">Aldini Valeriani</a>
+         <div class="navbar-brand">
+            <a class="navbar-brand nav_nopadding" href="../index.php">
+               <img class="nav_logo" src="../res/logo.png" alt="AV Logo">
+               Aldini Valeriani
+            </a>
+         </div>
          <div align="right">
-
+            <a class="nav_options" href="../map">Visita</a>
+            <?php
+               if(isLogged()) {
+                  ?>
+                     <a class="nav_options" href="./index.php">Prenota</a>
+                     <a class="nav_options" href="../logout.php">Esci</a>
+                  <?php
+               }
+               else {
+                  ?>
+                     <a class="nav_options" href="../login.php">Accedi</a>
+                     <a class="nav_options" href="../register.php">Registrati</a>
+                  <?php
+               }
+            ?>
          </div>
       </nav>
 
-      <section id="cover" class="min-vh-90">
+      <section id="cover" class="min-vh-100">
          <div id="cover-caption">
             <div class="container">
                <div class="row text-black">

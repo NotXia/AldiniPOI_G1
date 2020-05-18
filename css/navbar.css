@@ -1,0 +1,14 @@
+.nav_options {
+   color: white;
+   padding: 10px;
+   text-transform: uppercase;
+}
+
+.nav_logo {
+   width:30px;
+   margin-right:10px;
+}
+
+.nav_nopadding {
+   padding: 0;
+}

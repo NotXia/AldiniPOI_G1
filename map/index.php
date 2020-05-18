@@ -1,3 +1,7 @@
+<?php
+   require_once (dirname(__FILE__)."/../util/auth_check.php");
+?>
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -10,7 +14,7 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
-      <link rel="stylesheet" href="../css/admin_navbar.css">
+      <link rel="stylesheet" href="../css/navbar.css">
       <link rel="stylesheet" href="../css/form_table.css">
       <link rel="stylesheet" type="text/css" href="../css/map.css">
       <script src="../js/map.js"></script>
@@ -18,35 +22,58 @@
       <title>Visita</title>
 
       <style>
-      #rotate {
-         /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
-         transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
-         transition: all 1.0s ease-in;
-      }
-      #rotate2 {
-         /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
-         transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
-         transition: all 1.0s ease-in;
-      }
-      #rotate3 {
-         /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
-         transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
-         transition: all 1.0s ease-in;
-      }
+         #rotate {
+            /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
+            transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
+            transition: all 1.0s ease-in;
+         }
+         #rotate2 {
+            /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
+            transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
+            transition: all 1.0s ease-in;
+         }
+         #rotate3 {
+            /* transform: rotate3d(3, -2, -1.8, -0.15turn); */
+            transform: rotate3d(1, 0, 0, -0.23turn) scale(0.6);
+            transition: all 1.0s ease-in;
+         }
 
-      body {
-         display: table;
-         position: absolute;
-         height: 100%;
-         width: 100%;
-      }
+         body {
+            display: table;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+         }
       </style>
 
    </head>
 
    <body>
+
       <nav class="navbar navbar-dark bg-primary">
-         <a class="navbar-brand" href="#">Aldini Valeriani</a>
+         <div class="navbar-brand">
+            <a class="navbar-brand nav_nopadding" href="../index.php">
+               <img class="nav_logo" src="../res/logo.png" alt="AV Logo">
+               Aldini Valeriani
+            </a>
+         </div>
+         <div align="right">
+            <a class="nav_options" href="index.php">Visita</a>
+            <?php
+               if(isLogged()) {
+                  ?>
+                     <a class="nav_options" href="../prenotazioni">Prenota</a>
+                     <a class="nav_options" href="../logout.php">Esci</a>
+                  <?php
+               }
+               else {
+                  ?>
+                     <a class="nav_options" href="../login.php">Accedi</a>
+                     <a class="nav_options" href="../register.php">Registrati</a>
+                  <?php
+               }
+            ?>
+         </div>
       </nav>
 
       <section id="cover" class="min-vh-90">
