@@ -75,12 +75,13 @@
 
                                  if(!empty($res)) {
                                     foreach($res as $row) {
+                                       $id = $row["id"];
                                        $orario = date("H:i" ,strtotime($row["ora_inizio"])) . " - " . date("H:i" ,strtotime($row["ora_fine"]));
                                        $cod_visita = $row["id"];
 
                                        $sql = "SELECT COUNT(*) AS tot_part, COUNT(cod_dispositivo) AS tot_disp
-                                       FROM prenotazioni
-                                       WHERE cod_visita = $cod_visita";
+                                               FROM prenotazioni
+                                               WHERE cod_visita = $cod_visita";
                                        $stmt = $conn->prepare($sql);
                                        $stmt->execute();
                                        $res = $stmt->fetch();
@@ -91,7 +92,9 @@
                                        $str_dispositivi = $tot_dispositivi == 1 ? "dispositivo" : "dispositivi";
 
                                        echo "<tr style='border-bottom: 1px solid #4588cc; border-top: 1px solid #4588cc;'>";
-                                       echo "<td style='text-align:right;'>$orario&nbsp</td> <td>&nbsp</td> <td>$tot_partecipanti $str_partecipanti</td> <td>&nbsp</td> <td>$tot_dispositivi $str_dispositivi</td>";
+                                       echo "<td style='text-align:right;'>$orario&nbsp</td>
+                                             <td>&nbsp</td> <td>$tot_partecipanti $str_partecipanti</td> <td>&nbsp</td>
+                                             <td>$tot_dispositivi $str_dispositivi</td> <td>&nbsp</td> <td><a href='openday/partecipants.php?id=$id'>Gestisci</a></td>";
                                        echo "</tr>";
                                     }
                                  }
