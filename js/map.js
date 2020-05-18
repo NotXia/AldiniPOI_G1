@@ -5,183 +5,135 @@ $(document).ready(function(){
 
     $("#_228").hover(function(){
         rectInHover("228");
-        obscurePiano();
         }, function(){
         rectUnHover("228");
-        lightPiano();
     });
     $("#s228").hover(function(){
         rectInHover("228");
-        obscurePiano();
         }, function(){
         rectUnHover("228");
-        lightPiano();
     });
     $("#t228").hover(function(){
         rectInHover("228");
-        obscurePiano();
         }, function(){
-        rectUnHover("228");
-        lightPiano();
+        rectUnHover("228");  
     });
 
     $("#_221").hover(function(){
         rectInHover("221");
-        obscurePiano();
         }, function(){
         rectUnHover("221");
-        lightPiano();
-      });
+        });
     $("#s221").hover(function(){
         rectInHover("221");
-        obscurePiano();
         }, function(){
         rectUnHover("221");
-        lightPiano();
-      });
+        });
     $("#t221").hover(function(){
         rectInHover("221");
-        obscurePiano();
         }, function(){
         rectUnHover("221");
-        lightPiano();
-      });
+        });
 
     $("#_230").hover(function(){
         rectInHover("230");
-        obscurePiano();
         }, function(){
         rectUnHover("230");
-        lightPiano();
-      });
+        });
     $("#s230").hover(function(){
         rectInHover("230");
-        obscurePiano();
         }, function(){
         rectUnHover("230");
-        lightPiano();
-      });
+        });
     $("#t230").hover(function(){
         rectInHover("230");
-        obscurePiano();
         }, function(){
         rectUnHover("230");
-        lightPiano();
-      });
+        });
     
     $("#_288").hover(function(){
         rectInHover("288");
-        obscurePiano();
         }, function(){
         rectUnHover("288");
-        lightPiano();
-      });
+        });
     $("#s288").hover(function(){
         rectInHover("288");
-        obscurePiano();
         }, function(){
         rectUnHover("288");
-        lightPiano();
-      });
+        });
     $("#t288").hover(function(){
         rectInHover("288");
-        obscurePiano();
         }, function(){
         rectUnHover("288");
-        lightPiano();
-      });
+        });
 
     $("#_290").hover(function(){
         rectInHover("290");
-        obscurePiano();
         }, function(){
         rectUnHover("290");
-        lightPiano();
-      });
+        });
     $("#s290").hover(function(){
         rectInHover("290");
-        obscurePiano();
         }, function(){
         rectUnHover("290");
-        lightPiano();
-      });
+        });
     $("#t290").hover(function(){
         rectInHover("290");
-        obscurePiano();
         }, function(){
         rectUnHover("290");
-        lightPiano();
-      });
+        });
 
     $("#_292").hover(function(){
         rectInHover("292");
-        obscurePiano();
         }, function(){
         rectUnHover("292");
-        lightPiano();
-      });
+        });
     $("#s292").hover(function(){
         rectInHover("292");
-        obscurePiano();
         }, function(){
         rectUnHover("292");
-        lightPiano();
-      });
+        });
     $("#t292").hover(function(){
         rectInHover("292");
-        obscurePiano();
         }, function(){
         rectUnHover("292");
-        lightPiano();
-      });
+        });
 
     $("#_297b").hover(function(){
         rectInHover("297b");
-        obscurePiano();
         }, function(){
         rectUnHover("297b");
-        lightPiano();
-      });
+        });
     $("#s297b").hover(function(){
-        rectInHover("297b");
-        obscurePiano();
-        }, function(){
-        rectUnHover("297b");
-        lightPiano();
-      });
+        rectInHover("297b");}, function(){
+        rectUnHover("297b");});
     $("#t297b").hover(function(){
         rectInHover("297b");
-        obscurePiano();
         }, function(){
         rectUnHover("297b");
-        lightPiano();
-      });
+        });
 
     $("#labs").hover(function(){
         rectInHover("221");
         rectInHover("228");
         rectInHover("230");
-        obscurePiano();
         }, function(){
         rectUnHover("221");    
         rectUnHover("228");
         rectUnHover("230");
-        lightPiano();
-      });
+        });
 
     $("#labsb").hover(function(){
         rectInHover("288");
         rectInHover("290");
         rectInHover("292");
         rectInHover("297b");
-        obscurePiano();
         }, function(){
         rectUnHover("288");    
         rectUnHover("290");
         rectUnHover("292");
         rectUnHover("297b");
-        lightPiano();
-      });
+        });
 
     $("#dipartimento").hover(function(){
         rectInHover("221");
@@ -191,7 +143,6 @@ $(document).ready(function(){
         rectInHover("290");
         rectInHover("292");
         rectInHover("297b");
-        obscurePiano();
         }, function(){
         rectUnHover("221");    
         rectUnHover("228");
@@ -200,8 +151,7 @@ $(document).ready(function(){
         rectUnHover("290");
         rectUnHover("292");
         rectUnHover("297b");
-        lightPiano();
-      });
+        });
 
     //------------------------------------------------------------------------------
     
