@@ -119,7 +119,7 @@
             );
          }
 
-         header("Location:view.php");
+         header("Location:index.php");
       } catch (PDOException $e) {
          echo "<p id='error'>Qualcosa è andato storto</p>";
          $conn->rollBack();

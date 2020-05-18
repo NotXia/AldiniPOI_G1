@@ -28,55 +28,6 @@
 
       <title>Prenotazioni</title>
 
-      <style>
-      /* Tooltip container */
-      ._tooltip {
-         position: relative;
-         display: inline-block;
-         border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-      }
-
-      /* Tooltip text */
-      ._tooltip ._tooltiptext {
-         visibility: hidden;
-         width: 120px;
-         background-color: #555;
-         color: #fff;
-         text-align: center;
-         padding: 5px 0;
-         border-radius: 6px;
-
-         /* Position the tooltip text */
-         position: absolute;
-         z-index: 1;
-         bottom: 125%;
-         left: 50%;
-         margin-left: -60px;
-
-         /* Fade in tooltip */
-         opacity: 0;
-         transition: opacity 0.3s;
-      }
-
-      /* Tooltip arrow */
-      ._tooltipa ._tooltiptext::after {
-         content: "";
-         position: absolute;
-         top: 100%;
-         left: 50%;
-         margin-left: -5px;
-         border-width: 5px;
-         border-style: solid;
-         border-color: #555 transparent transparent transparent;
-      }
-
-      /* Show the tooltip text when you mouse over the tooltip container */
-      ._tooltip:hover ._tooltiptext {
-         visibility: visible;
-         opacity: 1;
-      }
-   </style>
-
    </head>
 
    <body>
@@ -132,13 +83,19 @@
                               ?>
 
                            </table>
+                           <br>
+
+                           <div style="width:70%">
+                              <p>Vuoi provare durante l'Open Day ad usare un dispositivo sperimentale in grado di leggere i tag NFC dei laboratori?</p>
+                           </div>
                            <input id="device" type="checkbox" name="device">
                            <label for="device">
-                              <div class="_tooltip">Richiedi dispositivo
-                                 <span class="_tooltiptext">Ti verrà data conferma via mail se disponibile o meno</span>
-                              </div>
+                              Richiedi dispositivo
+                              <span data-toggle="tooltip" data-placement="right"
+                                 title="Ti verrà data conferma via mail se disponibile o meno">
+                                 &#9432;
+                              </span>
                            </label>
-                           <p>DESCRIZIONE DI COSA È IL DISPOSITIVO</p>
                         </form>
                      </div>
 
@@ -149,6 +106,12 @@
       </section>
 
    </body>
+
+   <script>
+      $(document).ready(function(){
+         $('[data-toggle="tooltip"]').tooltip();
+      });
+   </script>
 </html>
 
 <?php
@@ -180,6 +143,7 @@
          $stmt->execute();
 
          $res_visita = $stmt->fetch();
+
          // È possibile prenotare
          if(!empty($res_visita)) {
 
@@ -233,12 +197,15 @@
                )
             );
 
-            header("Location: view.php");
+            header("Location: index.php");
+         }
+         else {
+            die("<p>Si è verificato un errore</p>");
          }
 
       } catch (PDOException $e) {
-         echo $e->getMessage();
          $conn->rollBack();
+         die("<p>Si è verificato un errore</p>");
       }
 
 
