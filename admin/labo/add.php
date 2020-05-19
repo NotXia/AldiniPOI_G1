@@ -86,11 +86,23 @@
                               </tr>
                               <tr>
                                  <td id="label">Id HTML</td>
-                                 <td id="padding"><input type="text" name="id_html" value="<?php if(!empty($_POST['id_html'])) echo $_POST['id_html']; ?>"></td>
+                                 <td id="padding">
+                                    <input type="text" name="id_html" value="<?php if(!empty($_POST['id_html'])) echo $_POST['id_html']; ?>">
+                                    <span data-toggle="tooltip" data-placement="right"
+                                       title="Campo utilizzato per le animazioni della mappa, solitamente è il numero dell'aula (es. 228)">
+                                       &#9432;
+                                    </span>
+                                 </td>
                               </tr>
                               <tr>
                                  <td id="label">Label HTML</td>
-                                 <td id="padding"><input type="text" name="label_html" value="<?php if(!empty($_POST['label_html'])) echo $_POST['label_html']; ?>"></td>
+                                 <td id="padding">
+                                    <input type="text" name="label_html" value="<?php if(!empty($_POST['label_html'])) echo $_POST['label_html']; ?>">
+                                    <span data-toggle="tooltip" data-placement="right"
+                                       title="Nome visualizzato nella barra laterale della mappa (es. Lab 228)">
+                                       &#9432;
+                                    </span>
+                                 </td>
                               </tr>
                            </table>
                            <br>
@@ -106,6 +118,13 @@
       </section>
 
    </body>
+
+   <script>
+   $(document).ready(function(){
+   $('[data-toggle="tooltip"]').tooltip();
+   });
+   </script>
+
 </html>
 
 
