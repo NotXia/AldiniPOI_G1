@@ -60,6 +60,11 @@
                         <a class="nav_options" href="./admin/labo/view.php">Indietro</a>
                      <?php
                   }
+                  else {
+                     ?>
+                        <a class="nav_options" href="./map">Indietro</a>
+                     <?php
+                  }
                }
                else {
                   ?>
