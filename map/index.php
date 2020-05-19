@@ -11,7 +11,7 @@
          exit;
       }
    }
-   if(isset($_SESSION["mail_verif"]) == 0) {
+   else if(isset($_SESSION["mail_verif"]) == 0) {
       header("Location:../mail.php");
       exit;
    }
