@@ -114,7 +114,7 @@
    if(isset($_POST["submit"])) {
 
       // Controlla che tutti i campi obbligatori siano impostati
-      if(!empty($_POST["tag"]) && !empty($_POST["nome"]) && !empty($_POST["piano"])) {
+      if(!empty($_POST["tag"]) && !empty($_POST["nome"]) && !isset($_POST["piano"])) {
          try {
             $lim = isset($_POST["lim"]) ? 1 : 0;
 
