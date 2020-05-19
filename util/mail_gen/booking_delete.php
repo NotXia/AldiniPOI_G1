@@ -1,7 +1,5 @@
 <?php
 
-   require_once (dirname(__FILE__)."/../config.php");
-
    function booking_delete_mail($nome, $cognome, $data, $ora_inizio, $ora_fine) {
 
       // ----------------------------------------------------------------

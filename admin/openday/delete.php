@@ -11,6 +11,8 @@
    }
 
    require_once (dirname(__FILE__)."/../../util/dbconnect.php");
+   require_once (dirname(__FILE__)."/../../util/mail_gen/openday_delete.php");
+   require_once (dirname(__FILE__)."/../../util/mailer.php");
 ?>
 
 <!DOCTYPE html>
@@ -69,6 +71,8 @@
                               ?>
                               <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
                                  <input type="hidden" name="id" value="<?php echo $id ?>">
+                                 <input type="checkbox" id="send_mail" name="send_mail"><label for="send_mail">&nbspManda un avviso a chi si è prenotato</label>
+                                 <br>
                                  <input type="submit" name="confirm" value="Elimina">
                               </form>
                            <?php
@@ -90,6 +94,34 @@
    if(isset($_POST["confirm"])) {
       try {
          $conn = db_connect();
+
+         // Invio mail
+         if(isset($_POST["send_mail"])) {
+            $sql = "SELECT email, nome, cognome
+                    FROM prenotazioni, utenti
+                    WHERE cod_utente = utenti.id AND
+                          cod_visita = :cod_visita";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":cod_visita", $_POST["id"], PDO::PARAM_INT);
+            $stmt->execute();
+            $res = $stmt->fetchAll();
+
+            if(!empty($res)) {
+               foreach($res as $row) {
+                  mailTo(
+                     $row["email"],
+                     "POI - Visita cancellata",
+                     openday_delete_mail(
+                        $row["nome"], $row["cognome"],
+                        date("d/m/Y", strtotime($_POST["data"])),
+                        date("H:i", strtotime($_POST["ora_inizio"])),
+                        date("H:i", strtotime($_POST["ora_fine"]))
+                     )
+                  );
+               }
+            }
+         }
+
          $sql = "DELETE FROM visite WHERE id = :id";
          $stmt = $conn->prepare($sql);
          $stmt->bindParam(":id", $_POST["id"], PDO::PARAM_INT);

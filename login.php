@@ -24,6 +24,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
       <link rel="stylesheet" href="css/navbar.css">
+      <link rel="stylesheet" href="css/form_table.css">
 
       <title>Accedi</title>
 
@@ -95,6 +96,107 @@
                         <br>
                      </div>
 
+                     <?php
+
+                     // Verifica che tutti i campi siano impostati
+                     if(isset($_POST["submit"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+
+                        // Verifica che la mail inserita sia in un formato corretto
+                        if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                           echo "<p id='error'>La mail inserita non è valida</p>";
+                        }
+                        else {
+                           try {
+                              $conn = db_connect();
+
+                              // ----------------------------------------------------------------
+                              // Sanitizzazione input
+                              // ----------------------------------------------------------------
+                              $email = strtolower(trim($_POST["email"]));
+                              $pswd = $_POST["password"];
+                              // ****************************************************************
+
+
+                              // ----------------------------------------------------------------
+                              // Controlla se l'email inserita è già presente
+                              // ----------------------------------------------------------------
+                              $sql = "SELECT id, nome, cognome, email, psw, cod_permesso FROM utenti WHERE email = :email";
+                              $stmt = $conn->prepare($sql);
+                              $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
+                              $stmt->execute();
+                              $res = $stmt->fetch();
+                              // ****************************************************************
+
+                              if(isset($res["id"])) {
+
+                                 // Verifica credenziali
+                                 if(password_verify($pswd, $res["psw"])) {
+                                    // Inizializzazione parametri della sessione
+                                    $_SESSION["id"] = $res["id"];
+                                    $_SESSION["nome"] = $res["nome"];
+                                    $_SESSION["cognome"] = $res["cognome"];
+                                    $_SESSION["email"] = $res["email"];
+                                    $_SESSION["cod_permesso"] = $res["cod_permesso"];
+
+                                    // ----------------------------------------------------------------
+                                    // Inizializza cookie per il token dell'utente (Se "Ricordami" è spuntato)
+                                    // ----------------------------------------------------------------
+                                    if(isset($_POST["rememberme"])) {
+                                       $token = token_gen(128);
+                                       $scadenza = time() + $TIMEOUT_REMEMBER_ME;
+                                       $token_hash = password_hash($token, PASSWORD_DEFAULT);
+                                       $ip = $_SERVER['REMOTE_ADDR'];
+                                       $web_agent = $_SERVER['HTTP_USER_AGENT'];
+                                       $id = $_SESSION["id"];
+                                       $giorno_scadenza = date("Y-m-d H:i:s", $scadenza);
+                                       $selector = "";
+
+                                       // Prova a generare il selector per 5 volte
+                                       // C'è la possibilità di una collisione tra i selector
+                                       $gen_times = 0;
+                                       $selector_created = false;
+                                       while($gen_times < 5) {
+                                          try {
+                                             $selector = token_gen(20);
+
+                                             $sql = "INSERT autenticazioni (selector, token, ip, web_agent, data_scadenza, cod_utente)
+                                             VALUES('$selector', '$token_hash', '$ip', '$web_agent', '$giorno_scadenza', $id)";
+                                             $stmt = $conn->prepare($sql);
+                                             $stmt->execute();
+                                             $selector_created = true;
+                                             break;
+                                          }
+                                          catch(PDOException $e) {
+                                             $gen_times++;
+                                          }
+                                       }
+
+                                       // Se non è stato possibile creare il selector
+                                       if(!$selector_created) {
+                                          die ("<p id='error'>Qualcosa è andato storto</p>");
+                                       }
+
+                                       setcookie("user", "$selector:$token", $scadenza, "/");
+                                    }
+                                    // ****************************************************************
+
+                                    header("Location:index.php");
+                                 } // if(password_verify($pswd, $res["psw"]))
+                                 else {
+                                    echo "<p id='error'>Credenziali non corrette</p>";
+                                 }
+                              } // if(isset($res["id"]))
+                              else {
+                                 echo "<p id='error'>Credenziali non corrette</p>";
+                              }
+                           }
+                           catch(PDOException $e) {
+                              echo "<p id='error'>Qualcosa è andato storto</p>";
+                           }
+                        }
+                     }
+
+                     ?>
                   </div>
                </div>
             </div>
@@ -103,105 +205,3 @@
 
    </body>
 </html>
-
-<?php
-
-   // Verifica che tutti i campi siano impostati
-   if(isset($_POST["submit"]) && isset($_POST["email"]) && isset($_POST["password"])) {
-
-      // Verifica che la mail inserita sia in un formato corretto
-      if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-         echo "<p id='error'>La mail inserita non è valida</p>";
-      }
-      else {
-         try {
-            $conn = db_connect();
-
-            // ----------------------------------------------------------------
-            // Sanitizzazione input
-            // ----------------------------------------------------------------
-            $email = strtolower(trim($_POST["email"]));
-            $pswd = $_POST["password"];
-            // ****************************************************************
-
-
-            // ----------------------------------------------------------------
-            // Controlla se l'email inserita è già presente
-            // ----------------------------------------------------------------
-            $sql = "SELECT id, nome, cognome, email, psw, cod_permesso FROM utenti WHERE email = :email";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
-            $stmt->execute();
-            $res = $stmt->fetch();
-            // ****************************************************************
-
-            if(isset($res["id"])) {
-
-               // Verifica credenziali
-               if(password_verify($pswd, $res["psw"])) {
-                  // Inizializzazione parametri della sessione
-                  $_SESSION["id"] = $res["id"];
-                  $_SESSION["nome"] = $res["nome"];
-                  $_SESSION["cognome"] = $res["cognome"];
-                  $_SESSION["email"] = $res["email"];
-                  $_SESSION["cod_permesso"] = $res["cod_permesso"];
-
-                  // ----------------------------------------------------------------
-                  // Inizializza cookie per il token dell'utente (Se "Ricordami" è spuntato)
-                  // ----------------------------------------------------------------
-                  if(isset($_POST["rememberme"])) {
-                     $token = token_gen(128);
-                     $scadenza = time() + $TIMEOUT_REMEMBER_ME;
-                     $token_hash = password_hash($token, PASSWORD_DEFAULT);
-                     $ip = $_SERVER['REMOTE_ADDR'];
-                     $web_agent = $_SERVER['HTTP_USER_AGENT'];
-                     $id = $_SESSION["id"];
-                     $giorno_scadenza = date("Y-m-d H:i:s", $scadenza);
-                     $selector = "";
-
-                     // Prova a generare il selector per 5 volte
-                     // C'è la possibilità di una collisione tra i selector
-                     $gen_times = 0;
-                     $selector_created = false;
-                     while($gen_times < 5) {
-                        try {
-                           $selector = token_gen(20);
-
-                           $sql = "INSERT autenticazioni (selector, token, ip, web_agent, data_scadenza, cod_utente)
-                           VALUES('$selector', '$token_hash', '$ip', '$web_agent', '$giorno_scadenza', $id)";
-                           $stmt = $conn->prepare($sql);
-                           $stmt->execute();
-                           $selector_created = true;
-                           break;
-                        }
-                        catch(PDOException $e) {
-                           $gen_times++;
-                        }
-                     }
-
-                     // Se non è stato possibile creare il selector
-                     if(!$selector_created) {
-                        die ("<p id='error'>Qualcosa è andato storto</p>");
-                     }
-
-                     setcookie("user", "$selector:$token", $scadenza, "/");
-                  }
-                  // ****************************************************************
-
-                  header("Location:index.php");
-               } // if(password_verify($pswd, $res["psw"]))
-               else {
-                  echo "<p id='error'>Credenziali non corrette</p>";
-               }
-            } // if(isset($res["id"]))
-            else {
-               echo "<p id='error'>Credenziali non corrette</p>";
-            }
-         }
-         catch(PDOException $e) {
-            echo "<p id='error'>Qualcosa è andato storto</p>";
-         }
-      }
-   }
-
-?>

@@ -61,7 +61,6 @@ CREATE TABLE autenticazioni (
 
 CREATE TABLE prenotazioni (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	ora_login TIME,
 	username VARCHAR(100), /* Generato per la visita */
 	psw VARCHAR(60), /* Generato per la visita */
 	cod_utente INT NOT NULL,
