@@ -2,6 +2,13 @@
    require_once (dirname(__FILE__)."/../util/auth_check.php");
    require_once (dirname(__FILE__)."/../util/openday_check.php");
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
+
+   if(isset($_SESSION["is_openday"])) {
+      if(!isOpenday()) {
+         header("Location:../logout.php");
+         exit;
+      }
+   }
 ?>
 
 <!DOCTYPE html>

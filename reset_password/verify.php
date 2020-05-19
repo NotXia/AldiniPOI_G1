@@ -3,7 +3,7 @@
 
    require_once (dirname(__FILE__)."/../util/auth_check.php");
    if(isLogged()) {
-      header("Location:index.php");
+      header("Location:../index.php");
    }
 
    require_once (dirname(__FILE__)."/../util/config.php");
