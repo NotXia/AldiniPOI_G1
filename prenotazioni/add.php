@@ -12,6 +12,10 @@
       header("Location:../index.php");
       exit;
    }
+   if($_SESSION["mail_verif"] == 0) {
+      header("Location:../mail.php");
+      exit;
+   }
 
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
    require_once (dirname(__FILE__)."/../util/mailer.php");

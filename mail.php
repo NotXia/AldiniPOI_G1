@@ -1,20 +1,16 @@
 <?php
+   session_start();
    require_once(dirname(__FILE__)."/util/auth_check.php");
-   require_once(dirname(__FILE__)."/util/openday_check.php");
 
    if(isLogged()) {
-      if(isset($_SESSION["is_openday"])) {
-         if(!isUserValid()) {
-            header("Location:./logout.php");
-            exit;
-         }
-         header("Location:./map");
+      if($_SESSION["mail_verif"] == 1) {
+         header("Location:index.php");
          exit;
       }
-      if($_SESSION["mail_verif"] == 0) {
-         header("Location:./mail.php");
-         exit;
-      }
+   }
+   else {
+      header("Location:index.php");
+      exit;
    }
 ?>
 
@@ -44,28 +40,7 @@
             </a>
          </div>
          <div align="right">
-            <?php
-            if(isOpenday()) {
-               ?><a class="nav_options" href="openday.php">Open Day</a><?php
-            }
-            ?>
-            <a class="nav_options" href="./map">Visita</a>
-            <?php
-               if(isLogged()) {
-                  if(!isset($_SESSION["is_openday"])) {
-                     ?><a class="nav_options" href="./prenotazioni">Prenota</a><?php
-                  }
-                  ?>
-                     <a class="nav_options" href="./logout.php">Esci</a>
-                  <?php
-               }
-               else {
-                  ?>
-                     <a class="nav_options" href="./login.php">Accedi</a>
-                     <a class="nav_options" href="./register.php">Registrati</a>
-                  <?php
-               }
-            ?>
+            <a class="nav_options" href="./logout.php">Esci</a>
          </div>
       </nav>
 
@@ -74,19 +49,10 @@
               <div class="container">
                   <div class="row text-black">
                       <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mx-auto text-center p-4">
-                        <img width="120px" src="res/logo.png" alt="Logo AV">
-                        <h1 class="display-2 py-2 ">Aldini Valeriani</h1>
-                        <?php
-                        if(isLogged()) {
-                           $nome = $_SESSION["nome"];
-                           echo "<h2 class='display-4 py-2'>Bentornat@ $nome</h2>";
-                        }
-                        else {
-                           ?>
-                           <h2 class="display-4 py-2 ">Benvenut@</h2>
-                           <?php
-                        }
-                        ?>
+                        <h1 class="display-4 py-2 ">Email non verificata</h1>
+
+                        <h5>Prima di procedere ti preghiamo di verificare la tua mail.</h5>
+                        <h5>Se vuoi richiedere una nuova mail di validazione premi <a href=<?php echo "validation/error.php?id=".$_SESSION["id"]; ?>>qui</a>.</h5>
                       </div>
                    </div>
                </div>

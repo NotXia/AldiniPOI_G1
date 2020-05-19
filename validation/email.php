@@ -38,6 +38,7 @@
                $stmt = $conn->prepare($sql);
                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
                $stmt->execute();
+               $_SESSION["mail_verif"] = 1;
                header("Location:success.html");
             }
          }

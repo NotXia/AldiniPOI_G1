@@ -1,4 +1,6 @@
 <?php
+   session_start();
+
    require_once (dirname(__FILE__)."/../util/auth_check.php");
    require_once (dirname(__FILE__)."/../util/openday_check.php");
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
@@ -8,6 +10,10 @@
          header("Location:../logout.php");
          exit;
       }
+   }
+   if(isset($_SESSION["mail_verif"]) == 0) {
+      header("Location:../mail.php");
+      exit;
    }
 ?>
 

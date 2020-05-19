@@ -137,6 +137,7 @@
                                     $_SESSION["cognome"] = $res["cognome"];
                                     $_SESSION["email"] = $res["email"];
                                     $_SESSION["cod_permesso"] = $res["cod_permesso"];
+                                    $_SESSION["mail_verif"] = $res["verifica_mail"];
 
                                     // ----------------------------------------------------------------
                                     // Inizializza cookie per il token dell'utente (Se "Ricordami" è spuntato)
