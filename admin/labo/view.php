@@ -61,8 +61,8 @@
                         <table class="table table-bordered">
                            <tr style="text-align:center;">
                               <th>Tag</th> <th>Nome</th> <th>Piano</th>
-                              <th>Numero posti</th> <th>Numero PC</th>
-                              <th>LIM</th> <th>Descrizione</th> <th>Id HTML</th>
+                              <th>Numero PC</th> <th>LIM</th> <th>Descrizione</th>
+                              <th>Id HTML</th> <th>Label HTML</th>
                            </tr>
                            <?php
 
@@ -76,13 +76,16 @@
                               $tag = $row["tag"];
                               $nome = $row["nome"];
                               $piano = $row["piano"];
-                              $num_post = $row["num_posti"];
                               $num_pc = $row["num_pc"];
                               $lim = $row["presenza_lim"] ? "Si" : "No";
                               $desc = nl2br($row["descrizione"]);
                               $id_html = $row["id_html_map"];
+                              $label_html = $row["label_html_map"];
                               echo "<tr style='text-align:center;'>";
-                              echo "<td>$tag</td> <td>$nome</td> <td>$piano</td> <td>$num_post</td> <td>$num_pc</td> <td>$lim</td> <td><div style='width:200px; word-wrap: break-word; text-align:left;'>$desc</div></td> <td>$id_html</td>";
+                              echo "<td>$tag</td> <td>$nome</td> <td>$piano</td>
+                                    <td>$num_pc</td> <td>$lim</td>
+                                    <td><div style='width:200px; word-wrap: break-word; text-align:left;'>$desc</div></td>
+                                    <td>$id_html</td> <td>$label_html</td>";
                               echo "<td><a href='../../view.php?tag=$tag'>Visualizza</a></td> <td><a href='modify.php?tag=$tag'>Modifica</a></td> <td><a href='delete.php?tag=$tag'>Elimina</a></td>";
                               echo "</tr>";
                            }

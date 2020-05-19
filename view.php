@@ -77,7 +77,7 @@
                         <h1 class="display-4 py-2 text-truncate"><?php echo htmlentities($res_lab["nome"]); ?></h1>
                         <p class="lead"><?php if(!empty($res_lab["descrizione"])) echo htmlentities($res_lab["descrizione"]); ?></p>
                         <p class="lead" style="margin: 0 0 0;"><?php echo "Piano n°".htmlentities($res_lab["piano"]); ?></p>
-                        <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["num_posti"])) echo htmlentities($res_lab["num_posti"])." postazioni"; ?></p>
+                        <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["num_pc"])) echo htmlentities($res_lab["num_pc"])." postazioni"; ?></p>
                         <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["presenza_lim"])) echo htmlentities($res_lab["presenza_lim"]==1 ? "LIM" : ""); ?></p>
                       </div>
                    </div>
@@ -119,14 +119,14 @@
                                  $i = 0;
                                  foreach($res_img as $row) {
                                     $path = $IMAGES_PATH . "/" . $row["percorso"];
-                                    $descrizione = $row["descrizione"];
+                                    $descrizione = nl2br($row["descrizione"]);
                                     if($i==0)
                                        echo "<div class='carousel-item active' align='center'>";
                                     else
                                        echo "<div class='carousel-item' align='center'>";
                                     echo "<img style='width:100%;' src='$path'>
                                           <div class='carousel-caption'>
-                                             <div style='background-color:rgba(150, 150, 150, 0.6);padding:0'>
+                                             <div style='background-color:rgba(150, 150, 150, 0.6);padding:0;text-align:center;word-wrap: break-word;'>
                                                 <p>$descrizione</p>
                                              </div>
                                           </div>

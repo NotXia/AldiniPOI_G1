@@ -89,56 +89,81 @@
                            <polygon class="cls-1" points="0.5 0.5 0.5 467.5 256.5 467.5 256.5 267.5 338.5 267.5 338.5 389.5 1338.5 387.5 1338.5 87.5 338.5 86.5 338.5 206.5 258.5 206.5 258.5 0.5 0.5 0.5"/>
 
                            <g id="Informatico">
-                              <a id="link_228" onclick="redirect(228)">
-                                 <rect id="_228" data-name="228" class="cls-3" x="355.5" y="256.5" width="200" height="115"/>
-                                 <text id="t228" class="cls-4" x="416" y="321">Lab 228</text>
+                              <a onclick="redirect(228)" class="cls-2">
+                                 <rect id="_228" data-name="228" x="355.5" y="256.5" width="200" height="115"/>
+                                 <text id="t228" class="cls-6" x="416" y="321">Lab 228</text>
                               </a>
-                              <a id="link_221" onclick="redirect(221)">
-                                 <rect id="_221" data-name="221" class="cls-3" x="519.5" y="98.5" width="300" height="115"/>
-                                 <text id="t221" class="cls-4" x="635" y="163">Lab 221</text>
+                              <a onclick="redirect(221)" class="cls-2">
+                                 <rect id="_221" data-name="221" x="519.5" y="98.5" width="300" height="115"/>
+                                 <text id="t221" class="cls-6" x="635" y="163">Lab 221</text>
                               </a>
-                              <a id="link_230" onclick="redirect(230)">
-                                 <rect id="_230" data-name="230" class="cls-3" x="152.5" y="256.5" width="95" height="195"/>
-                                 <text id="t230" class="cls-4" x=212.33 y=397.24>Lab 230</text>
+                              <a onclick="redirect(230)" class="cls-2">
+                                 <rect id="_230" data-name="230" x="152.5" y="256.5" width="95" height="195"/>
+                                 <text id="t230" class="cls-6" transform="translate(209.33 394.24) rotate(-90)">Lab 230</text>
                               </a>
                            </g>
 
                            <g id="Piano">
-                              <a id="link_226" xlink:title="Lab info 226">
-                                 <rect id="_226" data-name="226" class="cls-2" x="561.5" y="256.5" width="80" height="115"/>
+                              <a onclick="redirect(226)" class="cls-2">
+                                 <rect id="_226" data-name="226" x="561.5" y="256.5" width="80" height="115"/>
                                  <text class="cls-6" transform="translate(608.33 354.24) rotate(-90)">Aula 226</text>
                               </a>
-                              <a id="link_210" xlink:title="Aula 5AIN">
-                                 <rect id="_210" data-name="210" class="cls-2" x="1195.5" y="256.5" width="130" height="115"/>
+                              <a onclick="redirect(210)" class="cls-2">
+                                 <rect id="_210" data-name="210" x="1195.5" y="256.5" width="130" height="115"/>
                                  <text class="cls-6" transform="translate(1267.33 358.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 210</tspan></text>
                               </a>
-                              <a id="link_227" xlink:title="Lab 227">
-                                 <rect id="_227" data-name="227" class="cls-2" x="152.5" y="23.5" width="95" height="195"/>
+                              <a onclick="redirect(227)" class="cls-2">
+                                 <rect id="_227" data-name="227" x="152.5" y="23.5" width="95" height="195"/>
                                  <text class="cls-6" transform="translate(212.33 164.24) rotate(-90)">Lab 227</text>
                               </a>
-                              <rect id="_212" data-name="212" class="cls-2" x="1107.5" y="256.5" width="80" height="115"/>
-                              <rect id="_214" data-name="214" class="cls-2" x="1020.5" y="256.5" width="80" height="115"/>
-                              <rect id="_216" data-name="216" class="cls-2" x="933.5" y="256.5" width="80" height="115"/>
-                              <rect id="_213" data-name="213" class="cls-2" x="1107.5" y="98.5" width="80" height="115"/>
-                              <rect id="_215" data-name="215" class="cls-2" x="933.5" y="98.5" width="80" height="115"/>
-                              <rect id="_217" data-name="217" class="cls-2" x="847.5" y="98.5" width="80" height="115"/>
-                              <rect id="_211" data-name="211" class="cls-2" x="1195.5" y="98.5" width="80" height="115"/>
-                              <rect id="_224" data-name="224" class="cls-2" x="649.5" y="256.5" width="80" height="115"/>
-                              <rect id="_222" data-name="222" class="cls-2" x="736.5" y="256.5" width="80" height="115"/>
-                              <rect id="_218" data-name="218" class="cls-2" x="845.5" y="256.5" width="80" height="115"/>
-                              <rect id="_232" data-name="232" class="cls-2" x="10.5" y="256.5" width="125" height="195"/>
-                              <rect id="_229" data-name="229" class="cls-2" x="10.5" y="23.5" width="125" height="195"/>
-                              <text class="cls-6" transform="translate(1155.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 212</tspan></text>
-                              <text class="cls-6" transform="translate(1067.33 358.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 214</tspan></text>
-                              <text class="cls-6" transform="translate(980.33 358.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 216</tspan></text>
-                              <text class="cls-6" transform="translate(894.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 218</tspan></text>
-                              <text class="cls-6" transform="translate(783.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 222</tspan></text>
-                              <text class="cls-6" transform="translate(696.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 224</tspan></text>
-                              <text class="cls-6" transform="translate(894.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 217</tspan></text>
-                              <text class="cls-6" transform="translate(980.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 215</tspan></text>
-                              <text class="cls-6" transform="translate(1155.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 213</tspan></text>
-                              <text class="cls-6" transform="translate(1242.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 211</tspan></text>
-                              <text class="cls-6" transform="translate(80.33 174.24) rotate(-90)">Lab 229</text><text class="cls-6" transform="translate(80.33 403.24) rotate(-90)">Lab 232</text>
+                              <a onclick="redirect(212)" class="cls-2">
+                                 <rect id="_212" data-name="212" x="1107.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(1155.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 212</tspan></text>
+                              </a>
+                              <a onclick="redirect(214)" class="cls-2">
+                                 <rect id="_214" data-name="214" x="1020.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(1067.33 358.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 214</tspan></text>
+                              </a>
+                              <a onclick="redirect(216)" class="cls-2">
+                                 <rect id="_216" data-name="216" x="933.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(980.33 358.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 216</tspan></text>
+                              </a>
+                              <a onclick="redirect(213)" class="cls-2">
+                                 <rect id="_213" data-name="213" x="1107.5" y="98.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(1155.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 213</tspan></text>
+                              </a>
+                              <a onclick="redirect(215)" class="cls-2">
+                                 <rect id="_215" data-name="215" x="933.5" y="98.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(980.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 215</tspan></text>
+                              </a>
+                              <a onclick="redirect(217)" class="cls-2">
+                                 <rect id="_217" data-name="217" x="847.5" y="98.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(894.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 217</tspan></text>
+                              </a>
+                              <a onclick="redirect(211)" class="cls-2">
+                                 <rect id="_211" data-name="211" x="1195.5" y="98.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(1242.33 200.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 211</tspan></text>
+                              </a>
+                              <a onclick="redirect(224)" class="cls-2">
+                                 <rect id="_224" data-name="224" x="649.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(696.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 224</tspan></text>
+                              </a>
+                              <a onclick="redirect(222)" class="cls-2">
+                                 <rect id="_222" data-name="222" x="736.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(783.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 222</tspan></text>
+                              </a>
+                              <a onclick="redirect(218)" class="cls-2">
+                                 <rect id="_218" data-name="218" x="845.5" y="256.5" width="80" height="115"/>
+                                 <text class="cls-6" transform="translate(894.33 359.24) rotate(-90)"><tspan class="cls-5">A</tspan><tspan x="14.4" y="0">ula 218</tspan></text>
+                              </a>
+                              <a onclick="redirect(232)" class="cls-2">
+                                 <rect id="_232" data-name="232" x="10.5" y="256.5" width="125" height="195"/>
+                                 <text class="cls-6" transform="translate(80.33 403.24) rotate(-90)">Lab 232</text>
+                              </a>
+                              <a onclick="redirect(229)" class="cls-2">
+                                 <rect id="_229" data-name="229" x="10.5" y="23.5" width="125" height="195"/>
+                                 <text class="cls-6" transform="translate(80.33 174.24) rotate(-90)">Lab 229</text>
+                              </a>
                            </g>
 
                         </svg>
@@ -154,94 +179,188 @@
                            </g>
 
                            <g id="labobiennio">
-                              <a xlink:title="Lab 228">
-                                 <rect id="_228" data-name="228" class="cls-3" x="355.5" y="256.5" width="200" height="115"/>
-                                 <text id="t228" class="cls-4" x="416" y="321">Lab 228</text>
+                              <a onclick="redirect(288)" class="cls-2">
+                                 <rect id="_288" x="1090.5" y="32.5" width="75" height="185"/>
+                                 <text id="t288" class="cls-6" transform="translate(1132.33 164.24) rotate(-90)">Lab 288</text>
                               </a>
-
-                              <a xlink:title="Lab info 288">
-                                 <rect id="_288" class="cls-3" x="1090.5" y="32.5" width="75" height="185"/>
-                                 <text id="t288" class="cls-4" x="1090.5" y="142.5" style="transform: rotate(-20deg)">Lab 288</text>
+                              <a onclick="redirect(290)" class="cls-2">
+                                 <rect id="_290"    x="1171.5" y="32.5" width="75" height="185"/>
+                                 <text id="t290" class="cls-6" transform="translate(1216.33 164.24) rotate(-90)">Lab 290</text>
                               </a>
-                              <a xlink:title="Lab info 290">
-                                 <rect id="_290" class="cls-3" x="1171.5" y="32.5" width="75" height="185"/>
-                                 <text id="t290" class="cls-4" transform="translate(1216.33 164.24) rotate(-90)">Lab 290</text>
+                              <a onclick="redirect(292)" class="cls-2">
+                                 <rect id="_292" x="1251.5" y="32.5" width="75" height="185"/>
+                                 <text id="t292" class="cls-6" transform="translate(1296.33 164.24) rotate(-90)">Lab 292</text>
                               </a>
-                              <a xlink:title="Lab info 292">
-                                 <rect id="_292" class="cls-3" x="1251.5" y="32.5" width="75" height="185"/>
-                                 <text id="t292" class="cls-4" transform="translate(1296.33 164.24) rotate(-90)">Lab 292</text>
-                              </a>
-                              <a xlink:title="Lab info 297b">
-                                 <rect id="_297b" class="cls-3" x="1251.5" y="323.5" width="75" height="185"/>
-                                 <text id="t297b" class="cls-4" transform="translate(1296.33 455.24) rotate(-90)">Lab 297b</text>
+                              <a onclick="redirect(297b)" class="cls-2">
+                                 <rect id="_297b" x="1251.5" y="323.5" width="75" height="185"/>
+                                 <text id="t297b" class="cls-6" transform="translate(1296.33 455.24) rotate(-90)">Lab 297b</text>
                               </a>
                            </g>
 
                            <g id="Livello_2" data-name="Livello 2">
-                              <rect id="" class="cls-2" x="87.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="181.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="87.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="273.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="363.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="453.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="544.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="635.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="725.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="817.5" y="115.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="12.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="101.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="189.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="279.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="368.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="460.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="551.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="643.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="731.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="821.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="909.5" y="300.5" width="80" height="125"/>
-                              <rect id="" class="cls-2" x="1090.5" y="323.5" width="75" height="185"/>
-                              <rect id="" class="cls-2" x="1171.5" y="323.5" width="75" height="185"/>
-                              <text class="cls-6" transform="translate(1136.33 455.24) rotate(-90)">Lab 295</text>
-                              <text class="cls-6" transform="translate(1216.33 455.24) rotate(-90)">Lab 297</text>
-                              <text class="cls-6" transform="translate(863.33 223.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 286</tspan></text>
-                              <text class="cls-6" transform="translate(774.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 284</tspan></text>
-                              <text class="cls-6" transform="translate(682.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 282</tspan></text>
-                              <text class="cls-6" transform="translate(591.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 280</tspan></text>
-                              <text class="cls-6" transform="translate(501.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 278</tspan></text>
-                              <text class="cls-6" transform="translate(408.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 276</tspan></text>
-                              <text class="cls-6" transform="translate(320.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 274</tspan></text>
-                              <text class="cls-6" transform="translate(228.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 272</tspan></text>
-                              <text class="cls-6" transform="translate(135.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 270</tspan></text>
-                              <text class="cls-6" transform="translate(958.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 293</tspan></text>
-                              <text class="cls-6" transform="translate(869.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 291</tspan></text>
-                              <text class="cls-6" transform="translate(779.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 289</tspan></text>
-                              <text class="cls-6" transform="translate(690.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 287</tspan></text>
-                              <text class="cls-6" transform="translate(599.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 285</tspan></text>
-                              <text class="cls-6" transform="translate(508.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 283</tspan></text>
-                              <text class="cls-6" transform="translate(415.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 281</tspan></text>
-                              <text class="cls-6" transform="translate(326.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 279</tspan></text>
-                              <text class="cls-6" transform="translate(237.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 277</tspan></text>
-                              <text class="cls-6" transform="translate(148.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 275</tspan></text>
-                              <text class="cls-6" transform="translate(59.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 273</tspan></text>
+                              <a onclick="redirect(270)" class="cls-2">
+                                 <rect id="" x="87.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(135.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 270</tspan></text>
+                              </a>
+                              <a onclick="redirect(272)" class="cls-2">
+                                 <rect id="" x="181.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(228.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 272</tspan></text>
+                              </a>
+                              <a onclick="redirect(297b)" class="cls-2">
+                                 <rect id="" x="273.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(320.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 274</tspan></text>
+                              </a>
+                              <a onclick="redirect(276)" class="cls-2">
+                                 <rect id="" x="363.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(408.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 276</tspan></text>
+                              </a>
+                              <a onclick="redirect(278)" class="cls-2">
+                                 <rect id="" x="453.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(501.33 222.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 278</tspan></text>
+                              </a>
+                              <a onclick="redirect(280)" class="cls-2">
+                                 <rect id="" x="544.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(591.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 280</tspan></text>
+                              </a>
+                              <a onclick="redirect(282)" class="cls-2">
+                                 <rect id="" x="635.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(682.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 282</tspan></text>
+                              </a>
+                              <a onclick="redirect(284)" class="cls-2">
+                                 <rect id="" x="725.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(774.33 224.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 284</tspan></text>
+                              </a>
+                              <a onclick="redirect(286)" class="cls-2">
+                                 <rect id="" x="817.5" y="115.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(863.33 223.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 286</tspan></text>
+                              </a>
+                              <a onclick="redirect(273)" class="cls-2">
+                                 <rect id="" x="12.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(59.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 273</tspan></text>
+                              </a>
+                              <a onclick="redirect(275)" class="cls-2">
+                                 <rect id="" x="101.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(148.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 275</tspan></text>
+                              </a>
+                              <a onclick="redirect(277)" class="cls-2">
+                                 <rect id="" x="189.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(237.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 277</tspan></text>
+                              </a>
+                              <a onclick="redirect(279)" class="cls-2">
+                                 <rect id="" x="279.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(326.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 279</tspan></text>
+                              </a>
+                              <a onclick="redirect(281)" class="cls-2">
+                                 <rect id="" x="368.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(415.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 281</tspan></text>
+                              </a>
+                              <a onclick="redirect(283)" class="cls-2">
+                                 <rect id="" x="460.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(508.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 283</tspan></text>
+                              </a>
+                              <a onclick="redirect(285)" class="cls-2">
+                                 <rect id="" x="551.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(599.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 285</tspan></text>
+                              </a>
+                              <a onclick="redirect(287)" class="cls-2">
+                                 <rect id="" x="643.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(690.33 408.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 287</tspan></text>
+                              </a>
+                              <a onclick="redirect(289)" class="cls-2">
+                                 <rect id="" x="731.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(779.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 289</tspan></text>
+                              </a>
+                              <a onclick="redirect(291)" class="cls-2">
+                                 <rect id="" x="821.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(869.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 291</tspan></text>
+                              </a>
+                              <a onclick="redirect(293)" class="cls-2">
+                                 <rect id="" x="909.5" y="300.5" width="80" height="125"/>
+                                 <text class="cls-6" transform="translate(958.33 407.24) rotate(-90)"><tspan class="cls-7">A</tspan><tspan x="14.4" y="0">ula 293</tspan></text>
+                              </a>
+                              <a onclick="redirect(295)" class="cls-2">
+                                 <rect id="" x="1090.5" y="323.5" width="75" height="185"/>
+                                 <text class="cls-6" transform="translate(1136.33 455.24) rotate(-90)">Lab 295</text>
+                              </a>
+                              <a onclick="redirect(297)" class="cls-2">
+                                 <rect id="" x="1171.5" y="323.5" width="75" height="185"/>
+                                 <text class="cls-6" transform="translate(1216.33 455.24) rotate(-90)">Lab 297</text>
+                              </a>
                            </g>
 
                         </svg>
                      </div>
                   </div>
 
+                  <?php
+                     $conn = db_connect();
+                  ?>
+
                   <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4 mx-auto p-4 sidebar">
-                     <h1 id="labs">Laboratori Triennio</h1>
-                     <!-- <h2 id="labs">Laboratori Triennio</h2> -->
-                     <a id="s221" onclick="redirect(221)">Lab 221</a>
-                     <a id="s228" onclick="redirect(228)">Lab 228</a>
-                     <a id="s230" onclick="redirect(230)">Lab 230</a>
+
+                     <?php
+                        try {
+                           $sql = "SELECT tag, id_html_map, label_html_map FROM laboratori
+                                   WHERE id_html_map IN ('232', '229', '230', '227', '228', '221', '226', '224', '222', '218', '217', '216', '215', '214', '212', '213', '210', '211')";
+                           $stmt = $conn->prepare($sql);
+                           $stmt->execute();
+                           $res_triennio = $stmt->fetchAll();
+
+                           if(!empty($res_triennio)) {
+                              echo "<h1 id='labs'>Laboratori Triennio</h1>";
+                              foreach($res_triennio as $row) {
+                                 $id_html = $row["id_html_map"];
+                                 $label_html = $row["label_html_map"];
+                                 echo "<a id='s$id_html' onclick='redirect($id_html)'>$label_html</a>";
+                              }
+                           }
+                        } catch (PDOException $e) {
+                        }
+                     ?>
                      <br>
-                     <h1 id="labsb">Laboratori Biennio</h1>
-                     <!-- <h2 id="labsb">Laboratori Biennio</h2> -->
-                     <a id="s288" onclick="redirect()">Lab 288</a>
-                     <a id="s290" onclick="redirect()">Lab 290</a>
-                     <a id="s292" onclick="redirect()">Lab 292</a>
-                     <a id="s297b" onclick="redirect()">Lab 297b</a>
+
+                     <?php
+                        try {
+                           $sql = "SELECT tag, id_html_map, label_html_map FROM laboratori
+                                   WHERE id_html_map IN ('273', '275', '270', '277', '272', '279', '274', '281', '276', '283',
+                                                         '278', '285', '280', '287', '282', '289', '284', '291', '286', '293', '295', '288', '297', '290', '292', '297b')";
+                           $stmt = $conn->prepare($sql);
+                           $stmt->execute();
+                           $res_biennio = $stmt->fetchAll();
+
+                           if(!empty($res_biennio)) {
+                              echo "<h1 id='labsb'>Laboratori Biennio</h1>";
+                              foreach($res_biennio as $row) {
+                                 $id_html = $row["id_html_map"];
+                                 $label_html = $row["label_html_map"];
+                                 echo "<a id='s$id_html' onclick='redirect($id_html)'>$label_html</a>";
+                              }
+                           }
+                        } catch (PDOException $e) {
+                        }
+                     ?>
+
+                     <?php
+                        try {
+                           $sql = "SELECT tag, id_html_map, label_html_map FROM laboratori
+                                   WHERE id_html_map NOT IN ('232', '229', '230', '227', '228', '221', '226', '224', '222', '218', '217', '216', '215', '214', '212', '213', '210', '211',
+                                                             '273', '275', '270', '277', '272', '279', '274', '281', '276', '283', '278', '285', '280', '287', '282', '289', '284', '291',
+                                                             '286', '293', '295', '288', '297', '290', '292', '297b')";
+                           $stmt = $conn->prepare($sql);
+                           $stmt->execute();
+                           $res_altro = $stmt->fetchAll();
+
+                           if(!empty($res_altro)) {
+                              echo "<h1>Altri laboratori</h1>";
+                              foreach($res_altro as $row) {
+                                 $id_html = $row["id_html_map"];
+                                 $label_html = $row["label_html_map"];
+                                 echo "<a id='s$id_html' onclick='redirect($id_html)'>$label_html</a>";
+                              }
+                           }
+                        } catch (PDOException $e) {
+                        }
+                     ?>
                   </div>
 
                </div>
@@ -283,22 +402,26 @@
       function redirect (x) {
          switch(x) {
             <?php
-               try {
-                  $conn = db_connect();
-                  $sql = "SELECT tag, id_html_map FROM laboratori";
-                  $stmt = $conn->prepare($sql);
-                  $stmt->execute();
-                  $res = $stmt->fetchAll();
-
-                  foreach($res as $row) {
-                     $tag = $row["tag"];
-                     $id_html = $row["id_html_map"];
-                     echo "case $id_html:";
-                     echo "window.location.href = '../view.php?tag=$tag';";
-                     echo "break;";
-                  }
-               } catch (PDOException $e) {
-
+               foreach($res_triennio as $row) {
+                  $tag = $row["tag"];
+                  $id_html = $row["id_html_map"];
+                  echo "case $id_html:";
+                  echo "window.location.href = '../view.php?tag=$tag';";
+                  echo "break;";
+               }
+               foreach($res_biennio as $row) {
+                  $tag = $row["tag"];
+                  $id_html = $row["id_html_map"];
+                  echo "case $id_html:";
+                  echo "window.location.href = '../view.php?tag=$tag';";
+                  echo "break;";
+               }
+               foreach($res_altro as $row) {
+                  $tag = $row["tag"];
+                  $id_html = $row["id_html_map"];
+                  echo "case $id_html:";
+                  echo "window.location.href = '../view.php?tag=$tag';";
+                  echo "break;";
                }
             ?>
 

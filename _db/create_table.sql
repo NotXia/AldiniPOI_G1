@@ -28,11 +28,11 @@ CREATE TABLE laboratori (
 	tag VARCHAR(20) PRIMARY KEY,
 	nome VARCHAR(100) NOT NULL,
 	piano INT NOT NULL,
-	num_posti INT,
 	num_pc INT,
 	presenza_lim BOOLEAN,
 	descrizione VARCHAR(500),
-	id_html_map VARCHAR(100)
+	id_html_map VARCHAR(100) UNIQUE,
+	label_html_map VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE utenti (
@@ -84,12 +84,12 @@ CREATE TABLE immagini (
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE configurazioni (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	descrizione_cpu VARCHAR(200),
-	descrizione_ram VARCHAR(200),
-	descrizione_hdd VARCHAR(200),
-	descrizione VARCHAR(500),
-	cod_laboratorio VARCHAR(20) NOT NULL,
-	FOREIGN KEY (cod_laboratorio) REFERENCES laboratori(tag) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+-- CREATE TABLE configurazioni (
+-- 	id INT AUTO_INCREMENT PRIMARY KEY,
+-- 	descrizione_cpu VARCHAR(200),
+-- 	descrizione_ram VARCHAR(200),
+-- 	descrizione_hdd VARCHAR(200),
+-- 	descrizione VARCHAR(500),
+-- 	cod_laboratorio VARCHAR(20) NOT NULL,
+-- 	FOREIGN KEY (cod_laboratorio) REFERENCES laboratori(tag) ON DELETE RESTRICT ON UPDATE CASCADE
+-- );

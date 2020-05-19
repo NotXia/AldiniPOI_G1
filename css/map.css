@@ -77,11 +77,6 @@
    /* opacity: 0.2; */
 }
 
-#t230 {
-   transform-origin: center;
-   transform:rotate(-90);
-}
-
 
 
 @keyframes fade-in{

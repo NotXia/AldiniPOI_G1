@@ -96,10 +96,6 @@
                                     <td id="padding"><input type="number" min="0" max="3" name="piano" value="<?php if(!empty($res['piano'])) echo $res['piano']; ?>" required></td>
                                  </tr>
                                  <tr>
-                                    <td id="label">Numero posti</td>
-                                    <td id="padding"><input type="number" min="0" name="numposti" value="<?php if(!empty($res['num_posti'])) echo $res['num_posti']; ?>"></td>
-                                 </tr>
-                                 <tr>
                                     <td id="label">Numero PC</td>
                                     <td id="padding"><input type="number" min="0" name="numpc" value="<?php if(!empty($res['num_pc'])) echo $res['num_pc']; ?>"></td>
                                  </tr>
@@ -114,6 +110,10 @@
                                  <tr>
                                     <td id="label">Id HTML</td>
                                     <td id="padding"><input type="text" name="id_html" value="<?php if(!empty($res['id_html_map'])) echo $res['id_html_map']; ?>"></td>
+                                 </tr>
+                                 <tr>
+                                    <td id="label">Label HTML</td>
+                                    <td id="padding"><input type="text" name="label_html" value="<?php if(!empty($res['label_html_map'])) echo $res['label_html_map']; ?>"></td>
                                  </tr>
                               </table>
                               <br>
@@ -190,18 +190,19 @@
 
             $conn = db_connect();
             $sql = "UPDATE laboratori
-                    SET tag = :tag, nome = :nome, piano = :piano, num_posti = :num_posti,
-                        num_pc = :num_pc, presenza_lim = :presenza_lim, descrizione = :descrizione, id_html_map = :id_html
+                    SET tag = :tag, nome = :nome, piano = :piano,
+                        num_pc = :num_pc, presenza_lim = :presenza_lim,
+                        descrizione = :descrizione, id_html_map = :id_html, label_html_map = :label_html
                     WHERE tag = :old_tag";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":tag", $_POST["tag"], PDO::PARAM_STR, 20);
             $stmt->bindParam(":nome", $_POST["nome"], PDO::PARAM_STR, 100);
             $stmt->bindParam(":piano", $_POST["piano"], PDO::PARAM_INT);
-            $stmt->bindParam(":num_posti", $_POST["numposti"], PDO::PARAM_INT);
             $stmt->bindParam(":num_pc", $_POST["numpc"], PDO::PARAM_INT);
             $stmt->bindParam(":presenza_lim", $lim);
             $stmt->bindParam(":descrizione", $_POST["descrizione"], PDO::PARAM_STR, 500);
             $stmt->bindParam(":id_html", $_POST["id_html"], PDO::PARAM_STR, 100);
+            $stmt->bindParam(":label_html", $_POST["label_html"], PDO::PARAM_STR, 100);
             $stmt->bindParam(":old_tag", $_POST["old_tag"], PDO::PARAM_STR, 20);
             $stmt->execute();
          }

@@ -3,21 +3,22 @@ $(document).ready(function(){
     //------------------------------------------------------------------------------
     //LISTENERS
 
-    $("#_228").hover(function(){
-        rectInHover("228");
-        }, function(){
-        rectUnHover("228");
-    });
-    $("#s228").hover(function(){
-        rectInHover("228");
-        }, function(){
-        rectUnHover("228");
-    });
-    $("#t228").hover(function(){
-        rectInHover("228");
-        }, function(){
-        rectUnHover("228");  
-    });
+   // $("#s228").hover(function(){
+   //    rectInHover("228");
+   // }, function(){
+   //    rectUnHover("228");
+   // });
+   // $("#_228").hover(function(){
+   //    rectInHover("228");
+   // }, function(){
+   //    rectUnHover("228");
+   // });
+   // $("#t228").hover(function(){
+   //    rectInHover("228");
+   // }, function(){
+   //    rectUnHover("228");
+   // });
+   /*
 
     $("#_221").hover(function(){
         rectInHover("221");
@@ -50,7 +51,7 @@ $(document).ready(function(){
         }, function(){
         rectUnHover("230");
         });
-    
+
     $("#_288").hover(function(){
         rectInHover("288");
         }, function(){
@@ -111,7 +112,7 @@ $(document).ready(function(){
         rectInHover("297b");
         }, function(){
         rectUnHover("297b");
-        });
+     });*/
 
     $("#labs").hover(function(){
         rectInHover("221");
@@ -120,7 +121,7 @@ $(document).ready(function(){
         $(".mapbiennio").css("transition", "0.4s");
         $(".mapbiennio").css("opacity", "0.3");
         }, function(){
-        rectUnHover("221");    
+        rectUnHover("221");
         rectUnHover("228");
         rectUnHover("230");
         $(".mapbiennio").css("opacity", "1");
@@ -134,7 +135,7 @@ $(document).ready(function(){
         $(".maptriennio").css("transition", "0.4s");
         $(".maptriennio").css("opacity", "0.3");
         }, function(){
-        rectUnHover("288");    
+        rectUnHover("288");
         rectUnHover("290");
         rectUnHover("292");
         rectUnHover("297b");
@@ -150,44 +151,44 @@ $(document).ready(function(){
         rectInHover("292");
         rectInHover("297b");
         }, function(){
-        rectUnHover("221");    
+        rectUnHover("221");
         rectUnHover("228");
         rectUnHover("230");
-        rectUnHover("288");    
+        rectUnHover("288");
         rectUnHover("290");
         rectUnHover("292");
         rectUnHover("297b");
         });
 
     //------------------------------------------------------------------------------
-    
+
     function rectInHover(id) {
         rect_id = "#_" + id;
         text_id = "#t" + id;
         side_id = "#s" + id;
-        $(text_id).css("transition", "all 0.8s ease");
-        $(rect_id).css("transition", "all 0.8s ease");
-        $(text_id).css("transform-origin", "center");
-        $(rect_id).css("transform-origin", "center");
-        $(rect_id).css("transform", "translateX(-10px) translateY(-20px)");
-        $(text_id).css("transform", "translateX(-14px) translateY(-28px)");
+        // $(text_id).css("transition", "all 0.8s ease");
+        // $(rect_id).css("transition", "all 0.8s ease");
+        // $(text_id).css("transform-origin", "center");
+        // $(rect_id).css("transform-origin", "center");
+        // $(rect_id).css("transform", "translateX(-10px) translateY(-20px)");
+        // $(text_id).css("transform", "translateX(-14px) translateY(-28px)");
+        $(text_id).css("color", "#fefefe");
         $(rect_id).css("fill", "blue");
         $(side_id).css("color", "#111");
         $(side_id).css("margin-left", "15px");
         $(side_id).css("border-radius", "0%");
-        obscurePiano();
+        // obscurePiano();
     }
     function rectUnHover(id) {
         rect_id = "#_" + id;
         text_id = "#t" + id;
         side_id = "#s" + id;
-        $(text_id).css("transform", "translateX(0) translateY(0)");
-        $(rect_id).css("transform", "translateX(0) translateY(0)");
-        $(rect_id).css("fill", "cyan");
+        $(text_id).css("color", "#4c4c4c");
+        $(rect_id).css("fill", "#8e8e8e");
         $(side_id).css("color", "#bbb");
         $(side_id).css("margin-left", "25px");
         $(side_id).css("border-radius", "50%");
-        lightPiano();
+        // lightPiano();
     }
 
     function obscurePiano() {
