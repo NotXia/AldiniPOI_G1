@@ -20,7 +20,7 @@
                $conn = db_connect();
 
                // Estrae l'hash del token e la scadenza del selector memorizzato dall'utente
-               $sql = "SELECT token, data_scadenza, utenti.id as idUtente, nome, cognome, email, cod_permesso
+               $sql = "SELECT token, data_scadenza, utenti.id as idUtente, nome, cognome, email, cod_permesso, verifica_mail
                        FROM autenticazioni, utenti
                        WHERE utenti.id = cod_utente AND
                              selector = :selector";
@@ -39,6 +39,7 @@
                         $_SESSION["cognome"] = $res["cognome"];
                         $_SESSION["email"] = $res["email"];
                         $_SESSION["cod_permesso"] = $res["cod_permesso"];
+                        $_SESSION["mail_verif"] = $res["verifica_mail"];
                         return true;
                      }
                      else { // Token errato
