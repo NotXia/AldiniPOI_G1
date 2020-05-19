@@ -117,7 +117,7 @@
                         }
                         else {
                            ?>
-                              <h3>Non hai nessuna prenotazione :(</h3>
+                              <h3>Non hai nessuna prenotazione</h3>
                            <?php
                         }
                      ?>

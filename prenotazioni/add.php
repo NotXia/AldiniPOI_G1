@@ -132,6 +132,104 @@
                            </label>
                         </form>
                      </div>
+                     <?php
+
+                     if(isset($_POST["book"])) {
+
+                        // Prende l'id della visita corrispondente al bottone premuto
+                        $id_visita = 0;
+                        foreach($_POST["book"] as $id=>$x) {
+                           $id_visita = $id;
+                           break;
+                        }
+
+                        try {
+                           $conn = db_connect();
+
+                           $conn->beginTransaction();
+
+                           // Controlla che la visita sia valida
+                           $sql = "SELECT *
+                           FROM visite
+                           WHERE id NOT IN(SELECT cod_visita FROM prenotazioni WHERE cod_utente = :cod_utente) AND
+                           id = :id_visita_form AND
+                           CONCAT(data_inizio, ' ',ora_inizio) >= NOW() AND
+                           posti_disponibili > 0";
+                           $stmt = $conn->prepare($sql);
+                           $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
+                           $stmt->bindParam(":id_visita_form", $id_visita, PDO::PARAM_INT);
+                           $stmt->execute();
+
+                           $res_visita = $stmt->fetch();
+
+                           // È possibile prenotare
+                           if(!empty($res_visita)) {
+
+                              $id_dispositivo = null;
+
+                              // Se l'utente chiede il dispositivo, verifica la disponibilità
+                              if(isset($_POST["device"])) {
+                                 $sql = "SELECT id FROM dispositivi WHERE
+                                 id NOT IN(SELECT dispositivi.id
+                                    FROM prenotazioni, dispositivi
+                                    WHERE cod_dispositivo = dispositivi.id AND
+                                    cod_visita = :cod_visita)";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bindParam(":cod_visita", $id_visita, PDO::PARAM_INT);
+                                    $stmt->execute();
+
+                                    $res_dispositivi = $stmt->fetch();
+
+                                    if(!empty($res_dispositivi)) {
+                                       $id_dispositivo = $res_dispositivi["id"];
+                                    }
+                                 }
+
+                                 $sql = "INSERT prenotazioni (cod_utente, cod_visita, cod_permesso, cod_dispositivo)
+                                 VALUES (:cod_utente, :cod_visita, 2, :cod_dispositivo)";
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
+                                 $stmt->bindParam(":cod_visita", $id_visita, PDO::PARAM_INT);
+                                 $stmt->bindParam(":cod_dispositivo", $id_dispositivo);
+                                 $stmt->execute();
+
+                                 $sql = "UPDATE visite
+                                 SET posti_disponibili = posti_disponibili-1
+                                 WHERE id = :id_visita";
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->bindParam(":id_visita", $id_visita, PDO::PARAM_INT);
+                                 $stmt->execute();
+
+                                 $conn->commit();
+
+                                 mailTo(
+                                 $_SESSION["email"],
+                                 "POI - Conferma prenotazione",
+                                 booking_confirm_mail(
+                                 $_SESSION["nome"],
+                                 $_SESSION["cognome"],
+                                 date("d/m/Y",strtotime($res_visita["data_inizio"])),
+                                 date("H:i", strtotime($res_visita["ora_inizio"])),
+                                 date("H:i", strtotime($res_visita["ora_fine"])),
+                                 ($id_dispositivo != null)
+                                 )
+                                 );
+
+                                 header("Location: index.php");
+                              }
+                              else {
+                                 die("<p>Si è verificato un errore</p>");
+                              }
+
+                           } catch (PDOException $e) {
+                              $conn->rollBack();
+                              die("<p>Si è verificato un errore</p>");
+                           }
+
+
+                        }
+
+                        ?>
 
                   </div>
                </div>
@@ -147,102 +245,3 @@
       });
    </script>
 </html>
-
-<?php
-
-   if(isset($_POST["book"])) {
-
-      // Prende l'id della visita corrispondente al bottone premuto
-      $id_visita = 0;
-      foreach($_POST["book"] as $id=>$x) {
-         $id_visita = $id;
-         break;
-      }
-
-      try {
-         $conn = db_connect();
-
-         $conn->beginTransaction();
-
-         // Controlla che la visita sia valida
-         $sql = "SELECT *
-                 FROM visite
-                 WHERE id NOT IN(SELECT cod_visita FROM prenotazioni WHERE cod_utente = :cod_utente) AND
-                       id = :id_visita_form AND
-                       CONCAT(data_inizio, ' ',ora_inizio) >= NOW() AND
-                       posti_disponibili > 0";
-         $stmt = $conn->prepare($sql);
-         $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
-         $stmt->bindParam(":id_visita_form", $id_visita, PDO::PARAM_INT);
-         $stmt->execute();
-
-         $res_visita = $stmt->fetch();
-
-         // È possibile prenotare
-         if(!empty($res_visita)) {
-
-            $id_dispositivo = null;
-
-            // Se l'utente chiede il dispositivo, verifica la disponibilità
-            if(isset($_POST["device"])) {
-               $sql = "SELECT id FROM dispositivi WHERE
-                       id NOT IN(SELECT dispositivi.id
-                                 FROM prenotazioni, dispositivi
-                                 WHERE cod_dispositivo = dispositivi.id AND
-                                       cod_visita = :cod_visita)";
-               $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":cod_visita", $id_visita, PDO::PARAM_INT);
-               $stmt->execute();
-
-               $res_dispositivi = $stmt->fetch();
-
-               if(!empty($res_dispositivi)) {
-                  $id_dispositivo = $res_dispositivi["id"];
-               }
-            }
-
-            $sql = "INSERT prenotazioni (cod_utente, cod_visita, cod_permesso, cod_dispositivo)
-                    VALUES (:cod_utente, :cod_visita, 2, :cod_dispositivo)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
-            $stmt->bindParam(":cod_visita", $id_visita, PDO::PARAM_INT);
-            $stmt->bindParam(":cod_dispositivo", $id_dispositivo);
-            $stmt->execute();
-
-            $sql = "UPDATE visite
-                    SET posti_disponibili = posti_disponibili-1
-                    WHERE id = :id_visita";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":id_visita", $id_visita, PDO::PARAM_INT);
-            $stmt->execute();
-
-            $conn->commit();
-
-            mailTo(
-               $_SESSION["email"],
-               "POI - Conferma prenotazione",
-               booking_confirm_mail(
-                  $_SESSION["nome"],
-                  $_SESSION["cognome"],
-                  date("d/m/Y",strtotime($res_visita["data_inizio"])),
-                  date("H:i", strtotime($res_visita["ora_inizio"])),
-                  date("H:i", strtotime($res_visita["ora_fine"])),
-                  ($id_dispositivo != null)
-               )
-            );
-
-            header("Location: index.php");
-         }
-         else {
-            die("<p>Si è verificato un errore</p>");
-         }
-
-      } catch (PDOException $e) {
-         $conn->rollBack();
-         die("<p>Si è verificato un errore</p>");
-      }
-
-
-   }
-
-?>
