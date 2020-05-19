@@ -68,7 +68,10 @@
                            <?php
                               try {
                                  $conn = db_connect();
-                                 $sql = "SELECT * FROM visite WHERE data_inizio = DATE(NOW())";
+                                 $sql = "SELECT *
+                                         FROM visite
+                                         WHERE data_inizio = DATE(NOW())
+                                         ORDER BY data_inizio, ora_inizio";
                                  $stmt = $conn->prepare($sql);
                                  $stmt->execute();
                                  $res = $stmt->fetchAll();

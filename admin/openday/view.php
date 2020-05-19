@@ -65,7 +65,10 @@
                               $conn = db_connect();
 
                               // Estrae tutti gli Open day da oggi in poi
-                              $sql = "SELECT * FROM visite WHERE data_inizio >= DATE(NOW())";
+                              $sql = "SELECT *
+                                      FROM visite
+                                      WHERE CONCAT(data_inizio, ' ', ora_inizio) >= NOW()
+                                      ORDER BY data_inizio, ora_inizio";
                               $stmt = $conn->prepare($sql);
                               $stmt->execute();
 
