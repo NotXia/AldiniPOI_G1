@@ -11,9 +11,13 @@
          exit;
       }
    }
-   else if(isset($_SESSION["mail_verif"]) == 0) {
-      header("Location:../mail.php");
-      exit;
+   else {
+      if(isLogged()) {
+         if(isset($_SESSION["mail_verif"]) == 0) {
+            header("Location:../mail.php");
+            exit;
+         }
+      }
    }
 ?>
 

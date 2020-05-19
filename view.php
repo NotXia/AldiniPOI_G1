@@ -53,11 +53,13 @@
          </div>
          <div align="right">
             <?php
-               if($_SESSION["cod_permesso"] == 3) {
-                  ?>
-                     <a class="nav_options" href="./map">Mappa</a>
-                     <a class="nav_options" href="./admin/labo/view.php">Indietro</a>
-                  <?php
+               if(isset($_SESSION["cod_permesso"])) {
+                  if($_SESSION["cod_permesso"] == 3) {
+                     ?>
+                        <a class="nav_options" href="./map">Mappa</a>
+                        <a class="nav_options" href="./admin/labo/view.php">Indietro</a>
+                     <?php
+                  }
                }
                else {
                   ?>
