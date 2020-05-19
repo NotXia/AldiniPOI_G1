@@ -1,5 +1,6 @@
 .sidebar {
    background: #fff;
+   text-align: right !important;
 }
 
 .sidebar h1 {
@@ -45,9 +46,11 @@
  }
 
  .sidebar a:hover{
-    color: #111;
-    margin-left: 15px;
+    color: #111 !important;
+    /* margin-left: 15px; */
+    margin-right: 15px;
     border-radius: 0%;
+    cursor: pointer;
  }
 
 #cover svg {
@@ -72,6 +75,7 @@
 .cls-2:hover {
    transform: translateX(-5px) translateY(-10px);
    transform-origin: center;
+   cursor: pointer;
 }
 .cls-3:hover ~ .cls-4 {
    /* opacity: 0.2; */

@@ -1,24 +1,24 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     //------------------------------------------------------------------------------
     //LISTENERS
 
-   // $("#s228").hover(function(){
-   //    rectInHover("228");
-   // }, function(){
-   //    rectUnHover("228");
-   // });
-   // $("#_228").hover(function(){
-   //    rectInHover("228");
-   // }, function(){
-   //    rectUnHover("228");
-   // });
-   // $("#t228").hover(function(){
-   //    rectInHover("228");
-   // }, function(){
-   //    rectUnHover("228");
-   // });
-   /*
+    /*
+   $("#s228").hover(function(){
+      rectInHover("228");
+   }, function(){
+      rectUnHover("228");
+   });
+   $("#_228").hover(function(){
+      rectInHover("228");
+   }, function(){
+      rectUnHover("228");
+   });
+   $("#t228").hover(function(){
+      rectInHover("228");
+   }, function(){
+      rectUnHover("228");
+   });
 
     $("#_221").hover(function(){
         rectInHover("221");
@@ -114,6 +114,7 @@ $(document).ready(function(){
         rectUnHover("297b");
      });*/
 
+/*
     $("#labs").hover(function(){
         rectInHover("221");
         rectInHover("228");
@@ -159,35 +160,33 @@ $(document).ready(function(){
         rectUnHover("292");
         rectUnHover("297b");
         });
-
+*/
     //------------------------------------------------------------------------------
 
     function rectInHover(id) {
         rect_id = "#_" + id;
         text_id = "#t" + id;
         side_id = "#s" + id;
-        // $(text_id).css("transition", "all 0.8s ease");
-        // $(rect_id).css("transition", "all 0.8s ease");
-        // $(text_id).css("transform-origin", "center");
-        // $(rect_id).css("transform-origin", "center");
-        // $(rect_id).css("transform", "translateX(-10px) translateY(-20px)");
-        // $(text_id).css("transform", "translateX(-14px) translateY(-28px)");
-        $(text_id).css("color", "#fefefe");
-        $(rect_id).css("fill", "blue");
+        box_id = "#box_" + id;
+        $(box_id).css("transition", "all 0.8s ease");
+        $(box_id).css("transform-origin", "center");
+        $(box_id).css("transform", "translateX(-5px) translateY(-10px)");
+        $(text_id).css("fill", "#fefefe");
+        $(rect_id).css("fill", "#3e5cdd");
         $(side_id).css("color", "#111");
-        $(side_id).css("margin-left", "15px");
-        $(side_id).css("border-radius", "0%");
+        $(side_id).css("margin-right", "15px");
         // obscurePiano();
     }
     function rectUnHover(id) {
         rect_id = "#_" + id;
         text_id = "#t" + id;
         side_id = "#s" + id;
-        $(text_id).css("color", "#4c4c4c");
+        box_id = "#box_" + id;
+        $(box_id).css("transform", "translateX(0) translateY(0)");
+        $(text_id).css("fill", "#4c4c4c");
         $(rect_id).css("fill", "#8e8e8e");
         $(side_id).css("color", "#bbb");
-        $(side_id).css("margin-left", "25px");
-        $(side_id).css("border-radius", "50%");
+        $(side_id).css("margin-right", "0px");
         // lightPiano();
     }
 
