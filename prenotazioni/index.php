@@ -75,9 +75,11 @@
                         try {
                            $conn = db_connect();
                            $sql = "SELECT prenotazioni.id AS id_pren, data_inizio, ora_inizio, ora_fine, cod_dispositivo
-                           FROM prenotazioni, visite
-                           WHERE prenotazioni.cod_visita = visite.id AND
-                           cod_utente = :cod_utente";
+                                   FROM prenotazioni, visite
+                                   WHERE prenotazioni.cod_visita = visite.id AND
+                                         cod_utente = :cod_utente AND
+                                         NOW() <= CONCAT(data_inizio, ' ',ora_fine)
+                                   ORDER BY data_inizio, ora_inizio";
                            $stmt = $conn->prepare($sql);
                            $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
                            $stmt->execute();

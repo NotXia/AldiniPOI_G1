@@ -87,8 +87,9 @@
                                     $sql = "SELECT *
                                             FROM visite
                                             WHERE id NOT IN(SELECT cod_visita FROM prenotazioni WHERE cod_utente = :cod_utente) AND
-                                            data_inizio+ora_inizio >= NOW() AND
-                                            posti_disponibili > 0";
+                                                  CONCAT(data_inizio, ' ',ora_inizio) >= NOW() AND
+                                                  posti_disponibili > 0
+                                             ORDER BY data_inizio, ora_inizio";
                                     $stmt = $conn->prepare($sql);
                                     $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
                                     $stmt->execute();
@@ -164,7 +165,7 @@
                  FROM visite
                  WHERE id NOT IN(SELECT cod_visita FROM prenotazioni WHERE cod_utente = :cod_utente) AND
                        id = :id_visita_form AND
-                       data_inizio+ora_inizio >= NOW() AND
+                       CONCAT(data_inizio, ' ',ora_inizio) >= NOW() AND
                        posti_disponibili > 0";
          $stmt = $conn->prepare($sql);
          $stmt->bindParam(":cod_utente", $_SESSION["id"], PDO::PARAM_INT);
