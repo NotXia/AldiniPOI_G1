@@ -3,7 +3,11 @@
 
    require_once (dirname(__FILE__)."/util/auth_check.php");
    require_once (dirname(__FILE__)."/util/openday_check.php");
-   if(isLogged()) {
+   if(!isOpenday()) {
+      header("Location:index.php");
+      exit;
+   }
+   else if(isLogged()) {
       if(isset($_SESSION["is_openday"])) {
          header("Location:index.php");
       }

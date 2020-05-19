@@ -4,7 +4,7 @@
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
 
    if(isset($_SESSION["is_openday"])) {
-      if(!isOpenday()) {
+      if(!isUserValid()) {
          header("Location:../logout.php");
          exit;
       }

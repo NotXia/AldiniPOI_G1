@@ -47,7 +47,7 @@
    //
    // CONFIGURAZIONE OPEN DAY
    //
-   $OFFSET_BEFORE_OPENDAY = 15;
-   $OFFSET_AFTER_OPENDAY = 15;
+   $OFFSET_BEFORE_OPENDAY = 15; // Le credenziali sono valide X minuti prima
+   $OFFSET_AFTER_OPENDAY = 15; // Le credenziali sono valide X minuti dopo
 
 ?>

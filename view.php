@@ -9,8 +9,16 @@
          $cod_permesso = 2;
       }
       else {
-         $cod_permesso = $_SESSION["cod_permesso"];
+         if(!isUserValid()) {
+            $cod_permesso = 1;
+         }
+         else {
+            $cod_permesso = $_SESSION["cod_permesso"];
+         }
       }
+   }
+   else {
+      exit;
    }
 ?>
 
