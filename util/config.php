@@ -44,4 +44,10 @@
    $MAX_IMAGE_SIZE = 500000;
    $IMAGES_PATH = "res/lab_images"; // Relativo alla root
 
+   //
+   // CONFIGURAZIONE OPEN DAY
+   //
+   $OFFSET_BEFORE_OPENDAY = 15;
+   $OFFSET_AFTER_OPENDAY = 15;
+
 ?>

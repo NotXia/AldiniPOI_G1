@@ -1,5 +1,8 @@
 <?php
-
+   session_start();
+   if(isset($_SESSION["is_openday"])) {
+      header("Location:../index.php");
+   }
    require_once (dirname(__FILE__)."/../util/dbconnect.php");
    require_once (dirname(__FILE__)."/../util/mail_gen/verification_mail.php");
 

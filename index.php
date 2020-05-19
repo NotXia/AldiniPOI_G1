@@ -1,5 +1,10 @@
 <?php
    require_once(dirname(__FILE__)."/util/auth_check.php");
+   require_once(dirname(__FILE__)."/util/openday_check.php");
+   if(isset($_SESSION["is_openday"])) {
+      header("Location:./map");
+      exit;
+   }
 ?>
 
 <!DOCTYPE html>
@@ -28,11 +33,18 @@
             </a>
          </div>
          <div align="right">
+            <?php
+            if(isOpenday()) {
+               ?><a class="nav_options" href="openday.php">Open Day</a><?php
+            }
+            ?>
             <a class="nav_options" href="./map">Visita</a>
             <?php
                if(isLogged()) {
+                  if(!isset($_SESSION["is_openday"])) {
+                     ?><a class="nav_options" href="./prenotazioni">Prenota</a><?php
+                  }
                   ?>
-                     <a class="nav_options" href="./prenotazioni">Prenota</a>
                      <a class="nav_options" href="./logout.php">Esci</a>
                   <?php
                }
