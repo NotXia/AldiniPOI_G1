@@ -120,7 +120,7 @@
                               // ----------------------------------------------------------------
                               // Controlla se l'email inserita è già presente
                               // ----------------------------------------------------------------
-                              $sql = "SELECT id, nome, cognome, email, psw, cod_permesso FROM utenti WHERE email = :email";
+                              $sql = "SELECT id, nome, cognome, email, psw, cod_permesso, verifica_mail FROM utenti WHERE email = :email";
                               $stmt = $conn->prepare($sql);
                               $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
                               $stmt->execute();
