@@ -97,9 +97,10 @@
 
          // Invio mail
          if(isset($_POST["send_mail"])) {
-            $sql = "SELECT email, nome, cognome
-                    FROM prenotazioni, utenti
+            $sql = "SELECT email, nome, cognome, data_inizio, ora_inizio, ora_fine
+                    FROM prenotazioni, utenti, visite
                     WHERE cod_utente = utenti.id AND
+                          cod_visita = visite.id AND
                           cod_visita = :cod_visita";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":cod_visita", $_POST["id"], PDO::PARAM_INT);
@@ -113,9 +114,9 @@
                      "POI - Visita cancellata",
                      openday_delete_mail(
                         $row["nome"], $row["cognome"],
-                        date("d/m/Y", strtotime($_POST["data"])),
-                        date("H:i", strtotime($_POST["ora_inizio"])),
-                        date("H:i", strtotime($_POST["ora_fine"]))
+                        date("d/m/Y", strtotime($row["data_inizio"])),
+                        date("H:i", strtotime($row["ora_inizio"])),
+                        date("H:i", strtotime($row["ora_fine"]))
                      )
                   );
                }

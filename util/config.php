@@ -41,7 +41,7 @@
    //
    // CONFIGURAZIONE IMMAGINI
    //
-   $MAX_IMAGE_SIZE = 500000;
+   $MAX_IMAGE_SIZE = 500000000;
    $IMAGES_PATH = "res/lab_images"; // Relativo alla root
 
    //

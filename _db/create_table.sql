@@ -79,7 +79,7 @@ CREATE TABLE immagini (
 	descrizione VARCHAR(500),
 	cod_laboratorio VARCHAR(20) NOT NULL,
 	cod_permesso INT NOT NULL,
-	FOREIGN KEY (cod_laboratorio) REFERENCES laboratori(tag) ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY (cod_laboratorio) REFERENCES laboratori(tag) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (cod_permesso) REFERENCES permessi(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 

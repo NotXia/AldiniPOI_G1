@@ -21,7 +21,7 @@
          2 -> Troppo grande
    */
    function check_img($name, $index) : int {
-
+      $MAX_IMAGE_SIZE = $GLOBALS["MAX_IMAGE_SIZE"];
       if(!empty($_FILES[$name]["tmp_name"][$index])) {
          // Controlla se è un'immagine
          if(getimagesize($_FILES[$name]["tmp_name"][$index]) == false) {
@@ -29,7 +29,7 @@
          }
 
          // controllo dimensione file
-         if ($_FILES[$name]["size"][$index] > 500000) {
+         if ($_FILES[$name]["size"][$index] > $MAX_IMAGE_SIZE) {
             return 2;
          }
 

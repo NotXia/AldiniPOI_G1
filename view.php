@@ -2,6 +2,7 @@
    session_start();
    require_once (dirname(__FILE__)."/util/dbconnect.php");
    require_once (dirname(__FILE__)."/util/config.php");
+   require_once (dirname(__FILE__)."/util/openday_check.php");
 
    $cod_permesso = 1;
    if(isset($_SESSION["cod_permesso"])) {
@@ -9,16 +10,15 @@
          $cod_permesso = 2;
       }
       else {
-         if(!isUserValid()) {
-            $cod_permesso = 1;
+         if(isset($_SESSION["is_openday"])) {
+            if(!isUserValid()) {
+               $cod_permesso = 1;
+            }
          }
          else {
             $cod_permesso = $_SESSION["cod_permesso"];
          }
       }
-   }
-   else {
-      exit;
    }
 ?>
 
@@ -49,7 +49,19 @@
             </a>
          </div>
          <div align="right">
-            <a class="nav_options" href="./map">Indietro</a>
+            <?php
+               if($_SESSION["cod_permesso"] == 3) {
+                  ?>
+                     <a class="nav_options" href="./map">Mappa</a>
+                     <a class="nav_options" href="./admin/labo/view.php">Indietro</a>
+                  <?php
+               }
+               else {
+                  ?>
+                     <a class="nav_options" href="./map">Indietro</a>
+                  <?php
+               }
+            ?>
          </div>
       </nav>
 
@@ -82,21 +94,31 @@
                               }
                            }
                         ?>
-                        <h1 class="display-4 py-2 text-truncate"><?php echo htmlentities($res_lab["nome"]); ?></h1>
+                        <h1 class="display-4 py-2"><?php echo htmlentities($res_lab["nome"]); ?></h1>
                         <p class="lead"><?php if(!empty($res_lab["descrizione"])) echo htmlentities($res_lab["descrizione"]); ?></p>
                         <p class="lead" style="margin: 0 0 0;"><?php echo "Piano n°".htmlentities($res_lab["piano"]); ?></p>
                         <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["num_pc"])) echo htmlentities($res_lab["num_pc"])." postazioni"; ?></p>
-                        <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["presenza_lim"])) echo htmlentities($res_lab["presenza_lim"]==1 ? "LIM" : ""); ?></p>
+                        <p class="lead" style="margin: 0 0 0;"><?php if(!empty($res_lab["presenza_lim"])) echo ($res_lab["presenza_lim"]==1 ? "LIM &#10003" : ""); ?></p>
                       </div>
                    </div>
 
                    <?php
                       try {
+                        $sql = "";
                         // Estrae le immagini del laboratorio
-                        $sql = "SELECT *
-                                FROM immagini
-                                WHERE cod_laboratorio = :tag AND
-                                      cod_permesso = $cod_permesso";
+                        if($cod_permesso == 2) {
+                           $sql = "SELECT *
+                           FROM immagini
+                           WHERE cod_laboratorio = :tag AND
+                                 cod_permesso IN (1, 2)
+                           ORDER BY cod_permesso";
+                        }
+                        else {
+                           $sql = "SELECT *
+                           FROM immagini
+                           WHERE cod_laboratorio = :tag AND
+                                 cod_permesso = 1";
+                        }
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(":tag", $_GET["tag"], PDO::PARAM_STR, 20);
                         $stmt->execute();
@@ -107,7 +129,7 @@
                    ?>
 
                    <div class="row">
-                      <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 mx-auto text-center">
+                      <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 mx-auto text-center">
 
                         <div id="labImages" class="carousel slide" data-ride="carousel">
                            <ol class="carousel-indicators">

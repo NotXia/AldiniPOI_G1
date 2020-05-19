@@ -1,4 +1,5 @@
 <?php
+   ob_start();
    require_once (dirname(__FILE__)."/util/auth_check.php");
    require_once (dirname(__FILE__)."/util/openday_check.php");
    if(isLogged()) {
@@ -27,6 +28,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
       <link rel="stylesheet" href="css/navbar.css">
+      <link rel="stylesheet" href="css/form_table.css">
 
       <title>Registrazione</title>
 
@@ -104,8 +106,117 @@
                            <input type="submit" name="submit" value="Registrati">
                            <input id="strength" type="hidden" name="strength" value="">
                         </form>
+                        <br>
                      </div>
 
+                     <?php
+
+                     if(isset($_POST["submit"])) {
+
+                        // Verifica che tutti i campi siano impostati
+                        if(!isset($_POST["submit"]) || !isset($_POST["nome"]) || !isset($_POST["cognome"]) || !isset($_POST["ddn"]) ||
+                        !isset($_POST["email"]) || !isset($_POST["password1"]) || !isset($_POST["password2"]) || !isset($_POST["strength"])) {
+                           echo "<p id='error'>Qualcosa è andato storto</p>";
+                        }
+                        // Verifica l'età minima
+                        else if(strtotime($_POST["ddn"]) > strtotime($min_birth)) {
+                           echo "<p id='error'>Devi avere almeno $MIN_AGE anni per iscriverti, puoi chiedere ad un genitore di iscriverti per te</p>";
+                        }
+                        // Verifica che la password soddisfi la dimensione minima
+                        else if(strlen($_POST["password1"]) < $MIN_PSW_LENGTH || strlen($_POST["password2"]) < $MIN_PSW_LENGTH) {
+                           echo "<p id='error'>La password è troppo corta</p>";
+                        }
+                        // Verifica che la mail inserita sia in un formato corretto
+                        else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                           echo "<p id='error'>La mail inserita non è valida</p>";
+                        }
+                        // Verifica che la complessità della password sia accettabile
+                        else if($_POST["strength"] < 2) {
+                           echo "<p id='error'>La password è troppo debole</p>";
+                        }
+                        // Verifica che le due password coincidano
+                        else if($_POST["password1"] == $_POST["password2"]) {
+                           try {
+                              $conn = db_connect();
+
+                              // ----------------------------------------------------------------
+                              // Sanitizzazione input
+                              // ----------------------------------------------------------------
+                              $nome = trim($_POST["nome"]);
+                              $cognome = trim($_POST["cognome"]);
+                              $email = strtolower(trim($_POST["email"]));
+                              $ddn = $_POST["ddn"];
+                              $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
+                              // ****************************************************************
+
+
+                              // ----------------------------------------------------------------
+                              // Controlla se l'email inserita è già presente
+                              // ----------------------------------------------------------------
+                              $sql = "SELECT COUNT(*) as conta FROM utenti WHERE email = :email";
+                              $stmt = $conn->prepare($sql);
+                              $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
+                              $stmt->execute();
+                              $account_check = $stmt->fetch()["conta"]; // Numero di utenti con quella mail (0 o 1)
+                              // ****************************************************************
+
+
+                              if($account_check == 0) { // Email non presente
+                                 // ----------------------------------------------------------------
+                                 // Inserimento utente
+                                 // ----------------------------------------------------------------
+                                 $sql = "INSERT utenti (email, psw, nome, cognome, ddn, verifica_mail, data_creazione, cod_permesso)
+                                 VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod_permesso base
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
+                                 $stmt->bindParam(":psw", $pswd, PDO::PARAM_STR, 60);
+                                 $stmt->bindParam(":nome", $nome, PDO::PARAM_STR, 100);
+                                 $stmt->bindParam(":cognome", $cognome, PDO::PARAM_STR, 100);
+                                 $stmt->bindParam(":ddn", $ddn);
+                                 $stmt->execute();
+                                 // ****************************************************************
+
+                                 // ID dell'utente appena inserito
+                                 $last_id = $conn->lastInsertId();
+
+                                 // ----------------------------------------------------------------
+                                 // Estrazione data e ora creazione utente
+                                 // ----------------------------------------------------------------
+                                 $sql = "SELECT data_creazione FROM utenti WHERE id = $last_id";
+                                 $stmt = $conn->prepare($sql);
+                                 $stmt->execute();
+                                 $data_creazione = $stmt->fetch()["data_creazione"];
+                                 // ****************************************************************
+
+
+                                 // ----------------------------------------------------------------
+                                 // Invio della mail per verificare la mail
+                                 // ----------------------------------------------------------------
+                                 $email_format = verification_mail($last_id, $nome, $cognome, $email, $data_creazione);
+
+                                 if(mailTo($email, "POI - Registrazione effettuata con successo", $email_format)){
+                                    header("Location:success.html");
+                                 }
+                                 else{
+                                    // TODO Gestire errore invio email
+                                 }
+                                 // ****************************************************************
+
+                              } // if($account_check == 0)
+                              else {
+                                 echo "<p id='error'>L'indirizzo email che hai inserito è già in uso</p>";
+                              }
+                           }
+                           catch(PDOException $e) {
+                              echo "<p id='error'>Qualcosa è andato storto</p>";
+                           }
+                        } // if($_POST["password1"] == $_POST["password2"])
+                        else {
+                           echo "<p id='error'>Le password non coincidono</p>";
+                        }
+                     }
+
+                     ?>
                   </div>
                </div>
             </div>
@@ -118,117 +229,3 @@
    <script src="./js/psw_strength.js"></script>
 
 </html>
-
-
-<?php
-
-
-
-   if(isset($_POST["submit"])) {
-
-      // Verifica che tutti i campi siano impostati
-      if(!isset($_POST["submit"]) || !isset($_POST["nome"]) || !isset($_POST["cognome"]) || !isset($_POST["ddn"]) ||
-         !isset($_POST["email"]) || !isset($_POST["password1"]) || !isset($_POST["password2"]) || !isset($_POST["strength"])) {
-         echo "<p id='error'>Qualcosa è andato storto</p>";
-      }
-      // Verifica l'età minima
-      else if(strtotime($_POST["ddn"]) > strtotime($min_birth)) {
-         echo "<p id='error'>Devi avere almeno $MIN_AGE anni per iscriverti, puoi chiedere ad un genitore di iscriverti per te</p>";
-      }
-      // Verifica che la password soddisfi la dimensione minima
-      else if(strlen($_POST["password1"]) < $MIN_PSW_LENGTH || strlen($_POST["password2"]) < $MIN_PSW_LENGTH) {
-         echo "<p id='error'>La password è troppo corta</p>";
-      }
-      // Verifica che la mail inserita sia in un formato corretto
-      else if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-         echo "<p id='error'>La mail inserita non è valida</p>";
-      }
-      // Verifica che la complessità della password sia accettabile
-      else if($_POST["strength"] < 2) {
-         echo "<p id='error'>La password è troppo debole</p>";
-      }
-      // Verifica che le due password coincidano
-      else if($_POST["password1"] == $_POST["password2"]) {
-         try {
-            $conn = db_connect();
-
-            // ----------------------------------------------------------------
-            // Sanitizzazione input
-            // ----------------------------------------------------------------
-            $nome = trim($_POST["nome"]);
-            $cognome = trim($_POST["cognome"]);
-            $email = strtolower(trim($_POST["email"]));
-            $ddn = $_POST["ddn"];
-            $pswd = password_hash($_POST["password1"], PASSWORD_DEFAULT);
-            // ****************************************************************
-
-
-            // ----------------------------------------------------------------
-            // Controlla se l'email inserita è già presente
-            // ----------------------------------------------------------------
-            $sql = "SELECT COUNT(*) as conta FROM utenti WHERE email = :email";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
-            $stmt->execute();
-            $account_check = $stmt->fetch()["conta"]; // Numero di utenti con quella mail (0 o 1)
-            // ****************************************************************
-
-
-            if($account_check == 0) { // Email non presente
-               // ----------------------------------------------------------------
-               // Inserimento utente
-               // ----------------------------------------------------------------
-               $sql = "INSERT utenti (email, psw, nome, cognome, ddn, verifica_mail, data_creazione, cod_permesso)
-               VALUES(:email, :psw, :nome, :cognome, :ddn, 0, NOW(), 1)"; // 1 = cod_permesso base
-               $stmt = $conn->prepare($sql);
-               $stmt->bindParam(":email", $email, PDO::PARAM_STR, 100);
-               $stmt->bindParam(":psw", $pswd, PDO::PARAM_STR, 60);
-               $stmt->bindParam(":nome", $nome, PDO::PARAM_STR, 100);
-               $stmt->bindParam(":cognome", $cognome, PDO::PARAM_STR, 100);
-               $stmt->bindParam(":ddn", $ddn);
-               $stmt->execute();
-               // ****************************************************************
-
-               // ID dell'utente appena inserito
-               $last_id = $conn->lastInsertId();
-
-               // ----------------------------------------------------------------
-               // Estrazione data e ora creazione utente
-               // ----------------------------------------------------------------
-               $sql = "SELECT data_creazione FROM utenti WHERE id = $last_id";
-               $stmt = $conn->prepare($sql);
-               $stmt->execute();
-               $data_creazione = $stmt->fetch()["data_creazione"];
-               // ****************************************************************
-
-
-               // ----------------------------------------------------------------
-               // Invio della mail per verificare la mail
-               // ----------------------------------------------------------------
-               $email_format = verification_mail($last_id, $nome, $cognome, $email, $data_creazione);
-
-               if(mailTo($email, "POI - Registrazione effettuata con successo", $email_format)){
-                  header("Location:success.html");
-               }
-               else{
-                  // TODO Gestire errore invio email
-               }
-               // ****************************************************************
-
-            } // if($account_check == 0)
-            else {
-               echo "<p id='error'>L'indirizzo email che hai inserito è già in uso</p>";
-            }
-         }
-         catch(PDOException $e) {
-            echo "<p id='error'>Qualcosa è andato storto</p>";
-         }
-      } // if($_POST["password1"] == $_POST["password2"])
-      else {
-         echo "<p id='error'>Le password non coincidono</p>";
-      }
-   }
-
-
-
-?>

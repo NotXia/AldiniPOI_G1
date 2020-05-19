@@ -66,10 +66,21 @@
       <section id="cover" class="min-vh-100">
           <div id="cover-caption">
               <div class="container">
-                  <div class="row text-white">
-                      <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                          <h1 class="display-4 py-2 text-truncate">Aldini Valeriani</h1>
-                          <button type="submit" class="btn btn-primary btn-lg">Effettua prenotazione</button>
+                  <div class="row text-black">
+                      <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mx-auto text-center p-4">
+                        <img width="120px" src="res/logo.png" alt="Logo AV">
+                        <h1 class="display-2 py-2 ">Aldini Valeriani</h1>
+                        <?php
+                        if(isLogged()) {
+                           $nome = $_SESSION["nome"];
+                           echo "<h2 class='display-4 py-2'>Bentornat@ $nome</h2>";
+                        }
+                        else {
+                           ?>
+                           <h2 class="display-4 py-2 ">Benvenut@</h2>
+                           <?php
+                        }
+                        ?>
                       </div>
                    </div>
                </div>
