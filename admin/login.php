@@ -94,7 +94,7 @@
                               // ----------------------------------------------------------------
                               // Controlla se l'email inserita è già presente
                               // ----------------------------------------------------------------
-                              $sql = "SELECT id, nome, cognome, email, psw, cod_permesso
+                              $sql = "SELECT id, nome, cognome, email, psw, cod_permesso, verifica_mail
                               FROM utenti
                               WHERE email = :email AND
                               cod_permesso = 3";
@@ -114,6 +114,7 @@
                                     $_SESSION["cognome"] = $res["cognome"];
                                     $_SESSION["email"] = $res["email"];
                                     $_SESSION["cod_permesso"] = $res["cod_permesso"];
+                                    $_SESSION["mail_verif"] = $res["verifica_mail"];
 
                                     // ----------------------------------------------------------------
                                     // Inizializza cookie per il token dell'utente (Se "Ricordami" è spuntato)
