@@ -57,6 +57,13 @@
             <a class="nav_options" href="../map">Visita</a>
             <?php
                if(isLogged()) {
+                  if(isset($_SESSION["cod_permesso"])) {
+                     if($_SESSION["cod_permesso"] == 3) {
+                        ?>
+                        <a class="nav_options" href="./admin">Admin</a>
+                        <?php
+                     }
+                  }
                   ?>
                      <a class="nav_options" href="./index.php">Prenota</a>
                      <a class="nav_options" href="../logout.php">Esci</a>

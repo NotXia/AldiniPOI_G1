@@ -52,8 +52,17 @@
             <a class="nav_options" href="./map">Visita</a>
             <?php
                if(isLogged()) {
+                  if(isset($_SESSION["cod_permesso"])) {
+                     if($_SESSION["cod_permesso"] == 3) {
+                        ?>
+                        <a class="nav_options" href="./admin">Admin</a>
+                        <?php
+                     }
+                  }
                   if(!isset($_SESSION["is_openday"])) {
-                     ?><a class="nav_options" href="./prenotazioni">Prenota</a><?php
+                     ?>
+                     <a class="nav_options" href="./prenotazioni">Prenota</a>
+                     <?php
                   }
                   ?>
                      <a class="nav_options" href="./logout.php">Esci</a>
