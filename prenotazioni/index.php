@@ -56,7 +56,7 @@
                   if(isset($_SESSION["cod_permesso"])) {
                      if($_SESSION["cod_permesso"] == 3) {
                         ?>
-                        <a class="nav_options" href="./admin">Admin</a>
+                        <a class="nav_options" href="../admin">Admin</a>
                         <?php
                      }
                   }
