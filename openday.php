@@ -120,7 +120,7 @@
                            WHERE cod_visita = visite.id AND
                                  username = :username AND
                                  DATE(NOW()) = data_inizio AND
-                                 TIME(NOW()) BETWEEN DATE_ADD(ora_inizio, INTERVAL $OFFSET_BEFORE_OPENDAY MINUTE) AND DATE_ADD(ora_fine, INTERVAL $OFFSET_AFTER_OPENDAY MINUTE)";
+                                 TIME(NOW()) BETWEEN DATE_ADD(ora_inizio, INTERVAL -$OFFSET_BEFORE_OPENDAY MINUTE) AND DATE_ADD(ora_fine, INTERVAL $OFFSET_AFTER_OPENDAY MINUTE)";
                            $stmt = $conn->prepare($sql);
                            $stmt->bindParam(":username", $user, PDO::PARAM_STR, 100);
                            $stmt->execute();
