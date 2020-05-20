@@ -449,6 +449,13 @@
                echo "window.location.href = '../view.php?tag=$tag';";
                echo "break;";
             }
+            foreach($res_altro as $row) {
+               $tag = $row["tag"];
+               $id_html = $row["id_html_map"];
+               echo "case $id_html:";
+               echo "window.location.href = '../view.php?tag=$tag';";
+               echo "break;";
+            }
 
             ?>
          }
