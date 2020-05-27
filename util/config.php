@@ -12,7 +12,7 @@
    // CONFIGURAZIONE EMAIL
    //
    $EMAIL_SERVER = "tcxia.test@gmail.com";
-   $PSW_SERVER = "XiaTesting";
+   $PSW_SERVER = "";
    $NOME_SERVER = "Aldini Valeriani";
 
    /*
